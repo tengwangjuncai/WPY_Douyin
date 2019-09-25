@@ -1,0 +1,1176 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		30040CCC227580610053D25F /* Rotatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30040CCB227580610053D25F /* Rotatable.swift */; };
+		30040CCE227583CC0053D25F /* ConfigurationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30040CCD227583CC0053D25F /* ConfigurationHelper.swift */; };
+		30040CD32276E1330053D25F /* UserDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30040CD22276E1330053D25F /* UserDetailVC.swift */; };
+		30040CE82276FE800053D25F /* CommentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30040CE62276FE800053D25F /* CommentVC.swift */; };
+		30040CE92276FE800053D25F /* CommentVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30040CE72276FE800053D25F /* CommentVC.xib */; };
+		30040CEC22770EF30053D25F /* SelectPageSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30040CEB22770EF30053D25F /* SelectPageSectionView.swift */; };
+		30040CEE227838280053D25F /* WPYContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30040CED227838280053D25F /* WPYContainerCell.swift */; };
+		300A5C052260996A00D88A3B /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C042260996A00D88A3B /* TabBarVC.swift */; };
+		300A5C0B2260A68600D88A3B /* UserRecordsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C092260A68600D88A3B /* UserRecordsVC.swift */; };
+		300A5C0C2260A68600D88A3B /* UserRecordsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 300A5C0A2260A68600D88A3B /* UserRecordsVC.xib */; };
+		300A5C1D2264282A00D88A3B /* LGSideMenuHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C142264282A00D88A3B /* LGSideMenuHelper.m */; };
+		300A5C1E2264282A00D88A3B /* LGSideMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C162264282A00D88A3B /* LGSideMenuView.m */; };
+		300A5C1F2264282A00D88A3B /* LGSideMenuSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C172264282A00D88A3B /* LGSideMenuSegue.m */; };
+		300A5C202264282A00D88A3B /* LGSideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C182264282A00D88A3B /* LGSideMenuController.m */; };
+		300A5C212264282A00D88A3B /* LGSideMenuGesturesHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C192264282A00D88A3B /* LGSideMenuGesturesHandler.m */; };
+		300A5C222264282A00D88A3B /* UIViewController+LGSideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C1A2264282A00D88A3B /* UIViewController+LGSideMenuController.m */; };
+		300A5C232264282A00D88A3B /* LGSideMenuBorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C1C2264282A00D88A3B /* LGSideMenuBorderView.m */; };
+		300A5C2522642E6200D88A3B /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C2422642E6200D88A3B /* BaseVC.swift */; };
+		300A5C2722642E9700D88A3B /* BaseNavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C2622642E9700D88A3B /* BaseNavController.swift */; };
+		300A5C292264330900D88A3B /* MenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C282264330900D88A3B /* MenuVC.swift */; };
+		300A5C2C22643F9000D88A3B /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C2B22643F9000D88A3B /* CustomTabBar.swift */; };
+		300A5C2F2264731F00D88A3B /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C2E2264731F00D88A3B /* Util.swift */; };
+		300A5C362265841000D88A3B /* HomePageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300A5C342265841000D88A3B /* HomePageCell.swift */; };
+		300A5C372265841000D88A3B /* HomePageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 300A5C352265841000D88A3B /* HomePageCell.xib */; };
+		3043A564227853CA0046AB34 /* AllVideosVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3043A562227853CA0046AB34 /* AllVideosVC.swift */; };
+		3043A565227853CA0046AB34 /* AllVideosVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3043A563227853CA0046AB34 /* AllVideosVC.xib */; };
+		3043A568227854200046AB34 /* MyActVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3043A566227854200046AB34 /* MyActVC.swift */; };
+		3043A569227854200046AB34 /* MyActVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3043A567227854200046AB34 /* MyActVC.xib */; };
+		3043A56C2278546F0046AB34 /* AddUsersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3043A56A2278546F0046AB34 /* AddUsersVC.swift */; };
+		3043A56D2278546F0046AB34 /* AddUsersVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3043A56B2278546F0046AB34 /* AddUsersVC.xib */; };
+		3043A573227FEDFD0046AB34 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3043A571227FEDFD0046AB34 /* VideoCell.swift */; };
+		3043A574227FEDFD0046AB34 /* VideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3043A572227FEDFD0046AB34 /* VideoCell.xib */; };
+		304CD78B22696E73000B8B83 /* ReleaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304CD78922696E73000B8B83 /* ReleaseVC.swift */; };
+		304CD78C22696E73000B8B83 /* ReleaseVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 304CD78A22696E73000B8B83 /* ReleaseVC.xib */; };
+		304CD78F22697D15000B8B83 /* WRNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304CD78E22697D14000B8B83 /* WRNavigationBar.swift */; };
+		304CD79222703FDC000B8B83 /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304CD79122703FDC000B8B83 /* DBHelper.swift */; };
+		304CD79922705A11000B8B83 /* WPYPhotoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304CD79822705A11000B8B83 /* WPYPhotoModel.swift */; };
+		304CD79D2270708A000B8B83 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 304CD79C2270708A000B8B83 /* libsqlite3.0.tbd */; };
+		304CD79F227074B3000B8B83 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 304CD79E227074B3000B8B83 /* SQLite.framework */; };
+		304CD7A32272D2A2000B8B83 /* CAGradientLayer+GradientBG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304CD7A22272D2A2000B8B83 /* CAGradientLayer+GradientBG.swift */; };
+		304FC45821EC369400DB0B7A /* Util_OC.m in Sources */ = {isa = PBXBuildFile; fileRef = 304FC45521EC369400DB0B7A /* Util_OC.m */; };
+		304FC45921EC369400DB0B7A /* WPY_AVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304FC45621EC369400DB0B7A /* WPY_AVPlayer.swift */; };
+		304FC45E21EC485100DB0B7A /* WPYPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304FC45D21EC485100DB0B7A /* WPYPlayView.swift */; };
+		304FC46121EC763D00DB0B7A /* playVideoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304FC45F21EC763D00DB0B7A /* playVideoVC.swift */; };
+		304FC46221EC763D00DB0B7A /* playVideoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 304FC46021EC763D00DB0B7A /* playVideoVC.xib */; };
+		3075118721CA5CC100A34BA7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3075118621CA5CC100A34BA7 /* AppDelegate.swift */; };
+		3075118921CA5CC100A34BA7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3075118821CA5CC100A34BA7 /* ViewController.swift */; };
+		3075118C21CA5CC100A34BA7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3075118A21CA5CC100A34BA7 /* Main.storyboard */; };
+		3075118E21CA5CC500A34BA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3075118D21CA5CC500A34BA7 /* Assets.xcassets */; };
+		3075119121CA5CC500A34BA7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3075118F21CA5CC500A34BA7 /* LaunchScreen.storyboard */; };
+		307511A421CA601400A34BA7 /* photograph_Select@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3075119B21CA601400A34BA7 /* photograph_Select@3x.png */; };
+		307511A521CA601400A34BA7 /* photograph_Select@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3075119C21CA601400A34BA7 /* photograph_Select@2x.png */; };
+		307511A621CA601400A34BA7 /* 闪光灯-关.png in Resources */ = {isa = PBXBuildFile; fileRef = 3075119D21CA601400A34BA7 /* 闪光灯-关.png */; };
+		307511A721CA601400A34BA7 /* photograph@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3075119E21CA601400A34BA7 /* photograph@3x.png */; };
+		307511A821CA601400A34BA7 /* photograph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3075119F21CA601400A34BA7 /* photograph@2x.png */; };
+		307511A921CA601400A34BA7 /* 闪光灯-开.png in Resources */ = {isa = PBXBuildFile; fileRef = 307511A021CA601400A34BA7 /* 闪光灯-开.png */; };
+		307511AA21CA601400A34BA7 /* icon-摄像头切换-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 307511A121CA601400A34BA7 /* icon-摄像头切换-3.png */; };
+		307511AB21CA601400A34BA7 /* Camera.xib in Resources */ = {isa = PBXBuildFile; fileRef = 307511A221CA601400A34BA7 /* Camera.xib */; };
+		307511AC21CA601400A34BA7 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307511A321CA601400A34BA7 /* Camera.swift */; };
+		307511E721CB662000A34BA7 /* MyCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 307511E421CB661F00A34BA7 /* MyCamera.m */; };
+		307511E821CB662000A34BA7 /* MyCamera.xib in Resources */ = {isa = PBXBuildFile; fileRef = 307511E521CB661F00A34BA7 /* MyCamera.xib */; };
+		307511F121CB68CE00A34BA7 /* SDPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 307511EB21CB68CE00A34BA7 /* SDPhotoBrowser.m */; };
+		307511F221CB68CE00A34BA7 /* SDWaitingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 307511EC21CB68CE00A34BA7 /* SDWaitingView.m */; };
+		307511F321CB68CE00A34BA7 /* SDBrowserImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 307511ED21CB68CE00A34BA7 /* SDBrowserImageView.m */; };
+		307F579922290F1B003FA66C /* WPYVideoClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307F579822290F1B003FA66C /* WPYVideoClip.swift */; };
+		307F579B22290F8F003FA66C /* WPYClipFrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307F579A22290F8F003FA66C /* WPYClipFrameView.swift */; };
+		307F579D22291076003FA66C /* WPYVideoClipCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307F579C22291076003FA66C /* WPYVideoClipCell.swift */; };
+		30D9F2A722B8908D00F02A76 /* WPY_VCDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 30D9F29322B8908D00F02A76 /* WPY_VCDelegate.m */; };
+		30D9F2A822B8908D00F02A76 /* WPY_GestureRecognizerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 30D9F29522B8908D00F02A76 /* WPY_GestureRecognizerDelegate.m */; };
+		30D9F2A922B8908D00F02A76 /* WPYPresentTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 30D9F29822B8908D00F02A76 /* WPYPresentTransition.m */; };
+		30D9F2AA22B8908D00F02A76 /* WPYDismissTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 30D9F29922B8908D00F02A76 /* WPYDismissTransition.m */; };
+		30D9F2AB22B8908D00F02A76 /* WPYPopTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 30D9F29A22B8908D00F02A76 /* WPYPopTransition.m */; };
+		30D9F2AC22B8908D00F02A76 /* WPYPushTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 30D9F29B22B8908D00F02A76 /* WPYPushTransition.m */; };
+		30D9F2AD22B8908D00F02A76 /* WPYBaseTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 30D9F2A122B8908D00F02A76 /* WPYBaseTransition.m */; };
+		30D9F2AE22B8908D00F02A76 /* WPY_NavDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 30D9F2A222B8908D00F02A76 /* WPY_NavDelegate.m */; };
+		30D9F2AF22B8908D00F02A76 /* UIViewController+WPYTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 30D9F2A322B8908D00F02A76 /* UIViewController+WPYTransition.m */; };
+		30D9F2B022B8908D00F02A76 /* UINavigationController+WPYTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 30D9F2A522B8908D00F02A76 /* UINavigationController+WPYTransition.m */; };
+		30D9F2B322B89CC600F02A76 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D9F2B122B89CC600F02A76 /* HomeVC.swift */; };
+		30D9F2B422B89CC600F02A76 /* HomeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30D9F2B222B89CC600F02A76 /* HomeVC.xib */; };
+		30D9F2B822B8D00000F02A76 /* LeftVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D9F2B622B8D00000F02A76 /* LeftVC.swift */; };
+		30D9F2B922B8D00000F02A76 /* LeftVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30D9F2B722B8D00000F02A76 /* LeftVC.xib */; };
+		30D9FCE221F02701000CFCA0 /* MusicPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D9FCE121F02701000CFCA0 /* MusicPlayerManager.swift */; };
+		30D9FCE521F02BBB000CFCA0 /* 真的不容易.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 30D9FCE421F02BBB000CFCA0 /* 真的不容易.mp3 */; };
+		30D9FCE821F1BC17000CFCA0 /* WPYEditRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D9FCE721F1BC17000CFCA0 /* WPYEditRecordView.swift */; };
+		30D9FCEC21F1C703000CFCA0 /* VolumeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D9FCEA21F1C703000CFCA0 /* VolumeCell.swift */; };
+		30D9FCED21F1C703000CFCA0 /* VolumeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30D9FCEB21F1C703000CFCA0 /* VolumeCell.xib */; };
+		30D9FCF021F5C3D0000CFCA0 /* WPYVideoEditManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D9FCEF21F5C3D0000CFCA0 /* WPYVideoEditManager.swift */; };
+		30E17FD722C21E55004EA036 /* DYViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E17FD622C21E55004EA036 /* DYViewController.swift */; };
+		30E17FDA22C35660004EA036 /* UIScrollView+WPYTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E17FD922C35660004EA036 /* UIScrollView+WPYTransition.m */; };
+		30E17FDE22C38970004EA036 /* WPY_PageTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E17FDD22C38970004EA036 /* WPY_PageTableView.m */; };
+		30E17FE122C38A90004EA036 /* WPY_PageContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E17FE022C38A90004EA036 /* WPY_PageContainerView.m */; };
+		30E17FE422C475F7004EA036 /* WPY_PageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E17FE322C475F7004EA036 /* WPY_PageView.m */; };
+		30E5AA5D21E359CE00EA50DC /* WPYTakePhotoBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E5AA5C21E359CE00EA50DC /* WPYTakePhotoBtn.swift */; };
+		DFF6477B46F411C7EA2C940E /* Pods_WPYCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18AE7F2370990EA4884BF9C2 /* Pods_WPYCamera.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		18AE7F2370990EA4884BF9C2 /* Pods_WPYCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WPYCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		30040CCB227580610053D25F /* Rotatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Rotatable.swift; path = ../../../../../MyProject/Swift_myImGuider/MyImGuider/Vendor/Source/AnimatingBarButton/Animations/Rotatable.swift; sourceTree = "<group>"; };
+		30040CCD227583CC0053D25F /* ConfigurationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfigurationHelper.swift; path = ../../../../../MyProject/Swift_myImGuider/MyImGuider/Vendor/Source/Helpers/ConfigurationHelper/ConfigurationHelper.swift; sourceTree = "<group>"; };
+		30040CD22276E1330053D25F /* UserDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailVC.swift; sourceTree = "<group>"; };
+		30040CE62276FE800053D25F /* CommentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentVC.swift; sourceTree = "<group>"; };
+		30040CE72276FE800053D25F /* CommentVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentVC.xib; sourceTree = "<group>"; };
+		30040CEB22770EF30053D25F /* SelectPageSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPageSectionView.swift; sourceTree = "<group>"; };
+		30040CED227838280053D25F /* WPYContainerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPYContainerCell.swift; sourceTree = "<group>"; };
+		300A5C042260996A00D88A3B /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
+		300A5C092260A68600D88A3B /* UserRecordsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecordsVC.swift; sourceTree = "<group>"; };
+		300A5C0A2260A68600D88A3B /* UserRecordsVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserRecordsVC.xib; sourceTree = "<group>"; };
+		300A5C0F2264282A00D88A3B /* LGSideMenuSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSideMenuSegue.h; sourceTree = "<group>"; };
+		300A5C102264282A00D88A3B /* LGSideMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSideMenuView.h; sourceTree = "<group>"; };
+		300A5C112264282A00D88A3B /* LGSideMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSideMenuController.h; sourceTree = "<group>"; };
+		300A5C122264282A00D88A3B /* LGSideMenuGesturesHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSideMenuGesturesHandler.h; sourceTree = "<group>"; };
+		300A5C132264282A00D88A3B /* LGSideMenuBorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSideMenuBorderView.h; sourceTree = "<group>"; };
+		300A5C142264282A00D88A3B /* LGSideMenuHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSideMenuHelper.m; sourceTree = "<group>"; };
+		300A5C152264282A00D88A3B /* UIViewController+LGSideMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LGSideMenuController.h"; sourceTree = "<group>"; };
+		300A5C162264282A00D88A3B /* LGSideMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSideMenuView.m; sourceTree = "<group>"; };
+		300A5C172264282A00D88A3B /* LGSideMenuSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSideMenuSegue.m; sourceTree = "<group>"; };
+		300A5C182264282A00D88A3B /* LGSideMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSideMenuController.m; sourceTree = "<group>"; };
+		300A5C192264282A00D88A3B /* LGSideMenuGesturesHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSideMenuGesturesHandler.m; sourceTree = "<group>"; };
+		300A5C1A2264282A00D88A3B /* UIViewController+LGSideMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LGSideMenuController.m"; sourceTree = "<group>"; };
+		300A5C1B2264282A00D88A3B /* LGSideMenuHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSideMenuHelper.h; sourceTree = "<group>"; };
+		300A5C1C2264282A00D88A3B /* LGSideMenuBorderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSideMenuBorderView.m; sourceTree = "<group>"; };
+		300A5C2422642E6200D88A3B /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
+		300A5C2622642E9700D88A3B /* BaseNavController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavController.swift; sourceTree = "<group>"; };
+		300A5C282264330900D88A3B /* MenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuVC.swift; sourceTree = "<group>"; };
+		300A5C2B22643F9000D88A3B /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
+		300A5C2E2264731F00D88A3B /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		300A5C342265841000D88A3B /* HomePageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageCell.swift; sourceTree = "<group>"; };
+		300A5C352265841000D88A3B /* HomePageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomePageCell.xib; sourceTree = "<group>"; };
+		3043A562227853CA0046AB34 /* AllVideosVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllVideosVC.swift; sourceTree = "<group>"; };
+		3043A563227853CA0046AB34 /* AllVideosVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AllVideosVC.xib; sourceTree = "<group>"; };
+		3043A566227854200046AB34 /* MyActVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyActVC.swift; sourceTree = "<group>"; };
+		3043A567227854200046AB34 /* MyActVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyActVC.xib; sourceTree = "<group>"; };
+		3043A56A2278546F0046AB34 /* AddUsersVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUsersVC.swift; sourceTree = "<group>"; };
+		3043A56B2278546F0046AB34 /* AddUsersVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddUsersVC.xib; sourceTree = "<group>"; };
+		3043A571227FEDFD0046AB34 /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
+		3043A572227FEDFD0046AB34 /* VideoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoCell.xib; sourceTree = "<group>"; };
+		304CD78922696E73000B8B83 /* ReleaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseVC.swift; sourceTree = "<group>"; };
+		304CD78A22696E73000B8B83 /* ReleaseVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReleaseVC.xib; sourceTree = "<group>"; };
+		304CD78E22697D14000B8B83 /* WRNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WRNavigationBar.swift; sourceTree = "<group>"; };
+		304CD79122703FDC000B8B83 /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
+		304CD79322704E35000B8B83 /* SQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		304CD79822705A11000B8B83 /* WPYPhotoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPYPhotoModel.swift; sourceTree = "<group>"; };
+		304CD79A2270707E000B8B83 /* SQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		304CD79C2270708A000B8B83 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		304CD79E227074B3000B8B83 /* SQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		304CD7A22272D2A2000B8B83 /* CAGradientLayer+GradientBG.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CAGradientLayer+GradientBG.swift"; path = "../../../../../ImGuiderX_Swift/ImGuider X/Public/Extension/CAGradientLayer+GradientBG.swift"; sourceTree = "<group>"; };
+		304FC45521EC369400DB0B7A /* Util_OC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util_OC.m; sourceTree = "<group>"; };
+		304FC45621EC369400DB0B7A /* WPY_AVPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPY_AVPlayer.swift; sourceTree = "<group>"; };
+		304FC45721EC369400DB0B7A /* Util_OC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util_OC.h; sourceTree = "<group>"; };
+		304FC45D21EC485100DB0B7A /* WPYPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPYPlayView.swift; sourceTree = "<group>"; };
+		304FC45F21EC763D00DB0B7A /* playVideoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = playVideoVC.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		304FC46021EC763D00DB0B7A /* playVideoVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = playVideoVC.xib; sourceTree = "<group>"; };
+		3075118321CA5CC100A34BA7 /* WPYCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WPYCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3075118621CA5CC100A34BA7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3075118821CA5CC100A34BA7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3075118B21CA5CC100A34BA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3075118D21CA5CC500A34BA7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3075119021CA5CC500A34BA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		3075119221CA5CC500A34BA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3075119B21CA601400A34BA7 /* photograph_Select@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photograph_Select@3x.png"; sourceTree = "<group>"; };
+		3075119C21CA601400A34BA7 /* photograph_Select@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photograph_Select@2x.png"; sourceTree = "<group>"; };
+		3075119D21CA601400A34BA7 /* 闪光灯-关.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "闪光灯-关.png"; sourceTree = "<group>"; };
+		3075119E21CA601400A34BA7 /* photograph@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photograph@3x.png"; sourceTree = "<group>"; };
+		3075119F21CA601400A34BA7 /* photograph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photograph@2x.png"; sourceTree = "<group>"; };
+		307511A021CA601400A34BA7 /* 闪光灯-开.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "闪光灯-开.png"; sourceTree = "<group>"; };
+		307511A121CA601400A34BA7 /* icon-摄像头切换-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-摄像头切换-3.png"; sourceTree = "<group>"; };
+		307511A221CA601400A34BA7 /* Camera.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Camera.xib; sourceTree = "<group>"; };
+		307511A321CA601400A34BA7 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; tabWidth = 5; };
+		307511E321CB661E00A34BA7 /* WPYCamera-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WPYCamera-Bridging-Header.h"; sourceTree = "<group>"; };
+		307511E421CB661F00A34BA7 /* MyCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCamera.m; sourceTree = "<group>"; };
+		307511E521CB661F00A34BA7 /* MyCamera.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyCamera.xib; sourceTree = "<group>"; };
+		307511E621CB661F00A34BA7 /* MyCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCamera.h; sourceTree = "<group>"; };
+		307511EA21CB68CE00A34BA7 /* SDPhotoBrowserConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDPhotoBrowserConfig.h; sourceTree = "<group>"; };
+		307511EB21CB68CE00A34BA7 /* SDPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDPhotoBrowser.m; sourceTree = "<group>"; };
+		307511EC21CB68CE00A34BA7 /* SDWaitingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWaitingView.m; sourceTree = "<group>"; };
+		307511ED21CB68CE00A34BA7 /* SDBrowserImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDBrowserImageView.m; sourceTree = "<group>"; };
+		307511EE21CB68CE00A34BA7 /* SDWaitingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWaitingView.h; sourceTree = "<group>"; };
+		307511EF21CB68CE00A34BA7 /* SDPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDPhotoBrowser.h; sourceTree = "<group>"; };
+		307511F021CB68CE00A34BA7 /* SDBrowserImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDBrowserImageView.h; sourceTree = "<group>"; };
+		307F579822290F1B003FA66C /* WPYVideoClip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPYVideoClip.swift; sourceTree = "<group>"; };
+		307F579A22290F8F003FA66C /* WPYClipFrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPYClipFrameView.swift; sourceTree = "<group>"; };
+		307F579C22291076003FA66C /* WPYVideoClipCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPYVideoClipCell.swift; sourceTree = "<group>"; };
+		30D9F29122B8908D00F02A76 /* UIViewController+WPYTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WPYTransition.h"; sourceTree = "<group>"; };
+		30D9F29222B8908D00F02A76 /* WPY_NavDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPY_NavDelegate.h; sourceTree = "<group>"; };
+		30D9F29322B8908D00F02A76 /* WPY_VCDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPY_VCDelegate.m; sourceTree = "<group>"; };
+		30D9F29422B8908D00F02A76 /* UINavigationController+WPYTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+WPYTransition.h"; sourceTree = "<group>"; };
+		30D9F29522B8908D00F02A76 /* WPY_GestureRecognizerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPY_GestureRecognizerDelegate.m; sourceTree = "<group>"; };
+		30D9F29622B8908D00F02A76 /* WPY_TransitionUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPY_TransitionUtil.h; sourceTree = "<group>"; };
+		30D9F29822B8908D00F02A76 /* WPYPresentTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPYPresentTransition.m; sourceTree = "<group>"; };
+		30D9F29922B8908D00F02A76 /* WPYDismissTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPYDismissTransition.m; sourceTree = "<group>"; };
+		30D9F29A22B8908D00F02A76 /* WPYPopTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPYPopTransition.m; sourceTree = "<group>"; };
+		30D9F29B22B8908D00F02A76 /* WPYPushTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPYPushTransition.m; sourceTree = "<group>"; };
+		30D9F29C22B8908D00F02A76 /* WPYBaseTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPYBaseTransition.h; sourceTree = "<group>"; };
+		30D9F29D22B8908D00F02A76 /* WPYPresentTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPYPresentTransition.h; sourceTree = "<group>"; };
+		30D9F29E22B8908D00F02A76 /* WPYPopTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPYPopTransition.h; sourceTree = "<group>"; };
+		30D9F29F22B8908D00F02A76 /* WPYDismissTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPYDismissTransition.h; sourceTree = "<group>"; };
+		30D9F2A022B8908D00F02A76 /* WPYPushTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPYPushTransition.h; sourceTree = "<group>"; };
+		30D9F2A122B8908D00F02A76 /* WPYBaseTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPYBaseTransition.m; sourceTree = "<group>"; };
+		30D9F2A222B8908D00F02A76 /* WPY_NavDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPY_NavDelegate.m; sourceTree = "<group>"; };
+		30D9F2A322B8908D00F02A76 /* UIViewController+WPYTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WPYTransition.m"; sourceTree = "<group>"; };
+		30D9F2A422B8908D00F02A76 /* WPY_GestureRecognizerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPY_GestureRecognizerDelegate.h; sourceTree = "<group>"; };
+		30D9F2A522B8908D00F02A76 /* UINavigationController+WPYTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+WPYTransition.m"; sourceTree = "<group>"; };
+		30D9F2A622B8908D00F02A76 /* WPY_VCDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPY_VCDelegate.h; sourceTree = "<group>"; };
+		30D9F2B122B89CC600F02A76 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
+		30D9F2B222B89CC600F02A76 /* HomeVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeVC.xib; sourceTree = "<group>"; };
+		30D9F2B622B8D00000F02A76 /* LeftVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LeftVC.swift; path = WPYCamera/Main/LeftVC/LeftVC.swift; sourceTree = SOURCE_ROOT; };
+		30D9F2B722B8D00000F02A76 /* LeftVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = LeftVC.xib; path = WPYCamera/Main/LeftVC/LeftVC.xib; sourceTree = SOURCE_ROOT; };
+		30D9FCE121F02701000CFCA0 /* MusicPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerManager.swift; sourceTree = "<group>"; };
+		30D9FCE421F02BBB000CFCA0 /* 真的不容易.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "真的不容易.mp3"; sourceTree = "<group>"; };
+		30D9FCE721F1BC17000CFCA0 /* WPYEditRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPYEditRecordView.swift; sourceTree = "<group>"; };
+		30D9FCEA21F1C703000CFCA0 /* VolumeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeCell.swift; sourceTree = "<group>"; };
+		30D9FCEB21F1C703000CFCA0 /* VolumeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VolumeCell.xib; sourceTree = "<group>"; };
+		30D9FCEF21F5C3D0000CFCA0 /* WPYVideoEditManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPYVideoEditManager.swift; sourceTree = "<group>"; };
+		30E17FD622C21E55004EA036 /* DYViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DYViewController.swift; sourceTree = "<group>"; };
+		30E17FD822C35660004EA036 /* UIScrollView+WPYTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+WPYTransition.h"; sourceTree = "<group>"; };
+		30E17FD922C35660004EA036 /* UIScrollView+WPYTransition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+WPYTransition.m"; sourceTree = "<group>"; };
+		30E17FDC22C38970004EA036 /* WPY_PageTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPY_PageTableView.h; sourceTree = "<group>"; };
+		30E17FDD22C38970004EA036 /* WPY_PageTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WPY_PageTableView.m; sourceTree = "<group>"; };
+		30E17FDF22C38A90004EA036 /* WPY_PageContainerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPY_PageContainerView.h; sourceTree = "<group>"; };
+		30E17FE022C38A90004EA036 /* WPY_PageContainerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WPY_PageContainerView.m; sourceTree = "<group>"; };
+		30E17FE222C475F7004EA036 /* WPY_PageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPY_PageView.h; sourceTree = "<group>"; };
+		30E17FE322C475F7004EA036 /* WPY_PageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WPY_PageView.m; sourceTree = "<group>"; };
+		30E5AA5C21E359CE00EA50DC /* WPYTakePhotoBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPYTakePhotoBtn.swift; sourceTree = "<group>"; };
+		52F3B248419CB0EAAA74CC88 /* Pods-WPYCamera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WPYCamera.debug.xcconfig"; path = "Target Support Files/Pods-WPYCamera/Pods-WPYCamera.debug.xcconfig"; sourceTree = "<group>"; };
+		5AB72CE2368AD294B2BC6D78 /* Pods-WPYCamera.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WPYCamera.release.xcconfig"; path = "Target Support Files/Pods-WPYCamera/Pods-WPYCamera.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3075118021CA5CC100A34BA7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				304CD79F227074B3000B8B83 /* SQLite.framework in Frameworks */,
+				304CD79D2270708A000B8B83 /* libsqlite3.0.tbd in Frameworks */,
+				DFF6477B46F411C7EA2C940E /* Pods_WPYCamera.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		12BA9BD01A3CD3890752BB5D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				304CD79E227074B3000B8B83 /* SQLite.framework */,
+				304CD79C2270708A000B8B83 /* libsqlite3.0.tbd */,
+				304CD79A2270707E000B8B83 /* SQLite.framework */,
+				304CD79322704E35000B8B83 /* SQLite.framework */,
+				18AE7F2370990EA4884BF9C2 /* Pods_WPYCamera.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		30040CCF2276E05C0053D25F /* DetailVC */ = {
+			isa = PBXGroup;
+			children = (
+				3043A56E2278547C0046AB34 /* SubVC */,
+				30040CEA22770E670053D25F /* View */,
+				30040CD22276E1330053D25F /* UserDetailVC.swift */,
+				30E17FD622C21E55004EA036 /* DYViewController.swift */,
+			);
+			path = DetailVC;
+			sourceTree = "<group>";
+		};
+		30040CE52276FE520053D25F /* CommentVC */ = {
+			isa = PBXGroup;
+			children = (
+				30040CE62276FE800053D25F /* CommentVC.swift */,
+				30040CE72276FE800053D25F /* CommentVC.xib */,
+			);
+			path = CommentVC;
+			sourceTree = "<group>";
+		};
+		30040CEA22770E670053D25F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				30040CEB22770EF30053D25F /* SelectPageSectionView.swift */,
+				30040CED227838280053D25F /* WPYContainerCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		300A5C022260991B00D88A3B /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				307511E321CB661E00A34BA7 /* WPYCamera-Bridging-Header.h */,
+				304CD7A12272D285000B8B83 /* Extension */,
+				304CD79522705812000B8B83 /* Model */,
+				304CD79022703F74000B8B83 /* DBManager */,
+				300A5C2D2264726200D88A3B /* Util */,
+				300A5C2A22643ED800D88A3B /* View */,
+				300A5C032260993400D88A3B /* BaseVC */,
+			);
+			path = Public;
+			sourceTree = "<group>";
+		};
+		300A5C032260993400D88A3B /* BaseVC */ = {
+			isa = PBXGroup;
+			children = (
+				300A5C042260996A00D88A3B /* TabBarVC.swift */,
+				300A5C2422642E6200D88A3B /* BaseVC.swift */,
+				300A5C2622642E9700D88A3B /* BaseNavController.swift */,
+				300A5C282264330900D88A3B /* MenuVC.swift */,
+			);
+			path = BaseVC;
+			sourceTree = "<group>";
+		};
+		300A5C062260A50E00D88A3B /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				30D9F2B522B8CFCF00F02A76 /* LeftVC */,
+				30040CE52276FE520053D25F /* CommentVC */,
+				30040CCF2276E05C0053D25F /* DetailVC */,
+				300A5C322265763000D88A3B /* Account */,
+				300A5C31226575FF00D88A3B /* Home */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		300A5C0D2264280100D88A3B /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				304CD78D22697D14000B8B83 /* NavigationBar */,
+				300A5C0E2264282A00D88A3B /* LGSideMenuController */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		300A5C0E2264282A00D88A3B /* LGSideMenuController */ = {
+			isa = PBXGroup;
+			children = (
+				300A5C0F2264282A00D88A3B /* LGSideMenuSegue.h */,
+				300A5C102264282A00D88A3B /* LGSideMenuView.h */,
+				300A5C112264282A00D88A3B /* LGSideMenuController.h */,
+				300A5C122264282A00D88A3B /* LGSideMenuGesturesHandler.h */,
+				300A5C132264282A00D88A3B /* LGSideMenuBorderView.h */,
+				300A5C142264282A00D88A3B /* LGSideMenuHelper.m */,
+				300A5C152264282A00D88A3B /* UIViewController+LGSideMenuController.h */,
+				300A5C162264282A00D88A3B /* LGSideMenuView.m */,
+				300A5C172264282A00D88A3B /* LGSideMenuSegue.m */,
+				300A5C182264282A00D88A3B /* LGSideMenuController.m */,
+				300A5C192264282A00D88A3B /* LGSideMenuGesturesHandler.m */,
+				300A5C1A2264282A00D88A3B /* UIViewController+LGSideMenuController.m */,
+				300A5C1B2264282A00D88A3B /* LGSideMenuHelper.h */,
+				300A5C1C2264282A00D88A3B /* LGSideMenuBorderView.m */,
+			);
+			path = LGSideMenuController;
+			sourceTree = "<group>";
+		};
+		300A5C2A22643ED800D88A3B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				300A5C2B22643F9000D88A3B /* CustomTabBar.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		300A5C2D2264726200D88A3B /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				30040CCD227583CC0053D25F /* ConfigurationHelper.swift */,
+				30040CCB227580610053D25F /* Rotatable.swift */,
+				300A5C2E2264731F00D88A3B /* Util.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		300A5C30226574E500D88A3B /* CoreFunction */ = {
+			isa = PBXGroup;
+			children = (
+				304CD78822696E46000B8B83 /* ReleaseVC */,
+				3075119821CA5FB600A34BA7 /* Swift-Camera */,
+				30D9FCE621F1BBB0000CFCA0 /* EditRecordView */,
+				30D9FCDE21F02586000CFCA0 /* WPYMusicPlayer */,
+				304FC45321EC354F00DB0B7A /* WPYVideoPlayer */,
+			);
+			path = CoreFunction;
+			sourceTree = "<group>";
+		};
+		300A5C31226575FF00D88A3B /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				300A5C33226583BF00D88A3B /* View */,
+				3075118821CA5CC100A34BA7 /* ViewController.swift */,
+				30D9F2B122B89CC600F02A76 /* HomeVC.swift */,
+				30D9F2B222B89CC600F02A76 /* HomeVC.xib */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		300A5C322265763000D88A3B /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				300A5C092260A68600D88A3B /* UserRecordsVC.swift */,
+				300A5C0A2260A68600D88A3B /* UserRecordsVC.xib */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		300A5C33226583BF00D88A3B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				300A5C342265841000D88A3B /* HomePageCell.swift */,
+				300A5C352265841000D88A3B /* HomePageCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3043A56E2278547C0046AB34 /* SubVC */ = {
+			isa = PBXGroup;
+			children = (
+				3043A570227FEDB50046AB34 /* View */,
+				3043A562227853CA0046AB34 /* AllVideosVC.swift */,
+				3043A563227853CA0046AB34 /* AllVideosVC.xib */,
+				3043A566227854200046AB34 /* MyActVC.swift */,
+				3043A567227854200046AB34 /* MyActVC.xib */,
+				3043A56A2278546F0046AB34 /* AddUsersVC.swift */,
+				3043A56B2278546F0046AB34 /* AddUsersVC.xib */,
+			);
+			path = SubVC;
+			sourceTree = "<group>";
+		};
+		3043A570227FEDB50046AB34 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3043A571227FEDFD0046AB34 /* VideoCell.swift */,
+				3043A572227FEDFD0046AB34 /* VideoCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		304CD78822696E46000B8B83 /* ReleaseVC */ = {
+			isa = PBXGroup;
+			children = (
+				304CD78922696E73000B8B83 /* ReleaseVC.swift */,
+				304CD78A22696E73000B8B83 /* ReleaseVC.xib */,
+			);
+			path = ReleaseVC;
+			sourceTree = "<group>";
+		};
+		304CD78D22697D14000B8B83 /* NavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				304CD78E22697D14000B8B83 /* WRNavigationBar.swift */,
+			);
+			path = NavigationBar;
+			sourceTree = "<group>";
+		};
+		304CD79022703F74000B8B83 /* DBManager */ = {
+			isa = PBXGroup;
+			children = (
+				304CD79122703FDC000B8B83 /* DBHelper.swift */,
+			);
+			path = DBManager;
+			sourceTree = "<group>";
+		};
+		304CD79522705812000B8B83 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				304CD79822705A11000B8B83 /* WPYPhotoModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		304CD7A12272D285000B8B83 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				304CD7A22272D2A2000B8B83 /* CAGradientLayer+GradientBG.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		304FC45321EC354F00DB0B7A /* WPYVideoPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				307F579722290B1A003FA66C /* VideoClip */,
+				30D9FCEE21F5C357000CFCA0 /* EditManager */,
+				304FC45421EC369400DB0B7A /* Swift_PlayManager */,
+				304FC45F21EC763D00DB0B7A /* playVideoVC.swift */,
+				304FC46021EC763D00DB0B7A /* playVideoVC.xib */,
+			);
+			path = WPYVideoPlayer;
+			sourceTree = "<group>";
+		};
+		304FC45421EC369400DB0B7A /* Swift_PlayManager */ = {
+			isa = PBXGroup;
+			children = (
+				304FC45721EC369400DB0B7A /* Util_OC.h */,
+				304FC45521EC369400DB0B7A /* Util_OC.m */,
+				304FC45621EC369400DB0B7A /* WPY_AVPlayer.swift */,
+				304FC45D21EC485100DB0B7A /* WPYPlayView.swift */,
+			);
+			path = Swift_PlayManager;
+			sourceTree = "<group>";
+		};
+		3075117A21CA5CC100A34BA7 = {
+			isa = PBXGroup;
+			children = (
+				3075118521CA5CC100A34BA7 /* WPYCamera */,
+				3075118421CA5CC100A34BA7 /* Products */,
+				7C2B6DB32292EE3573B5CAA5 /* Pods */,
+				12BA9BD01A3CD3890752BB5D /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		3075118421CA5CC100A34BA7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3075118321CA5CC100A34BA7 /* WPYCamera.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3075118521CA5CC100A34BA7 /* WPYCamera */ = {
+			isa = PBXGroup;
+			children = (
+				30E17FDB22C388ED004EA036 /* WPYPageView */,
+				30D9F29022B8908D00F02A76 /* WPYTransition */,
+				3075119921CA5FC500A34BA7 /* OC-Camera */,
+				300A5C30226574E500D88A3B /* CoreFunction */,
+				300A5C0D2264280100D88A3B /* Vendor */,
+				300A5C022260991B00D88A3B /* Public */,
+				300A5C062260A50E00D88A3B /* Main */,
+				3075118621CA5CC100A34BA7 /* AppDelegate.swift */,
+				3075118A21CA5CC100A34BA7 /* Main.storyboard */,
+				3075118D21CA5CC500A34BA7 /* Assets.xcassets */,
+				3075118F21CA5CC500A34BA7 /* LaunchScreen.storyboard */,
+				3075119221CA5CC500A34BA7 /* Info.plist */,
+			);
+			path = WPYCamera;
+			sourceTree = "<group>";
+		};
+		3075119821CA5FB600A34BA7 /* Swift-Camera */ = {
+			isa = PBXGroup;
+			children = (
+				30E5AA5821E3585500EA50DC /* WPYTakePhotoBtn */,
+				307511A321CA601400A34BA7 /* Camera.swift */,
+				307511A221CA601400A34BA7 /* Camera.xib */,
+				3075119A21CA601400A34BA7 /* src */,
+			);
+			path = "Swift-Camera";
+			sourceTree = "<group>";
+		};
+		3075119921CA5FC500A34BA7 /* OC-Camera */ = {
+			isa = PBXGroup;
+			children = (
+				307511E921CB68CE00A34BA7 /* SDPhotoBrowser */,
+				307511E621CB661F00A34BA7 /* MyCamera.h */,
+				307511E421CB661F00A34BA7 /* MyCamera.m */,
+				307511E521CB661F00A34BA7 /* MyCamera.xib */,
+			);
+			path = "OC-Camera";
+			sourceTree = "<group>";
+		};
+		3075119A21CA601400A34BA7 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				3075119B21CA601400A34BA7 /* photograph_Select@3x.png */,
+				3075119C21CA601400A34BA7 /* photograph_Select@2x.png */,
+				3075119D21CA601400A34BA7 /* 闪光灯-关.png */,
+				3075119E21CA601400A34BA7 /* photograph@3x.png */,
+				3075119F21CA601400A34BA7 /* photograph@2x.png */,
+				307511A021CA601400A34BA7 /* 闪光灯-开.png */,
+				307511A121CA601400A34BA7 /* icon-摄像头切换-3.png */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		307511E921CB68CE00A34BA7 /* SDPhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				307511EA21CB68CE00A34BA7 /* SDPhotoBrowserConfig.h */,
+				307511EB21CB68CE00A34BA7 /* SDPhotoBrowser.m */,
+				307511EC21CB68CE00A34BA7 /* SDWaitingView.m */,
+				307511ED21CB68CE00A34BA7 /* SDBrowserImageView.m */,
+				307511EE21CB68CE00A34BA7 /* SDWaitingView.h */,
+				307511EF21CB68CE00A34BA7 /* SDPhotoBrowser.h */,
+				307511F021CB68CE00A34BA7 /* SDBrowserImageView.h */,
+			);
+			path = SDPhotoBrowser;
+			sourceTree = "<group>";
+		};
+		307F579722290B1A003FA66C /* VideoClip */ = {
+			isa = PBXGroup;
+			children = (
+				307F579822290F1B003FA66C /* WPYVideoClip.swift */,
+				307F579A22290F8F003FA66C /* WPYClipFrameView.swift */,
+				307F579C22291076003FA66C /* WPYVideoClipCell.swift */,
+			);
+			path = VideoClip;
+			sourceTree = "<group>";
+		};
+		30D9F29022B8908D00F02A76 /* WPYTransition */ = {
+			isa = PBXGroup;
+			children = (
+				30D9F29622B8908D00F02A76 /* WPY_TransitionUtil.h */,
+				30D9F29722B8908D00F02A76 /* Animation */,
+				30D9F29222B8908D00F02A76 /* WPY_NavDelegate.h */,
+				30D9F2A222B8908D00F02A76 /* WPY_NavDelegate.m */,
+				30D9F2A622B8908D00F02A76 /* WPY_VCDelegate.h */,
+				30D9F29322B8908D00F02A76 /* WPY_VCDelegate.m */,
+				30D9F2A422B8908D00F02A76 /* WPY_GestureRecognizerDelegate.h */,
+				30D9F29522B8908D00F02A76 /* WPY_GestureRecognizerDelegate.m */,
+				30D9F29122B8908D00F02A76 /* UIViewController+WPYTransition.h */,
+				30D9F2A322B8908D00F02A76 /* UIViewController+WPYTransition.m */,
+				30D9F29422B8908D00F02A76 /* UINavigationController+WPYTransition.h */,
+				30D9F2A522B8908D00F02A76 /* UINavigationController+WPYTransition.m */,
+				30E17FD822C35660004EA036 /* UIScrollView+WPYTransition.h */,
+				30E17FD922C35660004EA036 /* UIScrollView+WPYTransition.m */,
+			);
+			path = WPYTransition;
+			sourceTree = "<group>";
+		};
+		30D9F29722B8908D00F02A76 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				30D9F29822B8908D00F02A76 /* WPYPresentTransition.m */,
+				30D9F29922B8908D00F02A76 /* WPYDismissTransition.m */,
+				30D9F29A22B8908D00F02A76 /* WPYPopTransition.m */,
+				30D9F29B22B8908D00F02A76 /* WPYPushTransition.m */,
+				30D9F29C22B8908D00F02A76 /* WPYBaseTransition.h */,
+				30D9F29D22B8908D00F02A76 /* WPYPresentTransition.h */,
+				30D9F29E22B8908D00F02A76 /* WPYPopTransition.h */,
+				30D9F29F22B8908D00F02A76 /* WPYDismissTransition.h */,
+				30D9F2A022B8908D00F02A76 /* WPYPushTransition.h */,
+				30D9F2A122B8908D00F02A76 /* WPYBaseTransition.m */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
+		30D9F2B522B8CFCF00F02A76 /* LeftVC */ = {
+			isa = PBXGroup;
+			children = (
+				30D9F2B622B8D00000F02A76 /* LeftVC.swift */,
+				30D9F2B722B8D00000F02A76 /* LeftVC.xib */,
+			);
+			path = LeftVC;
+			sourceTree = "<group>";
+		};
+		30D9FCDE21F02586000CFCA0 /* WPYMusicPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				30D9FCE321F02B88000CFCA0 /* Music */,
+				30D9FCE121F02701000CFCA0 /* MusicPlayerManager.swift */,
+			);
+			path = WPYMusicPlayer;
+			sourceTree = "<group>";
+		};
+		30D9FCE321F02B88000CFCA0 /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				30D9FCE421F02BBB000CFCA0 /* 真的不容易.mp3 */,
+			);
+			path = Music;
+			sourceTree = "<group>";
+		};
+		30D9FCE621F1BBB0000CFCA0 /* EditRecordView */ = {
+			isa = PBXGroup;
+			children = (
+				30D9FCE921F1C5CB000CFCA0 /* subView */,
+				30D9FCE721F1BC17000CFCA0 /* WPYEditRecordView.swift */,
+			);
+			path = EditRecordView;
+			sourceTree = "<group>";
+		};
+		30D9FCE921F1C5CB000CFCA0 /* subView */ = {
+			isa = PBXGroup;
+			children = (
+				30D9FCEA21F1C703000CFCA0 /* VolumeCell.swift */,
+				30D9FCEB21F1C703000CFCA0 /* VolumeCell.xib */,
+			);
+			path = subView;
+			sourceTree = "<group>";
+		};
+		30D9FCEE21F5C357000CFCA0 /* EditManager */ = {
+			isa = PBXGroup;
+			children = (
+				30D9FCEF21F5C3D0000CFCA0 /* WPYVideoEditManager.swift */,
+			);
+			path = EditManager;
+			sourceTree = "<group>";
+		};
+		30E17FDB22C388ED004EA036 /* WPYPageView */ = {
+			isa = PBXGroup;
+			children = (
+				30E17FDC22C38970004EA036 /* WPY_PageTableView.h */,
+				30E17FDD22C38970004EA036 /* WPY_PageTableView.m */,
+				30E17FDF22C38A90004EA036 /* WPY_PageContainerView.h */,
+				30E17FE022C38A90004EA036 /* WPY_PageContainerView.m */,
+				30E17FE222C475F7004EA036 /* WPY_PageView.h */,
+				30E17FE322C475F7004EA036 /* WPY_PageView.m */,
+			);
+			path = WPYPageView;
+			sourceTree = "<group>";
+		};
+		30E5AA5821E3585500EA50DC /* WPYTakePhotoBtn */ = {
+			isa = PBXGroup;
+			children = (
+				30E5AA5C21E359CE00EA50DC /* WPYTakePhotoBtn.swift */,
+			);
+			path = WPYTakePhotoBtn;
+			sourceTree = "<group>";
+		};
+		7C2B6DB32292EE3573B5CAA5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				52F3B248419CB0EAAA74CC88 /* Pods-WPYCamera.debug.xcconfig */,
+				5AB72CE2368AD294B2BC6D78 /* Pods-WPYCamera.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3075118221CA5CC100A34BA7 /* WPYCamera */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3075119521CA5CC500A34BA7 /* Build configuration list for PBXNativeTarget "WPYCamera" */;
+			buildPhases = (
+				DB9DFE505D0711E968230BB3 /* [CP] Check Pods Manifest.lock */,
+				3075117F21CA5CC100A34BA7 /* Sources */,
+				3075118021CA5CC100A34BA7 /* Frameworks */,
+				3075118121CA5CC100A34BA7 /* Resources */,
+				F49D5B38FBBC9B4C23F24E73 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WPYCamera;
+			productName = WPYCamera;
+			productReference = 3075118321CA5CC100A34BA7 /* WPYCamera.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3075117B21CA5CC100A34BA7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "王鹏宇";
+				TargetAttributes = {
+					3075118221CA5CC100A34BA7 = {
+						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
+					};
+				};
+			};
+			buildConfigurationList = 3075117E21CA5CC100A34BA7 /* Build configuration list for PBXProject "WPYCamera" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3075117A21CA5CC100A34BA7;
+			productRefGroup = 3075118421CA5CC100A34BA7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3075118221CA5CC100A34BA7 /* WPYCamera */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3075118121CA5CC100A34BA7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				307511E821CB662000A34BA7 /* MyCamera.xib in Resources */,
+				307511A621CA601400A34BA7 /* 闪光灯-关.png in Resources */,
+				30040CE92276FE800053D25F /* CommentVC.xib in Resources */,
+				3043A574227FEDFD0046AB34 /* VideoCell.xib in Resources */,
+				3075119121CA5CC500A34BA7 /* LaunchScreen.storyboard in Resources */,
+				307511A821CA601400A34BA7 /* photograph@2x.png in Resources */,
+				304CD78C22696E73000B8B83 /* ReleaseVC.xib in Resources */,
+				307511A921CA601400A34BA7 /* 闪光灯-开.png in Resources */,
+				304FC46221EC763D00DB0B7A /* playVideoVC.xib in Resources */,
+				307511A721CA601400A34BA7 /* photograph@3x.png in Resources */,
+				30D9F2B922B8D00000F02A76 /* LeftVC.xib in Resources */,
+				307511AA21CA601400A34BA7 /* icon-摄像头切换-3.png in Resources */,
+				307511AB21CA601400A34BA7 /* Camera.xib in Resources */,
+				307511A421CA601400A34BA7 /* photograph_Select@3x.png in Resources */,
+				30D9F2B422B89CC600F02A76 /* HomeVC.xib in Resources */,
+				3075118E21CA5CC500A34BA7 /* Assets.xcassets in Resources */,
+				3043A569227854200046AB34 /* MyActVC.xib in Resources */,
+				30D9FCE521F02BBB000CFCA0 /* 真的不容易.mp3 in Resources */,
+				300A5C0C2260A68600D88A3B /* UserRecordsVC.xib in Resources */,
+				3075118C21CA5CC100A34BA7 /* Main.storyboard in Resources */,
+				3043A565227853CA0046AB34 /* AllVideosVC.xib in Resources */,
+				307511A521CA601400A34BA7 /* photograph_Select@2x.png in Resources */,
+				3043A56D2278546F0046AB34 /* AddUsersVC.xib in Resources */,
+				30D9FCED21F1C703000CFCA0 /* VolumeCell.xib in Resources */,
+				300A5C372265841000D88A3B /* HomePageCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DB9DFE505D0711E968230BB3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WPYCamera-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F49D5B38FBBC9B4C23F24E73 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WPYCamera/Pods-WPYCamera-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/GKPageScrollViewSwift/GKPageScrollViewSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/HXPhotoPicker/HXPhotoPicker.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
+				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SKPhotoBrowser/SKPhotoBrowser.framework",
+				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Toast-Swift/Toast_Swift.framework",
+				"${BUILT_PRODUCTS_DIR}/YYCache/YYCache.framework",
+				"${BUILT_PRODUCTS_DIR}/YYImage/YYImage.framework",
+				"${BUILT_PRODUCTS_DIR}/YYWebImage/YYWebImage.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GKPageScrollViewSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HXPhotoPicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKPhotoBrowser.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toast_Swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYCache.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYWebImage.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WPYCamera/Pods-WPYCamera-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3075117F21CA5CC100A34BA7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				307511F121CB68CE00A34BA7 /* SDPhotoBrowser.m in Sources */,
+				304FC45E21EC485100DB0B7A /* WPYPlayView.swift in Sources */,
+				300A5C292264330900D88A3B /* MenuVC.swift in Sources */,
+				300A5C052260996A00D88A3B /* TabBarVC.swift in Sources */,
+				30D9F2AC22B8908D00F02A76 /* WPYPushTransition.m in Sources */,
+				30040CD32276E1330053D25F /* UserDetailVC.swift in Sources */,
+				30040CEE227838280053D25F /* WPYContainerCell.swift in Sources */,
+				3043A564227853CA0046AB34 /* AllVideosVC.swift in Sources */,
+				30D9F2AB22B8908D00F02A76 /* WPYPopTransition.m in Sources */,
+				304CD78B22696E73000B8B83 /* ReleaseVC.swift in Sources */,
+				304FC46121EC763D00DB0B7A /* playVideoVC.swift in Sources */,
+				30E17FDA22C35660004EA036 /* UIScrollView+WPYTransition.m in Sources */,
+				30D9F2A922B8908D00F02A76 /* WPYPresentTransition.m in Sources */,
+				30E17FDE22C38970004EA036 /* WPY_PageTableView.m in Sources */,
+				30040CEC22770EF30053D25F /* SelectPageSectionView.swift in Sources */,
+				304CD78F22697D15000B8B83 /* WRNavigationBar.swift in Sources */,
+				300A5C362265841000D88A3B /* HomePageCell.swift in Sources */,
+				300A5C2722642E9700D88A3B /* BaseNavController.swift in Sources */,
+				307511E721CB662000A34BA7 /* MyCamera.m in Sources */,
+				300A5C2522642E6200D88A3B /* BaseVC.swift in Sources */,
+				30D9F2A822B8908D00F02A76 /* WPY_GestureRecognizerDelegate.m in Sources */,
+				30E17FD722C21E55004EA036 /* DYViewController.swift in Sources */,
+				307F579922290F1B003FA66C /* WPYVideoClip.swift in Sources */,
+				307511AC21CA601400A34BA7 /* Camera.swift in Sources */,
+				30E17FE422C475F7004EA036 /* WPY_PageView.m in Sources */,
+				30D9F2B322B89CC600F02A76 /* HomeVC.swift in Sources */,
+				30E5AA5D21E359CE00EA50DC /* WPYTakePhotoBtn.swift in Sources */,
+				30D9FCE221F02701000CFCA0 /* MusicPlayerManager.swift in Sources */,
+				304FC45921EC369400DB0B7A /* WPY_AVPlayer.swift in Sources */,
+				30D9F2AF22B8908D00F02A76 /* UIViewController+WPYTransition.m in Sources */,
+				30040CCC227580610053D25F /* Rotatable.swift in Sources */,
+				300A5C1F2264282A00D88A3B /* LGSideMenuSegue.m in Sources */,
+				300A5C202264282A00D88A3B /* LGSideMenuController.m in Sources */,
+				300A5C1E2264282A00D88A3B /* LGSideMenuView.m in Sources */,
+				300A5C0B2260A68600D88A3B /* UserRecordsVC.swift in Sources */,
+				300A5C222264282A00D88A3B /* UIViewController+LGSideMenuController.m in Sources */,
+				304CD79922705A11000B8B83 /* WPYPhotoModel.swift in Sources */,
+				30E17FE122C38A90004EA036 /* WPY_PageContainerView.m in Sources */,
+				300A5C232264282A00D88A3B /* LGSideMenuBorderView.m in Sources */,
+				30D9F2B022B8908D00F02A76 /* UINavigationController+WPYTransition.m in Sources */,
+				304FC45821EC369400DB0B7A /* Util_OC.m in Sources */,
+				300A5C2C22643F9000D88A3B /* CustomTabBar.swift in Sources */,
+				3075118921CA5CC100A34BA7 /* ViewController.swift in Sources */,
+				300A5C2F2264731F00D88A3B /* Util.swift in Sources */,
+				307F579D22291076003FA66C /* WPYVideoClipCell.swift in Sources */,
+				300A5C212264282A00D88A3B /* LGSideMenuGesturesHandler.m in Sources */,
+				304CD7A32272D2A2000B8B83 /* CAGradientLayer+GradientBG.swift in Sources */,
+				304CD79222703FDC000B8B83 /* DBHelper.swift in Sources */,
+				30D9FCE821F1BC17000CFCA0 /* WPYEditRecordView.swift in Sources */,
+				307511F321CB68CE00A34BA7 /* SDBrowserImageView.m in Sources */,
+				30D9F2B822B8D00000F02A76 /* LeftVC.swift in Sources */,
+				307F579B22290F8F003FA66C /* WPYClipFrameView.swift in Sources */,
+				30D9FCF021F5C3D0000CFCA0 /* WPYVideoEditManager.swift in Sources */,
+				30D9F2AD22B8908D00F02A76 /* WPYBaseTransition.m in Sources */,
+				3075118721CA5CC100A34BA7 /* AppDelegate.swift in Sources */,
+				30040CE82276FE800053D25F /* CommentVC.swift in Sources */,
+				30D9FCEC21F1C703000CFCA0 /* VolumeCell.swift in Sources */,
+				3043A573227FEDFD0046AB34 /* VideoCell.swift in Sources */,
+				300A5C1D2264282A00D88A3B /* LGSideMenuHelper.m in Sources */,
+				307511F221CB68CE00A34BA7 /* SDWaitingView.m in Sources */,
+				30D9F2A722B8908D00F02A76 /* WPY_VCDelegate.m in Sources */,
+				30D9F2AE22B8908D00F02A76 /* WPY_NavDelegate.m in Sources */,
+				3043A568227854200046AB34 /* MyActVC.swift in Sources */,
+				30040CCE227583CC0053D25F /* ConfigurationHelper.swift in Sources */,
+				3043A56C2278546F0046AB34 /* AddUsersVC.swift in Sources */,
+				30D9F2AA22B8908D00F02A76 /* WPYDismissTransition.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		3075118A21CA5CC100A34BA7 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3075118B21CA5CC100A34BA7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		3075118F21CA5CC500A34BA7 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3075119021CA5CC500A34BA7 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3075119321CA5CC500A34BA7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		3075119421CA5CC500A34BA7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3075119621CA5CC500A34BA7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 52F3B248419CB0EAAA74CC88 /* Pods-WPYCamera.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B9QLYR7QH7;
+				INFOPLIST_FILE = WPYCamera/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = WPY.WPYCamera;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "WPYCamera/Public/WPYCamera-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3075119721CA5CC500A34BA7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5AB72CE2368AD294B2BC6D78 /* Pods-WPYCamera.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B9QLYR7QH7;
+				INFOPLIST_FILE = WPYCamera/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = WPY.WPYCamera;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "WPYCamera/Public/WPYCamera-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3075117E21CA5CC100A34BA7 /* Build configuration list for PBXProject "WPYCamera" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3075119321CA5CC500A34BA7 /* Debug */,
+				3075119421CA5CC500A34BA7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3075119521CA5CC500A34BA7 /* Build configuration list for PBXNativeTarget "WPYCamera" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3075119621CA5CC500A34BA7 /* Debug */,
+				3075119721CA5CC500A34BA7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3075117B21CA5CC100A34BA7 /* Project object */;
+}
