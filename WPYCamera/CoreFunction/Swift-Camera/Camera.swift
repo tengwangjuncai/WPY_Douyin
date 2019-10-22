@@ -784,7 +784,7 @@ extension Camera : AVCaptureFileOutputRecordingDelegate{
             return
         }
         
-        self.imageOutPut?.captureStillImageAsynchronously(from: videoConnection ?? AVCaptureConnection()) { (_ imageDataSampleBuffer : CMSampleBuffer?, _ error : Error?) in
+        self.imageOutPut?.captureStillImageAsynchronously(from: videoConnection!) { (_ imageDataSampleBuffer : CMSampleBuffer?, _ error : Error?) in
             
             if imageDataSampleBuffer == nil {
                 return

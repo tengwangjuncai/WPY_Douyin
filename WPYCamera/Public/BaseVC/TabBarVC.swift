@@ -83,7 +83,7 @@ class TabBarVC: UITabBarController,CustomTabBarDelegate{
         
         let nav = UINavigationController(rootViewController: Camera())
 
-        self.present(nav, animated: true, completion: nil)
+        self.present(Camera(), animated: true, completion: nil)
         
 //        self.navigationController?.pushViewController(nav, animated: true)
         
