@@ -64,7 +64,7 @@ class DYViewController: BaseVC,GKPageScrollViewDelegate,UIScrollViewDelegate {
     lazy var headerView:UIView = {
        
         let header = UIView(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: 400))
-        header.backgroundColor = UIColor.red
+        header.backgroundColor = UIColor(red: 32/255.0, green: 32/255.0, blue: 41/255.0, alpha: 1.0)
         
         return header
     }()

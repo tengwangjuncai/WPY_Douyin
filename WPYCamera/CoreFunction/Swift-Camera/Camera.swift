@@ -82,7 +82,7 @@ class Camera: UIViewController,AVCapturePhotoCaptureDelegate,WPYTakePhotoBtnDele
     private var desiredPosition:AVCaptureDevice.Position = .back
     // 当启动摄像头开始捕获输入
     var output : AVCaptureMetadataOutput?
-    var imageOutPut : AVCaptureStillImageOutput?
+    var imageOutPut : AVCaptureStillImageOutput?//AVCapturePhotoOutput
     
     
     
