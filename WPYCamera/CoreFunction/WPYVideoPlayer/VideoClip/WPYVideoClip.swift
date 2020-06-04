@@ -170,8 +170,6 @@ class WPYVideoClip: BaseVC,UICollectionViewDelegate,UICollectionViewDataSource {
 
     private func setupUI(){
         
-        
-        
         self.view.backgroundColor = UIColor.black
         playerLayer = AVPlayerLayer()
         self.view.layer.addSublayer(playerLayer)
@@ -222,8 +220,10 @@ class WPYVideoClip: BaseVC,UICollectionViewDelegate,UICollectionViewDataSource {
             
             generator = AVAssetImageGenerator(asset: asset)
             
+            ///按比例生成， 不指定会默认视频原来的格式大小
             generator.maximumSize = CGSize(width: kItemWith * 4, height: kItemHeight * 4)
             generator.appliesPreferredTrackTransform = true
+            //防止时间出现偏差
             generator.requestedTimeToleranceBefore = CMTime.zero
             generator.requestedTimeToleranceAfter = CMTime.zero
             generator.apertureMode = .productionAperture
@@ -256,6 +256,7 @@ class WPYVideoClip: BaseVC,UICollectionViewDelegate,UICollectionViewDataSource {
                 }
             }
             
+            //PHAsset是来自相册的视频地址和相关信息
             PHCachingImageManager.default().requestAVAsset(forVideo: passet, options: nil) {
                 [weak self] asset, _, _ in
                 
@@ -384,7 +385,6 @@ class WPYVideoClip: BaseVC,UICollectionViewDelegate,UICollectionViewDataSource {
         clipView.editViewValidRectChanged = {
             [weak self] in
             guard let `self` = self else { return }
-            
             self.stopTimer()
             self.playerLayer.player?.seek(to: self.getStartTime(), toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
         }
@@ -436,7 +436,8 @@ extension WPYVideoClip {
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         
-        if !decelerate{
+        if !decelerate
+        {
             startTimer()
         }
         
@@ -504,14 +505,19 @@ extension WPYVideoClip {
             self.imageCache["\(indexPath.row)"] = image
             DispatchQueue.main.async {
                 
-                if let nowIndexPath = collectionView.indexPath(for: cell){
+                if let nowIndexPath = collectionView.indexPath(for: cell)
+                {
                     
-                    if row == nowIndexPath.row {
+                    if row == nowIndexPath.row
+                    {
                         let cell = cell as! WPYVideoClipCell
                         
                         cell.imageView.image = image
-                    }else{
-                        if self.imageCache.contains(key: "\(nowIndexPath.row)") {
+                    }
+                    else
+                    {
+                        if self.imageCache.contains(key: "\(nowIndexPath.row)")
+                        {
                             
                             let cell = cell as! WPYVideoClipCell
                             cell.imageView.image =  self.imageCache["\(nowIndexPath.row)"]

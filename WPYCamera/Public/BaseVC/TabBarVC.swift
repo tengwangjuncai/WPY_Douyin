@@ -28,8 +28,8 @@ class TabBarVC: UITabBarController,CustomTabBarDelegate{
         
     }
     
-    private func initVC(){
-        
+    private func initVC()
+    {
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         
         let homVC = HomeVC()
@@ -43,8 +43,8 @@ class TabBarVC: UITabBarController,CustomTabBarDelegate{
         self.addChild(nav2)
     }
     
-    private func setup(){
-        
+    private func setup()
+    {
         let H:CGFloat = CGFloat(49 + kBottomHeight)
         
         let Y = kScreenHeight - H
@@ -54,38 +54,36 @@ class TabBarVC: UITabBarController,CustomTabBarDelegate{
         customTabBar.delegate = self
         self.view.addSubview(customTabBar)
         self.tabBar.isHidden = true
-        
         self.customTabBar.select(index: 0)
-        
     }
     
-
-    
-    
-    func selectIndex(index: Int) {
-       
+    func selectIndex(index: Int)
+    {
         
-        if index == 0 {
+        if index == 0
+        {
             self.customTabBar.backgroundColor = UIColor.clear
             sideMenuController?.isRightViewSwipeGestureEnabled = true
-        }else{
+        }
+        else
+        {
             self.customTabBar.backgroundColor = UIColor.darkGray
             sideMenuController?.isRightViewSwipeGestureEnabled = false
         }
-        
        self.selectedIndex = index
-        
-        
-    
     }
     
-    func midAction() {
+    func midAction()
+    {
         
         let nav = UINavigationController(rootViewController: Camera())
-
-        self.present(Camera(), animated: true, completion: nil)
-        
-//        self.navigationController?.pushViewController(nav, animated: true)
-        
+        if #available(iOS 13.0, *)
+        {
+            nav.isModalInPresentation = true
+        } else {
+            // Fallback on earlier versions
+        };
+        nav.modalPresentationStyle = UIModalPresentationStyle.fullScreen;
+        self.present(nav, animated: true, completion: nil)
     }
 }

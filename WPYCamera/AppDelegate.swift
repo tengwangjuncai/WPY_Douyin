@@ -8,7 +8,6 @@
 
 import UIKit
 import IQKeyboardManagerSwift
-import Toast_Swift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,9 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setup(){
-        IQKeyboardManager.shared.enable = true
-        IQKeyboardManager.shared.shouldResignOnTouchOutside = true
-        ToastManager.shared.position = .center
+//        IQKeyboardManager.shared.enable = true
+//        IQKeyboardManager.shared.shouldResignOnTouchOutside = true
+//        ToastManager.shared.position = .center
         
     }
 

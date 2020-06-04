@@ -38,6 +38,7 @@ HXVideoEditViewControllerDelegate
 @property (strong, nonatomic) HXPhotoPreviewViewCell *tempCell;
 @property (strong, nonatomic) UIButton *selectBtn;
 @property (assign, nonatomic) BOOL orientationDidChange;
+@property (assign, nonatomic) BOOL firstChangeFrame;
 @property (assign, nonatomic) NSInteger beforeOrientationIndex;
 @property (strong, nonatomic) HXPhotoInteractiveTransition *interactiveTransition;
 @property (strong, nonatomic) HXPhotoPersentInteractiveTransition *persentInteractiveTransition;
@@ -54,6 +55,19 @@ HXVideoEditViewControllerDelegate
 @end
 
 @implementation HXPhotoPreviewViewController
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+#ifdef __IPHONE_13_0
+    if (@available(iOS 13.0, *)) {
+        if ([self.traitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]) {
+            [self changeColor];
+            [self changeStatusBarStyle];
+            [self setNeedsStatusBarAppearanceUpdate];
+            [self.collectionView reloadData];
+        }
+    }
+#endif
+}
 #pragma mark - < transition delegate >
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC{
     if (operation == UINavigationControllerOperationPush) {
@@ -71,22 +85,13 @@ HXVideoEditViewControllerDelegate
 - (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController{
     return self.interactiveTransition.interation ? self.interactiveTransition : nil;
 }
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source{
-    if (!self.photoView) {
-        return nil;
-    }
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
     return [HXPhotoViewPresentTransition transitionWithTransitionType:HXPhotoViewPresentTransitionTypePresent photoView:self.photoView];
 }
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed{
-    if (!self.photoView) {
-        return nil;
-    }
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
     return [HXPhotoViewPresentTransition transitionWithTransitionType:HXPhotoViewPresentTransitionTypeDismiss photoView:self.photoView];
 }
 - (id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator {
-    if (!self.photoView) {
-        return nil;
-    }
     return self.persentInteractiveTransition.interation ? self.persentInteractiveTransition : nil;
 }
 #pragma mark - < life cycle >
@@ -118,6 +123,9 @@ HXVideoEditViewControllerDelegate
     if (HXShowLog) NSSLog(@"dealloc");
 }
 - (UIStatusBarStyle)preferredStatusBarStyle {
+    if ([HXPhotoCommon photoCommon].isDark) {
+        return UIStatusBarStyleLightContent;
+    }
     return self.manager.configuration.statusBarStyle;
 }
 - (BOOL)prefersStatusBarHidden {
@@ -131,9 +139,13 @@ HXVideoEditViewControllerDelegate
 }
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    if (self.orientationDidChange) {
-        self.orientationDidChange = NO;
+    if (!CGRectEqualToRect(self.view.frame, [UIScreen mainScreen].bounds)) {
+        self.view.frame = [UIScreen mainScreen].bounds;
+    }
+    if (self.orientationDidChange || self.firstChangeFrame) {
         [self changeSubviewFrame];
+        self.orientationDidChange = NO;
+        self.firstChangeFrame = NO;
     }
     if (self.bottomView.currentIndex == -1 && !self.layoutSubviewsCompletion) {
         if (self.outside) {
@@ -148,12 +160,21 @@ HXVideoEditViewControllerDelegate
     }
     self.layoutSubviewsCompletion = YES;
 }
+- (void)changeStatusBarStyle {
+    if ([HXPhotoCommon photoCommon].isDark) {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+        return;
+    }
+    [[UIApplication sharedApplication] setStatusBarStyle:self.manager.configuration.statusBarStyle];
+}
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[UIApplication sharedApplication] setStatusBarStyle:self.manager.configuration.statusBarStyle];
+    [self changeStatusBarStyle];
     if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDark) {
         [self changeStatusBarWithHidden:YES];
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+        if (![UIApplication sharedApplication].statusBarHidden) {
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+        }
     }
 }
 - (void)viewDidAppear:(BOOL)animated {
@@ -179,7 +200,7 @@ HXVideoEditViewControllerDelegate
                 //给当前控制器的视图添加手势
                 [self.interactiveTransition addPanGestureForViewController:self];
             });
-        }else if (!self.disableaPersentInteractiveTransition && self.photoView) {
+        }else if (!self.disableaPersentInteractiveTransition) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 //初始化手势过渡的代理
                 self.persentInteractiveTransition = [[HXPhotoPersentInteractiveTransition alloc] init];
@@ -191,9 +212,12 @@ HXVideoEditViewControllerDelegate
     }
 }
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDark) {
+        if ([UIApplication sharedApplication].statusBarHidden) {
+            [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+        }
         [self changeStatusBarWithHidden:NO];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     }
     HXPhotoPreviewViewCell *cell = (HXPhotoPreviewViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentModelIndex inSection:0]];
     cell.stopCancel = self.stopCancel;
@@ -202,7 +226,9 @@ HXVideoEditViewControllerDelegate
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    // Do any additional setup after loading the view
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.edgesForExtendedLayout = UIRectEdgeAll;
     [self setupUI];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationChanged:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     
@@ -239,7 +265,7 @@ HXVideoEditViewControllerDelegate
 - (void)changeSubviewFrame {
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     HXPhotoModel *model = self.modelArray[self.currentModelIndex];
-    if (orientation == UIInterfaceOrientationPortrait || UIInterfaceOrientationPortrait == UIInterfaceOrientationPortraitUpsideDown) {
+    if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown) {
         if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDark) {
             [self changeStatusBarWithHidden:YES];
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
@@ -280,11 +306,16 @@ HXVideoEditViewControllerDelegate
     self.collectionView.frame = CGRectMake(-(itemMargin / 2), 0,self.view.hx_w + itemMargin, self.view.hx_h);
     self.collectionView.contentSize = CGSizeMake(self.modelArray.count * (self.view.hx_w + itemMargin), 0);
     
-    [self.collectionView setContentOffset:CGPointMake(self.beforeOrientationIndex * (self.view.hx_w + itemMargin), 0)];
     
-    [UIView performWithoutAnimation:^{
-        [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:self.beforeOrientationIndex inSection:0]]];
-    }];
+    [self.collectionView setContentOffset:CGPointMake(self.beforeOrientationIndex * (self.view.hx_w + itemMargin), 0)];
+    if (self.orientationDidChange) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            HXPhotoPreviewViewCell *cell = [self currentPreviewCellWithIndex:self.currentModelIndex];
+            [UIView animateWithDuration:0.25 animations:^{
+                [cell refreshImageSize];
+            }];
+        });
+    }
     
     CGFloat bottomViewHeight = self.view.hx_h - 50 - bottomMargin;
     if (self.outside) {
@@ -293,10 +324,10 @@ HXVideoEditViewControllerDelegate
             self.bottomView.frame = CGRectMake(0, bottomViewHeight, self.view.hx_w, 50 + bottomMargin);
         }else if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDark) {
             CGFloat topMargin = HX_IS_IPhoneX_All ? 45 : 30;
-            if (self.previewShowDeleteButton) {
-                self.darkDeleteBtn.frame = CGRectMake(self.view.hx_w - 100 - 15, topMargin, 100, 30);
-            }
-            self.darkCancelBtn.frame = CGRectMake(15, topMargin, 30, 30);
+//            if (self.previewShowDeleteButton) {
+//                self.darkDeleteBtn.frame = CGRectMake(self.view.hx_w - 100 - 15, topMargin, 100, 30);
+//            }
+            self.darkCancelBtn.frame = CGRectMake(15, topMargin, 35, 35);
             self.bottomPageControl.frame = CGRectMake(0, self.view.hx_h - 30, self.view.hx_w, 10);
         }
     }else {
@@ -309,11 +340,13 @@ HXVideoEditViewControllerDelegate
     if (self.manager.configuration.previewCollectionView) {
         self.manager.configuration.previewCollectionView(self.collectionView);
     }
+    self.navigationController.navigationBar.translucent = self.manager.configuration.navBarTranslucent;
     if (!self.outside) {
         if (self.manager.configuration.navigationBar) {
             self.manager.configuration.navigationBar(self.navigationController.navigationBar, self);
         }
     }else {
+        self.navBar.translucent = self.manager.configuration.navBarTranslucent;
         if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDefault) {
             if (self.manager.configuration.navigationBar) {
                 self.manager.configuration.navigationBar(self.navBar, self);
@@ -321,16 +354,111 @@ HXVideoEditViewControllerDelegate
         }
     }
 }
-- (void)setupUI {
-    [self.view addSubview:self.collectionView];
+- (void)changeColor {
+    UIColor *backgroundColor;
+    UIColor *themeColor;
+    UIColor *navBarBackgroudColor;
+    UIColor *navigationTitleColor;
+    UIColor *selectedTitleColor;
+    UIColor *selectBtnBgColor;
+    UIColor *selectBtnTitleColor;
+    if ([HXPhotoCommon photoCommon].isDark) {
+        backgroundColor = [UIColor blackColor];
+        themeColor = [UIColor whiteColor];
+        navBarBackgroudColor = [UIColor blackColor];
+        navigationTitleColor = [UIColor whiteColor];
+//        selectedTitleColor = [UIColor blackColor];
+        selectBtnBgColor = self.manager.configuration.previewDarkSelectBgColor;
+        selectBtnTitleColor = self.manager.configuration.previewDarkSelectTitleColor;
+    }else {
+        backgroundColor = (_bottomView && _bottomView.alpha == 0) ? [UIColor blackColor] : [UIColor whiteColor];
+        themeColor = self.manager.configuration.themeColor;
+        navBarBackgroudColor = self.manager.configuration.navBarBackgroudColor;
+        navigationTitleColor = self.manager.configuration.navigationTitleColor;
+        selectedTitleColor = self.manager.configuration.selectedTitleColor;
+        selectBtnTitleColor = selectedTitleColor;
+        selectBtnBgColor = themeColor;
+    }
     if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDefault) {
-        self.view.backgroundColor = [UIColor whiteColor];
+        self.collectionView.backgroundColor = backgroundColor;
+    }else if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDark) {
+        self.collectionView.backgroundColor = [UIColor blackColor];
+    }
+    if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDefault) {
+        self.view.backgroundColor = backgroundColor;
         [self.view addSubview:self.bottomView];
     }else if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDark) {
         self.view.backgroundColor = [UIColor blackColor];
     }
+    if (!self.outside) {
+        [self.navigationController.navigationBar setTintColor:themeColor];
+        self.navigationController.navigationBar.barTintColor = navBarBackgroudColor;
+
+        if (self.manager.configuration.navBarBackgroundImage) {
+            [self.navigationController.navigationBar setBackgroundImage:self.manager.configuration.navBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
+        }
+        
+        if (self.manager.configuration.navigationTitleSynchColor) {
+            self.titleLb.textColor = themeColor;
+            self.subTitleLb.textColor = themeColor;
+        }else {
+            UIColor *titleColor = [self.navigationController.navigationBar.titleTextAttributes objectForKey:NSForegroundColorAttributeName];
+            if (titleColor) {
+                self.titleLb.textColor = titleColor;
+                self.subTitleLb.textColor = titleColor;
+            }
+            if (navigationTitleColor) {
+                self.titleLb.textColor = navigationTitleColor;
+                self.subTitleLb.textColor = navigationTitleColor;
+            }else {
+                self.titleLb.textColor = [UIColor blackColor];
+                self.subTitleLb.textColor = [UIColor blackColor];
+            }
+        }
+        self.selectBtn.backgroundColor = self.selectBtn.selected ? selectBtnBgColor : nil;
+    }else {
+        if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDefault) {
+            [self.navBar setTintColor:themeColor];
+            
+            self.navBar.barTintColor = navBarBackgroudColor;
+            if (self.manager.configuration.navBarBackgroundImage) {
+                [self.navBar setBackgroundImage:self.manager.configuration.navBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
+            }
+            
+            if (self.manager.configuration.navigationTitleSynchColor) {
+                self.titleLb.textColor = themeColor;
+                self.subTitleLb.textColor = themeColor;
+            }else {
+                UIColor *titleColor = [self.navBar.titleTextAttributes objectForKey:NSForegroundColorAttributeName];
+                if (titleColor) {
+                    self.titleLb.textColor = titleColor;
+                    self.subTitleLb.textColor = titleColor;
+                }
+                if (navigationTitleColor) {
+                    self.titleLb.textColor = navigationTitleColor;
+                    self.subTitleLb.textColor = navigationTitleColor;
+                }else {
+                    self.titleLb.textColor = [UIColor blackColor];
+                    self.subTitleLb.textColor = [UIColor blackColor];
+                }
+            }
+        }
+    }
+    if ([selectBtnBgColor isEqual:[UIColor whiteColor]]) {
+        [_selectBtn setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
+    }else {
+        [_selectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    }
+    if (selectBtnTitleColor) {
+        [_selectBtn setTitleColor:selectBtnTitleColor forState:UIControlStateSelected];
+    }
+}
+- (void)setupUI {
+    [self.view addSubview:self.collectionView];
     self.beforeOrientationIndex = self.currentModelIndex;
-    
+    if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDefault) {
+        [self.view addSubview:self.bottomView];
+    }
     HXPhotoModel *model = self.modelArray[self.currentModelIndex];
     self.currentModel = model;
     self.bottomView.outside = self.outside;
@@ -348,26 +476,6 @@ HXVideoEditViewControllerDelegate
     
     if (!self.outside) {
         self.navigationItem.titleView = self.customTitleView;
-        [self.navigationController.navigationBar setTintColor:self.manager.configuration.themeColor];
-        if (self.manager.configuration.navBarBackgroudColor) {
-            [self.navigationController.navigationBar setBackgroundColor:nil];
-            [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-            self.navigationController.navigationBar.barTintColor = self.manager.configuration.navBarBackgroudColor;
-        }
-        if (self.manager.configuration.navigationTitleSynchColor) {
-            self.titleLb.textColor = self.manager.configuration.themeColor;
-            self.subTitleLb.textColor = self.manager.configuration.themeColor;
-        }else {
-            UIColor *titleColor = [self.navigationController.navigationBar.titleTextAttributes objectForKey:NSForegroundColorAttributeName];
-            if (titleColor) {
-                self.titleLb.textColor = titleColor;
-                self.subTitleLb.textColor = titleColor;
-            }
-            if (self.manager.configuration.navigationTitleColor) {
-                self.titleLb.textColor = self.manager.configuration.navigationTitleColor;
-                self.subTitleLb.textColor = self.manager.configuration.navigationTitleColor;
-            }
-        }
         if (model.subType == HXPhotoModelMediaSubTypeVideo) {
             self.bottomView.enabled = self.manager.configuration.videoCanEdit;
         } else {
@@ -377,7 +485,6 @@ HXVideoEditViewControllerDelegate
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.selectBtn];
         self.selectBtn.selected = model.selected;
         [self.selectBtn setTitle:model.selectIndexStr forState:UIControlStateSelected];
-        self.selectBtn.backgroundColor = self.selectBtn.selected ? self.manager.configuration.themeColor : nil;
         if (self.manager.configuration.singleSelected) {
             self.selectBtn.hidden = YES;
             if (self.manager.configuration.singleJumpEdit) {
@@ -399,33 +506,12 @@ HXVideoEditViewControllerDelegate
         }
         if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDefault) {
             [self.view addSubview:self.navBar];
-            [self.navBar setTintColor:self.manager.configuration.themeColor];
-            if (self.manager.configuration.navBarBackgroudColor) {
-                [self.navBar setBackgroundColor:nil];
-                [self.navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-                self.navBar.barTintColor = self.manager.configuration.navBarBackgroudColor;
-            }
-            
-            if (self.manager.configuration.navigationTitleSynchColor) {
-                self.titleLb.textColor = self.manager.configuration.themeColor;
-                self.subTitleLb.textColor = self.manager.configuration.themeColor;
-            }else {
-                UIColor *titleColor = [self.navBar.titleTextAttributes objectForKey:NSForegroundColorAttributeName];
-                if (titleColor) {
-                    self.titleLb.textColor = titleColor;
-                    self.subTitleLb.textColor = titleColor;
-                }
-                if (self.manager.configuration.navigationTitleColor) {
-                    self.titleLb.textColor = self.manager.configuration.navigationTitleColor;
-                    self.subTitleLb.textColor = self.manager.configuration.navigationTitleColor;
-                }
-            }
         }else if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDark) {
             
             [self.view addSubview:self.darkCancelBtn];
-            if (self.previewShowDeleteButton) {
-                [self.view addSubview:self.darkDeleteBtn];
-            }
+//            if (self.previewShowDeleteButton) {
+//                [self.view addSubview:self.darkDeleteBtn];
+//            }
             if ([self.manager.afterSelectedArray containsObject:model]) {
                 self.bottomPageControl.currentPage = [[self.manager afterSelectedArray] indexOfObject:model];
             }
@@ -434,7 +520,8 @@ HXVideoEditViewControllerDelegate
             }
         }
     }
-    [self changeSubviewFrame];
+    [self changeColor];
+    self.firstChangeFrame = YES;
 }
 - (void)didSelectClick:(UIButton *)button {
     if (self.modelArray.count <= 0 || self.outside) {
@@ -455,38 +542,16 @@ HXVideoEditViewControllerDelegate
     }else {
         NSString *str = [self.manager maximumOfJudgment:model];
         if (str) {
-            [self.view hx_showImageHUDText:str];
+            if ([str isEqualToString:@"selectVideoBeyondTheLimitTimeAutoEdit"]) {
+                [self jumpVideoEdit];
+            }else {
+                [self.view hx_showImageHUDText:str];
+            }
             return;
         }
         HXPhotoPreviewViewCell *cell = (HXPhotoPreviewViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentModelIndex inSection:0]];
-        
-#if HasYYKitOrWebImage
-        if (model.type == HXPhotoModelMediaTypePhotoGif) {
-            if (cell.animatedImageView.image.images.count > 0) {
-                model.thumbPhoto = cell.animatedImageView.image.images.firstObject;
-                model.previewPhoto = cell.animatedImageView.image.images.firstObject;
-            }else {
-                model.thumbPhoto = cell.animatedImageView.image;
-                model.previewPhoto = cell.animatedImageView.image;
-            }
-        }else {
-            model.thumbPhoto = cell.animatedImageView.image;
-            model.previewPhoto = cell.animatedImageView.image;
-        }
-#else
-        if (model.type == HXPhotoModelMediaTypePhotoGif) {
-            if (cell.imageView.image.images.count > 0) {
-                model.thumbPhoto = cell.imageView.image.images.firstObject;
-                model.previewPhoto = cell.imageView.image.images.firstObject;
-            }else {
-                model.thumbPhoto = cell.imageView.image;
-                model.previewPhoto = cell.imageView.image;
-            }
-        }else {
-            model.thumbPhoto = cell.imageView.image;
-            model.previewPhoto = cell.imageView.image;
-        }
-#endif
+        model.thumbPhoto = cell.image;
+        model.previewPhoto = cell.image;
         [self.manager beforeSelectedListAddPhotoModel:model];
         button.selected = YES;
         [button setTitle:model.selectIndexStr forState:UIControlStateSelected];
@@ -495,7 +560,8 @@ HXVideoEditViewControllerDelegate
         anim.values = @[@(1.2),@(0.8),@(1.1),@(0.9),@(1.0)];
         [button.layer addAnimation:anim forKey:@""];
     }
-    button.backgroundColor = button.selected ? self.manager.configuration.themeColor : nil;
+    UIColor *themeColor = [HXPhotoCommon photoCommon].isDark ? [UIColor whiteColor] : self.manager.configuration.themeColor;
+    button.backgroundColor = button.selected ? themeColor : nil;
     if ([self.delegate respondsToSelector:@selector(photoPreviewControllerDidSelect:model:)]) {
         [self.delegate photoPreviewControllerDidSelect:self model:model];
     }
@@ -508,10 +574,14 @@ HXVideoEditViewControllerDelegate
 }
 - (void)dismissClick {
     self.manager.selectPhotoing = NO;
-    [self dismissViewControllerAnimated:YES completion:nil];
-    if (self.manager.configuration.restoreNavigationBar) {
-        [UINavigationBar appearance].translucent = NO;
+    if ([self.delegate respondsToSelector:@selector(photoPreviewControllerDidCancel:model:)]) {
+        HXPhotoModel *model;
+        if (self.modelArray.count) {
+            model = self.modelArray[self.currentModelIndex];
+        }
+        [self.delegate photoPreviewControllerDidCancel:self model:model];
     }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)deleteClick {
     if (!self.modelArray.count) {
@@ -548,6 +618,15 @@ HXVideoEditViewControllerDelegate
     });
 }
 #pragma mark - < public >
+- (HXPhotoPreviewViewCell *)currentPreviewCellWithIndex:(NSInteger)index {
+    if (index < 0) {
+        index = 0;
+    }
+    if (index > self.modelArray.count - 1) {
+        index = self.modelArray.count - 1;
+    }
+    return (HXPhotoPreviewViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+}
 - (HXPhotoPreviewViewCell *)currentPreviewCell:(HXPhotoModel *)model {
     if (!model) {
         return nil;
@@ -571,6 +650,7 @@ HXVideoEditViewControllerDelegate
         [self.navigationController setNavigationBarHidden:hide animated:NO];
     }
     self.bottomView.userInteractionEnabled = !hide;
+    UIColor *bgColor = [HXPhotoCommon photoCommon].isDark ? [UIColor blackColor] : [UIColor whiteColor];
     if (animete) {
         [[UIApplication sharedApplication] setStatusBarHidden:hide withAnimation:UIStatusBarAnimationFade];
         [UIView animateWithDuration:duration animations:^{
@@ -578,8 +658,8 @@ HXVideoEditViewControllerDelegate
             if (self.outside) {
                 self.navBar.alpha = hide ? 0 : 1;
             }
-            self.view.backgroundColor = hide ? [UIColor blackColor] : [UIColor whiteColor];
-            self.collectionView.backgroundColor = hide ? [UIColor blackColor] : [UIColor whiteColor];
+            self.view.backgroundColor = hide ? [UIColor blackColor] : bgColor;
+            self.collectionView.backgroundColor = hide ? [UIColor blackColor] : bgColor;
             self.bottomView.alpha = hide ? 0 : 1;
         } completion:^(BOOL finished) {
             if (hide) {
@@ -592,8 +672,8 @@ HXVideoEditViewControllerDelegate
         if (self.outside) {
             self.navBar.alpha = hide ? 0 : 1;
         }
-        self.view.backgroundColor = hide ? [UIColor blackColor] : [UIColor whiteColor];
-        self.collectionView.backgroundColor = hide ? [UIColor blackColor] : [UIColor whiteColor];
+        self.view.backgroundColor = hide ? [UIColor blackColor] : bgColor;
+        self.collectionView.backgroundColor = hide ? [UIColor blackColor] : bgColor;
         self.bottomView.alpha = hide ? 0 : 1;
         if (hide) {
             [self.navigationController setNavigationBarHidden:hide];
@@ -616,10 +696,26 @@ HXVideoEditViewControllerDelegate
     return [self.modelArray count];
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    HXPhotoPreviewViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"DatePreviewCellId" forIndexPath:indexPath];
     HXPhotoModel *model = self.modelArray[indexPath.item];
-    cell.model = model;
+    HXPhotoPreviewViewCell *cell;
     HXWeakSelf
+    if (model.subType == HXPhotoModelMediaSubTypePhoto) {
+        if (model.type == HXPhotoModelMediaTypeLivePhoto) {
+            cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"HXPhotoPreviewLivePhotoCell" forIndexPath:indexPath];
+        }else {
+            cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"HXPhotoPreviewImageViewCell" forIndexPath:indexPath];
+        }
+    }else if (model.subType == HXPhotoModelMediaSubTypeVideo) {
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"HXPhotoPreviewVideoViewCell" forIndexPath:indexPath];
+    }
+    cell.cellViewLongPressGestureRecognizerBlock = ^(UILongPressGestureRecognizer * _Nonnull longPress) {
+        [weakSelf respondsToLongPress:longPress];
+    };
+    cell.scrollViewDidScroll = ^(CGFloat offsetY) {
+        if (weakSelf.currentCellScrollViewDidScroll) {
+            weakSelf.currentCellScrollViewDidScroll(offsetY);
+        }
+    };
     [cell setCellDidPlayVideoBtn:^(BOOL play) {
         if (weakSelf.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDark) {
             return;
@@ -644,23 +740,90 @@ HXVideoEditViewControllerDelegate
             [weakSelf.delegate photoPreviewCellDownloadImageComplete:weakSelf model:myCell.model];
         }
     };
-    [cell setCellTapClick:^{
+    [cell setCellTapClick:^(HXPhotoModel *model, HXPhotoPreviewViewCell *myCell) {
         if (weakSelf.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDark &&
             weakSelf.outside) {
-            [weakSelf dismissClick];
+            if (model.subType == HXPhotoModelMediaSubTypeVideo) {
+                HXPhotoPreviewVideoViewCell *videoCell = (HXPhotoPreviewVideoViewCell *)myCell;
+                BOOL hidden = YES;
+                if (videoCell.bottomSliderView.hidden || videoCell.bottomSliderView.alpha == 0) {
+                    hidden = NO;
+                }
+                [weakSelf setCurrentCellBottomSliderViewHidden:hidden animation:YES];
+            }else {
+                [weakSelf dismissClick];
+            }
         }else {
             [weakSelf setSubviewAlphaAnimate:YES];
         }
     }];
+    cell.model = model;
     return cell;
+}
+
+- (void)setCurrentCellBottomSliderViewHidden:(BOOL)hidden animation:(BOOL)animation {
+    HXPhotoPreviewVideoViewCell *cell = (HXPhotoPreviewVideoViewCell *)[self currentPreviewCell:self.currentModel];
+    if (cell.bottomSliderView.hidden == hidden && cell.bottomSliderView.alpha == !hidden) {
+        return;
+    }
+    if (animation) {
+        if (!hidden) {
+            if (cell.previewContentView.videoView.playBtnDidPlay) {
+                cell.bottomSliderView.hidden = hidden;
+            }
+            self.darkCancelBtn.hidden = hidden;
+            self.darkDeleteBtn.hidden = hidden;
+        }
+        [UIView animateWithDuration:0.25 animations:^{
+            if (cell.previewContentView.videoView.playBtnDidPlay) {
+                cell.bottomSliderView.alpha = !hidden;
+            }
+            self.darkCancelBtn.alpha = !hidden;
+            self.darkDeleteBtn.alpha = !hidden;
+        } completion:^(BOOL finished) {
+            if (cell.previewContentView.videoView.playBtnDidPlay) {
+                cell.bottomSliderView.hidden = hidden;
+            }
+            self.darkCancelBtn.hidden = hidden;
+            self.darkDeleteBtn.hidden = hidden;
+        }];
+    }else {
+        self.darkCancelBtn.alpha = !hidden;
+        self.darkCancelBtn.hidden = hidden;
+        self.darkDeleteBtn.alpha = !hidden;
+        self.darkDeleteBtn.hidden = hidden;
+        if (cell.previewContentView.videoView.playBtnDidPlay) {
+            cell.bottomSliderView.hidden = hidden;
+            cell.bottomSliderView.alpha = !hidden;
+        }
+    }
 }
 
 #pragma mark - < UICollectionViewDelegate >
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    self.persentInteractiveTransition.atFirstPan = NO;
+    self.interactiveTransition.atFirstPan = NO;
     [(HXPhotoPreviewViewCell *)cell resetScale:NO];
 }
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    [(HXPhotoPreviewViewCell *)cell cancelRequest];
+    HXPhotoPreviewViewCell *myCell = (HXPhotoPreviewViewCell *)cell;
+    [myCell cancelRequest];
+}
+- (void)scrollDidScrollHiddenBottomSliderViewWithOffsetX:(CGFloat)offsetx nextModel:(HXPhotoModel *)nextModel {
+    if (self.currentModel.subType == HXPhotoModelMediaSubTypeVideo &&
+        self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDark) {
+            HXPhotoPreviewVideoViewCell *cell = (HXPhotoPreviewVideoViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[self.modelArray indexOfObject:self.currentModel] inSection:0]];
+        if (self.darkCancelBtn.hidden) {
+            return;
+        }
+        float difference = fabs(offsetx - self.currentModel.previewContentOffsetX);
+        CGFloat width = [UIScreen mainScreen].bounds.size.width;
+        if (difference > width) {
+            difference = width;
+        }
+        self.darkCancelBtn.alpha = 1 - (difference / width);
+        cell.bottomSliderView.alpha = self.darkCancelBtn.alpha;
+    }
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (scrollView != self.collectionView) {
@@ -706,7 +869,7 @@ HXVideoEditViewControllerDelegate
             self.bottomView.enabled = self.manager.configuration.photoCanEdit;
         }
         UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-        if (orientation == UIInterfaceOrientationPortrait || UIInterfaceOrientationPortrait == UIInterfaceOrientationPortraitUpsideDown) {
+        if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown) {
             self.titleLb.text = model.barTitle;
             self.subTitleLb.text = model.barSubTitle;
         }else if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft){
@@ -714,7 +877,9 @@ HXVideoEditViewControllerDelegate
         }
         self.selectBtn.selected = model.selected;
         [self.selectBtn setTitle:model.selectIndexStr forState:UIControlStateSelected];
-        self.selectBtn.backgroundColor = self.selectBtn.selected ? self.manager.configuration.themeColor : nil;
+        
+        UIColor *themeColor = [HXPhotoCommon photoCommon].isDark ? self.manager.configuration.previewDarkSelectBgColor : self.manager.configuration.themeColor;
+        self.selectBtn.backgroundColor = self.selectBtn.selected ? themeColor : nil;
         if (self.outside) {
             if ([self.modelArray containsObject:model] && self.layoutSubviewsCompletion) {
                 self.bottomView.currentIndex = [self.modelArray indexOfObject:model];
@@ -740,11 +905,33 @@ HXVideoEditViewControllerDelegate
         }
     }
     self.currentModelIndex = currentIndex;
+    if (currentIndex > 0 && currentIndex < self.modelArray.count) {
+        HXPhotoModel *nextModel;
+        if (self.currentModel.previewContentOffsetX > offsetx) {
+            NSInteger index = [self.modelArray indexOfObject:self.currentModel] - 1;
+            if (index > 0 && index < self.modelArray.count) {
+                nextModel = self.modelArray[index];
+            }
+        }else {
+            NSInteger index = [self.modelArray indexOfObject:self.currentModel] + 1;
+            if (index > 0 && index < self.modelArray.count) {
+                nextModel = self.modelArray[index];
+            }
+        }
+        if (nextModel && !self.orientationDidChange) {
+            [self scrollDidScrollHiddenBottomSliderViewWithOffsetX:offsetx nextModel:nextModel];
+        }
+    }
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (self.modelArray.count > 0) {
         HXPhotoPreviewViewCell *cell = (HXPhotoPreviewViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentModelIndex inSection:0]];
         HXPhotoModel *model = self.modelArray[self.currentModelIndex];
+        model.previewContentOffsetX = scrollView.contentOffset.x;
+        if (self.currentModel != model) {
+            self.darkCancelBtn.alpha = 0;
+            self.darkCancelBtn.hidden = YES;
+        }
         self.currentModel = model;
         [cell requestHDImage];
     }
@@ -815,6 +1002,8 @@ HXVideoEditViewControllerDelegate
             vc.delegate = self;
             vc.manager = self.manager;
             vc.outside = self.outside;
+            vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+            vc.modalPresentationCapturesStatusBarAppearance = YES;
             [self presentViewController:vc animated:YES completion:nil];
         }
     }else {
@@ -828,23 +1017,32 @@ HXVideoEditViewControllerDelegate
                 [weakSelf photoEditViewControllerDidClipClick:nil beforeModel:beforeModel afterModel:afterModel];
             };
         }else {
-            HXPhotoPreviewViewCell *cell = (HXPhotoPreviewViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentModelIndex inSection:0]];
-            HXVideoEditViewController *vc = [[HXVideoEditViewController alloc] init];
-            vc.model = [self.modelArray objectAtIndex:self.currentModelIndex];
-            vc.avAsset = cell.avAsset;
-            vc.delegate = self;
-            vc.manager = self.manager;
-            vc.isInside = YES;
-            vc.outside = self.outside;
-            [self presentViewController:vc animated:YES completion:nil];
+            [self jumpVideoEdit];
         }
     }
 }
+- (void)jumpVideoEdit {
+    HXPhotoPreviewVideoViewCell *cell = (HXPhotoPreviewVideoViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentModelIndex inSection:0]];
+    HXVideoEditViewController *vc = [[HXVideoEditViewController alloc] init];
+    vc.model = [self.modelArray objectAtIndex:self.currentModelIndex];
+    vc.avAsset = cell.previewContentView.avAsset;
+    vc.delegate = self;
+    vc.manager = self.manager;
+    vc.isInside = YES;
+    vc.outside = self.outside;
+    vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    vc.modalPresentationCapturesStatusBarAppearance = YES;
+    [self presentViewController:vc animated:YES completion:nil];
+}
 - (void)photoPreviewBottomViewDidDone:(HXPhotoPreviewBottomView *)bottomView {
-    if (self.manager.configuration.restoreNavigationBar) {
-        [UINavigationBar appearance].translucent = NO;
-    }
     if (self.outside) {
+        if ([self.delegate respondsToSelector:@selector(photoPreviewControllerDidCancel:model:)]) {
+            HXPhotoModel *model;
+            if (self.modelArray.count) {
+                model = self.modelArray[self.currentModelIndex];
+            }
+            [self.delegate photoPreviewControllerDidCancel:self model:model];
+        }
         self.manager.selectPhotoing = NO;
         [self dismissViewControllerAnimated:YES completion:nil];
         return;
@@ -863,12 +1061,16 @@ HXVideoEditViewControllerDelegate
     }
     if (self.manager.configuration.singleSelected) {
         if (model.subType == HXPhotoModelMediaSubTypeVideo) {
-            ;
             if (model.videoDuration >= self.manager.configuration.videoMaximumSelectDuration + 1) {
                 [self.view hx_showImageHUDText:[NSString stringWithFormat:[NSBundle hx_localizedStringForKey:@"视频大于%ld秒，无法选择"], self.manager.configuration.videoMaximumSelectDuration]];
                 return;
             }else if (model.videoDuration < self.manager.configuration.videoMinimumSelectDuration) {
-                [self.view hx_showImageHUDText:[NSString stringWithFormat:[NSBundle hx_localizedStringForKey:@"视频少于%ld秒，无法选择"], self.manager.configuration.videoMinimumSelectDuration]];
+                if (self.manager.configuration.selectVideoBeyondTheLimitTimeAutoEdit &&
+                    self.manager.configuration.videoCanEdit) {
+                    [self jumpVideoEdit];
+                }else {
+                    [self.view hx_showImageHUDText:[NSString stringWithFormat:[NSBundle hx_localizedStringForKey:@"视频少于%ld秒，无法选择"], self.manager.configuration.videoMinimumSelectDuration]];
+                }
                 return;
             }
         }
@@ -904,45 +1106,20 @@ HXVideoEditViewControllerDelegate
         }
     }
     if ([self.manager selectedCount] == 0) {
-        if (model.subType == HXPhotoModelMediaSubTypeVideo) {
-            if (model.videoDuration >= self.manager.configuration.videoMaximumSelectDuration + 1) {
-                [self.view hx_showImageHUDText:[NSString stringWithFormat:[NSBundle hx_localizedStringForKey:@"视频大于%ld秒，无法选择"], self.manager.configuration.videoMaximumSelectDuration]];
-                return;
-            }else if (model.videoDuration < self.manager.configuration.videoMinimumSelectDuration) {
-                [self.view hx_showImageHUDText:[NSString stringWithFormat:[NSBundle hx_localizedStringForKey:@"视频少于%ld秒，无法选择"], self.manager.configuration.videoMinimumSelectDuration]];
-                return;
+        NSString *str = [self.manager maximumOfJudgment:model];
+        if (str) {
+            if ([str isEqualToString:@"selectVideoBeyondTheLimitTimeAutoEdit"]) {
+                [self jumpVideoEdit];
+            }else {
+                [self.view hx_showImageHUDText:str];
             }
+            return;
         }
         if (!self.selectBtn.selected && !max && self.modelArray.count > 0) {
             //            model.selected = YES;
             HXPhotoPreviewViewCell *cell = (HXPhotoPreviewViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentModelIndex inSection:0]];
-#if HasYYKitOrWebImage
-            if (model.type == HXPhotoModelMediaTypePhotoGif) {
-                if (cell.animatedImageView.image.images.count > 0) {
-                    model.thumbPhoto = cell.animatedImageView.image.images.firstObject;
-                    model.previewPhoto = cell.animatedImageView.image.images.firstObject;
-                }else {
-                    model.thumbPhoto = cell.animatedImageView.image;
-                    model.previewPhoto = cell.animatedImageView.image;
-                }
-            }else {
-                model.thumbPhoto = cell.animatedImageView.image;
-                model.previewPhoto = cell.animatedImageView.image;
-            }
-#else
-            if (model.type == HXPhotoModelMediaTypePhotoGif) {
-                if (cell.imageView.image.images.count > 0) {
-                    model.thumbPhoto = cell.imageView.image.images.firstObject;
-                    model.previewPhoto = cell.imageView.image.images.firstObject;
-                }else {
-                    model.thumbPhoto = cell.imageView.image;
-                    model.previewPhoto = cell.imageView.image;
-                }
-            }else {
-                model.thumbPhoto = cell.imageView.image;
-                model.previewPhoto = cell.imageView.image;
-            }
-#endif
+            model.thumbPhoto = cell.image;
+            model.previewPhoto = cell.image;
             [self.manager beforeSelectedListAddPhotoModel:model];
         }
     }
@@ -1013,6 +1190,8 @@ HXVideoEditViewControllerDelegate
     if (!_darkCancelBtn) {
         _darkCancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_darkCancelBtn setBackgroundImage:[UIImage hx_imageNamed:@"hx_faceu_cancel"] forState:UIControlStateNormal];
+        _darkCancelBtn.alpha = 0;
+        _darkCancelBtn.hidden = YES;
         _darkCancelBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         _darkCancelBtn.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
         [_darkCancelBtn addTarget:self action:@selector(dismissClick) forControlEvents:UIControlEventTouchUpInside];
@@ -1022,6 +1201,8 @@ HXVideoEditViewControllerDelegate
 - (UIButton *)darkDeleteBtn {
     if (!_darkDeleteBtn) {
         _darkDeleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _darkDeleteBtn.alpha = 0;
+        _darkDeleteBtn.hidden = YES;
         [_darkDeleteBtn setTitle:[NSBundle hx_localizedStringForKey:@"删除"] forState:UIControlStateNormal];
         _darkDeleteBtn.titleLabel.font = [UIFont systemFontOfSize:16];
         _darkDeleteBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -1035,19 +1216,18 @@ HXVideoEditViewControllerDelegate
         _navBar = [[HXPhotoCustomNavigationBar alloc] initWithFrame:CGRectMake(0, 0, width, hxNavigationBarHeight)];
         _navBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [_navBar pushNavigationItem:self.navItem animated:NO];
-        [_navBar setTintColor:self.manager.configuration.themeColor];
     }
     return _navBar;
 }
 - (UINavigationItem *)navItem {
     if (!_navItem) {
         _navItem = [[UINavigationItem alloc] init];
-        if (self.previewShowDeleteButton) {
-            _navItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSBundle hx_localizedStringForKey:@"返回"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissClick)];
-            _navItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSBundle hx_localizedStringForKey:@"删除"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteClick)];
-        }else {
+//        if (self.previewShowDeleteButton) {
+//            _navItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSBundle hx_localizedStringForKey:@"返回"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissClick)];
+//            _navItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSBundle hx_localizedStringForKey:@"删除"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteClick)];
+//        }else {
             _navItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSBundle hx_localizedStringForKey:@"取消"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissClick)];
-        }
+//        }
         if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDefault) {
             _navItem.titleView = self.customTitleView;
         }
@@ -1072,7 +1252,6 @@ HXVideoEditViewControllerDelegate
         }else {
             _titleLb.font = [UIFont systemFontOfSize:14];
         }
-        _titleLb.textColor = [UIColor blackColor];
     }
     return _titleLb;
 }
@@ -1085,7 +1264,6 @@ HXVideoEditViewControllerDelegate
         }else {
             _subTitleLb.font = [UIFont systemFontOfSize:11];
         }
-        _subTitleLb.textColor = [UIColor blackColor];
     }
     return _subTitleLb;
 }
@@ -1105,39 +1283,28 @@ HXVideoEditViewControllerDelegate
         _selectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_selectBtn setBackgroundImage:[UIImage hx_imageNamed:@"hx_compose_guide_check_box_default_2"] forState:UIControlStateNormal];
         [_selectBtn setBackgroundImage:[[UIImage alloc] init] forState:UIControlStateSelected];
-        if ([self.manager.configuration.themeColor isEqual:[UIColor whiteColor]]) {
-            [_selectBtn setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
-        }else {
-            [_selectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-        }
-        if (self.manager.configuration.selectedTitleColor) {
-            [_selectBtn setTitleColor:self.manager.configuration.selectedTitleColor forState:UIControlStateSelected];
-        }
         _selectBtn.titleLabel.font = [UIFont systemFontOfSize:14];
         _selectBtn.adjustsImageWhenDisabled = YES;
         [_selectBtn addTarget:self action:@selector(didSelectClick:) forControlEvents:UIControlEventTouchUpInside];
         _selectBtn.hx_size = CGSizeMake(24, 24);
-        [_selectBtn setEnlargeEdgeWithTop:0 right:0 bottom:20 left:20];
+        [_selectBtn hx_setEnlargeEdgeWithTop:0 right:0 bottom:20 left:20];
         _selectBtn.layer.cornerRadius = 12;
     }
     return _selectBtn;
 }
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
-        //        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(-10, hxTopMargin,self.view.hx_w + 20, self.view.hx_h - hxTopMargin - hxBottomMargin) collectionViewLayout:self.flowLayout];
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(-10, 0,self.view.hx_w + 20, self.view.hx_h) collectionViewLayout:self.flowLayout];
-        if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDefault) {
-            _collectionView.backgroundColor = [UIColor whiteColor];
-        }else if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDark) {
-            _collectionView.backgroundColor = [UIColor blackColor];
-        }
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(-10, 0,self.view.hx_w + 20, [UIScreen mainScreen].bounds.size.height) collectionViewLayout:self.flowLayout];
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
         _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _collectionView.pagingEnabled = YES;
         _collectionView.showsVerticalScrollIndicator = NO;
         _collectionView.showsHorizontalScrollIndicator = NO;
-        [_collectionView registerClass:[HXPhotoPreviewViewCell class] forCellWithReuseIdentifier:@"DatePreviewCellId"];
+        
+        [_collectionView registerClass:[HXPhotoPreviewImageViewCell class] forCellWithReuseIdentifier:@"HXPhotoPreviewImageViewCell"];
+        [_collectionView registerClass:[HXPhotoPreviewLivePhotoCell class] forCellWithReuseIdentifier:@"HXPhotoPreviewLivePhotoCell"];
+        [_collectionView registerClass:[HXPhotoPreviewVideoViewCell class] forCellWithReuseIdentifier:@"HXPhotoPreviewVideoViewCell"];
 #ifdef __IPHONE_11_0
         if (@available(iOS 11.0, *)) {
             _collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
@@ -1159,11 +1326,11 @@ HXVideoEditViewControllerDelegate
     if (self.outside) {
         _flowLayout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
     }else {
-    #ifdef __IPHONE_11_0
+#ifdef __IPHONE_11_0
         if (@available(iOS 11.0, *)) {
-    #else
+#else
             if ((NO)) {
-    #endif
+#endif
                 _flowLayout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
             }else {
                 _flowLayout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
@@ -1177,731 +1344,6 @@ HXVideoEditViewControllerDelegate
         _modelArray = [NSMutableArray array];
     }
     return _modelArray;
-}
-@end
-
-@interface HXPhotoPreviewViewCell ()<UIScrollViewDelegate,PHLivePhotoViewDelegate>
-@property (strong, nonatomic) UIScrollView *scrollView;
-@property (strong, nonatomic) UIImageView *imageView;
-@property (assign, nonatomic) CGPoint imageCenter;
-@property (strong, nonatomic) UIImage *gifImage;
-@property (strong, nonatomic) UIImage *gifFirstFrame;
-@property (assign, nonatomic) PHImageRequestID requestID;
-@property (assign, nonatomic) PHContentEditingInputRequestID gifRequestID;
-@property (strong, nonatomic) PHLivePhotoView *livePhotoView;
-@property (assign, nonatomic) BOOL livePhotoAnimating;
-@property (strong, nonatomic) AVPlayerLayer *playerLayer;
-@property (strong, nonatomic) AVPlayer *player;
-@property (strong, nonatomic) HXCircleProgressView *progressView;
-@property (strong, nonatomic) UIActivityIndicatorView *loadingView;
-@end
-
-@implementation HXPhotoPreviewViewCell
-- (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.requestID = -1;
-        [self setup];
-    }
-    return self;
-}
-- (void)setup {
-    [self.contentView addSubview:self.scrollView];
-    #if HasYYKitOrWebImage
-    [self.scrollView addSubview:self.animatedImageView];
-    #else
-    [self.scrollView addSubview:self.imageView];
-    #endif
-    [self.contentView.layer addSublayer:self.playerLayer];
-    [self.contentView addSubview:self.videoPlayBtn];
-    [self.contentView addSubview:self.progressView];
-    [self.contentView addSubview:self.loadingView];
-}
-- (CGFloat)getScrollViewZoomScale {
-    return self.scrollView.zoomScale;
-}
-- (void)setScrollViewZoomScale:(CGFloat)zoomScale {
-    [self.scrollView setZoomScale:zoomScale];
-}
-- (CGSize)getScrollViewContentSize {
-    return self.scrollView.contentSize;
-}
-- (void)setScrollViewContnetSize:(CGSize)contentSize {
-    [self.scrollView setContentSize:contentSize];
-}
-- (CGPoint)getScrollViewContentOffset {
-    return self.scrollView.contentOffset;
-}
-- (void)setScrollViewContentOffset:(CGPoint)contentOffset {
-    [self.scrollView setContentOffset:contentOffset];
-}
-- (void)resetScale:(BOOL)animated {
-    if (self.model.type != HXPhotoModelMediaTypePhotoGif) {
-        self.gifImage = nil;
-    }
-    [self resetScale:1.0f animated:animated];
-}
-- (void)resetScale:(CGFloat)scale animated:(BOOL)animated {
-    [self.scrollView setZoomScale:scale animated:animated];
-}
-- (void)againAddImageView {
-    [self refreshImageSize];
-    [self.scrollView setZoomScale:1.0f];
-    #if HasYYKitOrWebImage
-    [self.scrollView addSubview:self.animatedImageView];
-    #else
-    [self.scrollView addSubview:self.imageView];
-    #endif
-    if (self.model.subType == HXPhotoModelMediaSubTypeVideo) {
-        self.videoPlayBtn.hidden = NO;
-        [self.contentView.layer addSublayer:self.playerLayer];
-        [self.contentView addSubview:self.videoPlayBtn];
-        self.videoPlayBtn.alpha = 0;
-        [UIView animateWithDuration:0.2 animations:^{
-            self.videoPlayBtn.alpha = 1;
-        }];
-    }
-}
-- (CGSize)getImageSize {
-    CGFloat width = self.frame.size.width;
-    CGFloat height = self.frame.size.height;
-    CGFloat imgWidth = self.model.imageSize.width;
-    CGFloat imgHeight = self.model.imageSize.height;
-    CGFloat w;
-    CGFloat h;
-
-    imgHeight = width / imgWidth * imgHeight;
-    if (imgHeight > height) {
-        w = height / self.model.imageSize.height * imgWidth;
-        h = height;
-    }else {
-        w = width;
-        h = imgHeight;
-    }
-    return CGSizeMake(w, h);
-}
-- (void)refreshImageSize {
-    CGFloat width = self.frame.size.width;
-    CGFloat height = self.frame.size.height;
-    CGFloat imgWidth = self.model.imageSize.width;
-    CGFloat imgHeight = self.model.imageSize.height;
-    CGFloat w;
-    CGFloat h;
-
-    imgHeight = width / imgWidth * imgHeight;
-    if (imgHeight > height) {
-        w = height / self.model.imageSize.height * imgWidth;
-        h = height;
-        self.scrollView.maximumZoomScale = width / w + 0.5;
-    }else {
-        w = width;
-        h = imgHeight;
-        self.scrollView.maximumZoomScale = 2.5;
-    }
-    #if HasYYKitOrWebImage
-    self.animatedImageView.frame = CGRectMake(0, 0, w, h);
-    self.animatedImageView.center = CGPointMake(width / 2, height / 2);
-    self.playerLayer.frame = self.animatedImageView.frame;
-    #else
-    self.imageView.frame = CGRectMake(0, 0, w, h);
-    self.imageView.center = CGPointMake(width / 2, height / 2);
-    self.playerLayer.frame = self.imageView.frame;
-    #endif
-    self.videoPlayBtn.frame = self.playerLayer.frame;
-}
-- (void)setModel:(HXPhotoModel *)model {
-    _model = model;
-    [self cancelRequest];
-    self.playerLayer.player = nil;
-    self.player = nil;
-    self.progressView.hidden = YES;
-    [self.loadingView stopAnimating];
-    self.progressView.progress = 0;
-
-    [self resetScale:NO];
-
-    CGFloat width = self.frame.size.width;
-    CGFloat height = self.frame.size.height;
-    CGFloat imgWidth = self.model.imageSize.width;
-    CGFloat imgHeight = self.model.imageSize.height;
-    CGFloat w;
-    CGFloat h;
-
-    imgHeight = width / imgWidth * imgHeight;
-    if (imgHeight > height) {
-        w = height / self.model.imageSize.height * imgWidth;
-        h = height;
-        self.scrollView.maximumZoomScale = width / w + 0.5;
-    }else {
-        w = width;
-        h = imgHeight;
-        self.scrollView.maximumZoomScale = 2.5;
-    }
-    #if HasYYKitOrWebImage
-    self.animatedImageView.frame = CGRectMake(0, 0, w, h);
-    self.animatedImageView.center = CGPointMake(width / 2, height / 2);
-    self.playerLayer.frame = self.animatedImageView.frame;
-    self.videoPlayBtn.frame = self.playerLayer.frame;
-    self.animatedImageView.hidden = NO;
-    #else
-    self.imageView.frame = CGRectMake(0, 0, w, h);
-    self.imageView.center = CGPointMake(width / 2, height / 2);
-    self.playerLayer.frame = self.imageView.frame;
-    self.videoPlayBtn.frame = self.playerLayer.frame;
-    self.imageView.hidden = NO;
-    #endif
-    HXWeakSelf
-    if (model.type == HXPhotoModelMediaTypeCameraPhoto || model.type == HXPhotoModelMediaTypeCameraVideo) {
-        if (model.networkPhotoUrl) {
-            self.progressView.hidden = model.downloadComplete;
-            CGFloat progress = (CGFloat)model.receivedSize / model.expectedSize;
-            self.progressView.progress = progress;
-    #if HasYYKitOrWebImage
-            [self.animatedImageView hx_setImageWithModel:model progress:^(CGFloat progress, HXPhotoModel *model) {
-                if (weakSelf.model == model) {
-                    weakSelf.progressView.progress = progress;
-                }
-            } completed:^(UIImage *image, NSError *error, HXPhotoModel *model) {
-                if (weakSelf.model == model) {
-                    if (error != nil) {
-                        [weakSelf.progressView showError];
-                    }else {
-                        if (image) {
-                            if (weakSelf.cellDownloadImageComplete) weakSelf.cellDownloadImageComplete(weakSelf);
-                            weakSelf.progressView.progress = 1;
-                            weakSelf.progressView.hidden = YES;
-                            weakSelf.animatedImageView.image = image;
-                            [weakSelf refreshImageSize];
-                        }
-                    }
-                }
-            }];
-    #else
-            [self.imageView hx_setImageWithModel:model progress:^(CGFloat progress, HXPhotoModel *model) {
-                if (weakSelf.model == model) {
-                    weakSelf.progressView.progress = progress;
-                }
-            } completed:^(UIImage *image, NSError *error, HXPhotoModel *model) {
-                if (weakSelf.model == model) {
-                    if (error != nil) {
-                        [weakSelf.progressView showError];
-                    }else {
-                        if (image) {
-                            if (weakSelf.cellDownloadImageComplete) weakSelf.cellDownloadImageComplete(weakSelf);
-                            weakSelf.progressView.progress = 1;
-                            weakSelf.progressView.hidden = YES;
-                            weakSelf.imageView.image = image;
-                            [weakSelf refreshImageSize];
-                        }
-                    }
-                }
-            }];
-    #endif
-        }else {
-    #if HasYYKitOrWebImage
-            self.animatedImageView.image = model.thumbPhoto;
-    #else
-            self.imageView.image = model.thumbPhoto;
-    #endif
-            model.tempImage = nil;
-        }
-    }else {
-        if (model.type == HXPhotoModelMediaTypeLivePhoto) {
-            if (model.tempImage) {
-    #if HasYYKitOrWebImage
-                self.animatedImageView.image = model.tempImage;
-    #else
-                self.imageView.image = model.tempImage;
-    #endif
-                model.tempImage = nil;
-            }else {
-                self.requestID = [model requestThumbImageWithSize:CGSizeMake(self.hx_w * 0.5, self.hx_h * 0.5) completion:^(UIImage *image, HXPhotoModel *model, NSDictionary *info) {
-                    if (weakSelf.model != model) return;
-    #if HasYYKitOrWebImage
-                    weakSelf.animatedImageView.image = image;
-    #else
-                    weakSelf.imageView.image = image;
-    #endif
-                }];
-            }
-        }else {
-            if (model.previewPhoto) {
-    #if HasYYKitOrWebImage
-                self.animatedImageView.image = model.previewPhoto;
-    #else
-                self.imageView.image = model.previewPhoto;
-    #endif
-                model.tempImage = nil;
-            }else {
-                if (model.tempImage) {
-    #if HasYYKitOrWebImage
-                    self.animatedImageView.image = model.tempImage;
-    #else
-                    self.imageView.image = model.tempImage;
-    #endif
-                    model.tempImage = nil;
-                }else {
-                    CGSize requestSize;
-                    if (imgHeight > imgWidth / 9 * 20 ||
-                        imgWidth > imgHeight / 9 * 20) {
-                        requestSize = CGSizeMake(self.hx_w * 0.6, self.hx_h * 0.6);
-                    }else {
-                        requestSize = CGSizeMake(model.endImageSize.width, model.endImageSize.height);
-                    }
-                    self.requestID =[model requestThumbImageWithSize:requestSize completion:^(UIImage *image, HXPhotoModel *model, NSDictionary *info) {
-                        if (weakSelf.model != model) return;
-    #if HasYYKitOrWebImage
-                        weakSelf.animatedImageView.image = image;
-    #else
-                        weakSelf.imageView.image = image;
-    #endif
-                    }];
-                }
-            }
-        }
-    }
-    if (model.subType == HXPhotoModelMediaSubTypeVideo) {
-        self.playerLayer.hidden = NO;
-        self.videoPlayBtn.hidden = NO;
-    }else {
-        self.playerLayer.hidden = YES;
-        self.videoPlayBtn.hidden = YES;
-    }
-}
-- (void)requestHDImage {
-    self.avAsset = nil;
-    if (self.requestID) {
-        [[PHImageManager defaultManager] cancelImageRequest:self.requestID];
-        self.requestID = -1;
-    }
-    CGFloat width = self.frame.size.width;
-    CGFloat height = self.frame.size.height;
-    CGFloat imgWidth = self.model.imageSize.width;
-    CGFloat imgHeight = self.model.imageSize.height;
-    CGSize size;
-    HXWeakSelf
-    CGFloat scale;
-    if (HX_IS_IPhoneX_All) {
-        scale = 3.0f;
-    }else if ([UIScreen mainScreen].bounds.size.width == 320) {
-        scale = 2.0;
-    }else if ([UIScreen mainScreen].bounds.size.width == 375) {
-        scale = 2.5;
-    }else {
-        scale = 3.0;
-    }
-
-    if (imgHeight > imgWidth / 9 * 20 ||
-        imgWidth > imgHeight / 9 * 20) {
-        size = CGSizeMake(width * scale, height * scale);
-    }else {
-        size = CGSizeMake(self.model.endImageSize.width * scale, self.model.endImageSize.height * scale);
-    }
-    if (self.model.type == HXPhotoModelMediaTypeCameraPhoto) {
-        if (self.model.networkPhotoUrl) {
-            if (!self.model.downloadComplete) {
-                self.progressView.hidden = NO;
-                self.progressView.progress = (CGFloat)self.model.receivedSize / self.model.expectedSize;;
-            }else if (self.model.downloadError) {
-                [self.progressView showError];
-            }
-        }
-    }else if (self.model.type == HXPhotoModelMediaTypeLivePhoto) {
-        if (_livePhotoView.livePhoto) {
-            [self.livePhotoView stopPlayback];
-            [self.livePhotoView startPlaybackWithStyle:PHLivePhotoViewPlaybackStyleFull];
-            return;
-        }
-        if (self.model.iCloudRequestID) {
-            [[PHImageManager defaultManager] cancelImageRequest:self.model.iCloudRequestID];
-            self.model.iCloudRequestID = -1;
-        }
-        self.requestID = [self.model requestLivePhotoWithSize:self.model.endImageSize startRequestICloud:^(PHImageRequestID iCloudRequestId, HXPhotoModel *model) {
-            if (weakSelf.model != model) return;
-            if (weakSelf.model.isICloud) {
-                weakSelf.progressView.hidden = NO;
-            }
-            weakSelf.requestID = iCloudRequestId;
-        } progressHandler:^(double progress, HXPhotoModel *model) {
-            if (weakSelf.model != model) return;
-            if (weakSelf.model.isICloud) {
-                weakSelf.progressView.hidden = NO;
-            }
-            weakSelf.progressView.progress = progress;
-        } success:^(PHLivePhoto *livePhoto, HXPhotoModel *model, NSDictionary *info) {
-            if (weakSelf.model != model) return;
-            [weakSelf downloadICloudAssetComplete];
-    #if HasYYKitOrWebImage
-            weakSelf.livePhotoView.frame = weakSelf.animatedImageView.frame;
-            weakSelf.animatedImageView.hidden = YES;
-    #else
-            weakSelf.livePhotoView.frame = weakSelf.imageView.frame;
-            weakSelf.imageView.hidden = YES;
-    #endif
-            [weakSelf.scrollView addSubview:weakSelf.livePhotoView];
-            weakSelf.livePhotoView.livePhoto = livePhoto;
-            [weakSelf.livePhotoView startPlaybackWithStyle:PHLivePhotoViewPlaybackStyleFull];
-        } failed:^(NSDictionary *info, HXPhotoModel *model) {
-            if (weakSelf.model != model) return;
-            weakSelf.progressView.hidden = YES;
-        }];
-    }else if (self.model.type == HXPhotoModelMediaTypePhoto) {
-        self.requestID = [self.model requestPreviewImageWithSize:size startRequestICloud:^(PHImageRequestID iCloudRequestId, HXPhotoModel *model) {
-            if (weakSelf.model != model) return;
-            if (weakSelf.model.isICloud) {
-                weakSelf.progressView.hidden = NO;
-            }
-            weakSelf.requestID = iCloudRequestId;
-        } progressHandler:^(double progress, HXPhotoModel *model) {
-            if (weakSelf.model != model) return;
-            if (weakSelf.model.isICloud) {
-                weakSelf.progressView.hidden = NO;
-            }
-            weakSelf.progressView.progress = progress;
-        } success:^(UIImage *image, HXPhotoModel *model, NSDictionary *info) {
-            if (weakSelf.model != model) return;
-            [weakSelf downloadICloudAssetComplete];
-            weakSelf.progressView.hidden = YES;
-            CATransition *transition = [CATransition animation];
-            transition.duration = 0.2f;
-            transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-            transition.type = kCATransitionFade;
-    #if HasYYKitOrWebImage
-            [weakSelf.animatedImageView.layer removeAllAnimations];
-            weakSelf.animatedImageView.image = image;
-            [weakSelf.animatedImageView.layer addAnimation:transition forKey:nil];
-    #else
-            [weakSelf.imageView.layer removeAllAnimations];
-            weakSelf.imageView.image = image;
-            [weakSelf.imageView.layer addAnimation:transition forKey:nil];
-    #endif
-        } failed:^(NSDictionary *info, HXPhotoModel *model) {
-            if (weakSelf.model != model) return;
-            weakSelf.progressView.hidden = YES;
-        }];
-    }else if (self.model.type == HXPhotoModelMediaTypePhotoGif) {
-        if (self.gifImage) {
-    #if HasYYKitOrWebImage
-            if (self.animatedImageView.image != self.gifImage) {
-                self.animatedImageView.image = self.gifImage;
-            }
-    #else
-            if (self.imageView.image != self.gifImage) {
-                self.imageView.image = self.gifImage;
-            }
-    #endif
-        }else {
-            self.requestID = [self.model requestImageDataStartRequestICloud:^(PHImageRequestID iCloudRequestId, HXPhotoModel *model) {
-                if (weakSelf.model != model) return;
-                if (weakSelf.model.isICloud) {
-                    weakSelf.progressView.hidden = NO;
-                }
-                weakSelf.requestID = iCloudRequestId;
-            } progressHandler:^(double progress, HXPhotoModel *model) {
-                if (weakSelf.model != model) return;
-                if (weakSelf.model.isICloud) {
-                    weakSelf.progressView.hidden = NO;
-                }
-                weakSelf.progressView.progress = progress;
-            } success:^(NSData *imageData, UIImageOrientation orientation, HXPhotoModel *model, NSDictionary *info) {
-                if (weakSelf.model != model) return;
-                [weakSelf downloadICloudAssetComplete];
-                weakSelf.progressView.hidden = YES;
-    #if HasYYKitOrWebImage
-                YYImage *gifImage = [YYImage imageWithData:imageData];
-                weakSelf.animatedImageView.image = gifImage;
-                weakSelf.gifImage = gifImage;
-    #else
-                UIImage *gifImage = [UIImage hx_animatedGIFWithData:imageData];
-                weakSelf.imageView.image = gifImage;
-                weakSelf.gifImage = gifImage;
-                if (gifImage.images.count == 0) {
-                    weakSelf.gifFirstFrame = gifImage;
-                }else {
-                    weakSelf.gifFirstFrame = gifImage.images.firstObject;
-                }
-    #endif
-                weakSelf.model.tempImage = nil;
-            } failed:^(NSDictionary *info, HXPhotoModel *model) {
-                if (weakSelf.model != model) return;
-                weakSelf.progressView.hidden = YES;
-            }];
-        }
-    }
-    if (self.player != nil) return;
-    if (self.model.subType == HXPhotoModelMediaSubTypeVideo) {
-        [self.model requestAVAssetStartRequestICloud:^(PHImageRequestID iCloudRequestId, HXPhotoModel *model) {
-            if (weakSelf.model != model) return;
-            [weakSelf.loadingView startAnimating];
-            weakSelf.videoPlayBtn.hidden = YES;
-            weakSelf.requestID = iCloudRequestId;
-        } progressHandler:^(double progress, HXPhotoModel *model) {
-            if (weakSelf.model != model) return;
-            weakSelf.progressView.progress = progress;
-        } success:^(AVAsset *avAsset, AVAudioMix *audioMix, HXPhotoModel *model, NSDictionary *info) {
-            if (weakSelf.model != model) return;
-            weakSelf.avAsset = avAsset;
-            [weakSelf downloadICloudAssetComplete];
-            weakSelf.progressView.hidden = YES;
-            [weakSelf.loadingView stopAnimating];
-            weakSelf.videoPlayBtn.hidden = NO;
-            weakSelf.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:avAsset]];
-            weakSelf.playerLayer.player = weakSelf.player;
-            [[NSNotificationCenter defaultCenter] addObserver:weakSelf selector:@selector(pausePlayerAndShowNaviBar) name:AVPlayerItemDidPlayToEndTimeNotification object:weakSelf.player.currentItem];
-        } failed:^(NSDictionary *info, HXPhotoModel *model) {
-            if (weakSelf.model != model) return;
-            [weakSelf.loadingView stopAnimating];
-            weakSelf.videoPlayBtn.hidden = NO;
-            weakSelf.progressView.hidden = YES;
-        }];
-    }
-}
-- (void)downloadICloudAssetComplete {
-    self.progressView.hidden = YES;
-    [self.loadingView stopAnimating];
-    if (self.model.isICloud) {
-        self.model.iCloudDownloading = NO;
-        self.model.isICloud = NO;
-        if (self.cellDownloadICloudAssetComplete) {
-            self.cellDownloadICloudAssetComplete(self);
-        }
-    }
-}
-- (void)pausePlayerAndShowNaviBar {
-    [self.player.currentItem seekToTime:CMTimeMake(0, 1)];
-    [self.player play];
-}
-- (void)cancelRequest {
-    if (self.requestID) {
-        [[PHImageManager defaultManager] cancelImageRequest:self.requestID];
-        self.requestID = -1;
-    }
-    //    self.videoPlayBtn.hidden = YES;
-    self.progressView.hidden = YES;
-    self.progressView.progress = 0;
-    if (self.model.type == HXPhotoModelMediaTypeLivePhoto) {
-        if (_livePhotoView.livePhoto) {
-            self.livePhotoView.livePhoto = nil;
-            [self.livePhotoView removeFromSuperview];
-    #if HasYYKitOrWebImage
-            self.animatedImageView.hidden = NO;
-    #else
-            self.imageView.hidden = NO;
-    #endif
-            [self stopLivePhoto];
-        }
-    }else if (self.model.type == HXPhotoModelMediaTypePhoto) {
-    #if HasYYWebImage
-        [self.animatedImageView yy_cancelCurrentImageRequest];
-    #elif HasYYKit
-        [self.animatedImageView cancelCurrentImageRequest];
-    #elif HasSDWebImage
-        [self.imageView sd_cancelCurrentAnimationImagesLoad];
-    #endif
-    }else if (self.model.type == HXPhotoModelMediaTypePhotoGif) {
-        if (!self.stopCancel) {
-    #if HasYYKitOrWebImage
-            self.animatedImageView.currentAnimatedImageIndex = 0;
-    #else
-            self.imageView.image = nil;
-            self.gifImage = nil;
-            self.imageView.image = self.gifFirstFrame;
-    #endif
-        }else {
-            self.stopCancel = NO;
-        }
-    }
-    if (self.model.subType == HXPhotoModelMediaSubTypeVideo) {
-        if (self.player != nil && !self.stopCancel) {
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
-            [self.player pause];
-            self.videoPlayBtn.selected = NO;
-            [self.player seekToTime:kCMTimeZero];
-            self.playerLayer.player = nil;
-            self.player = nil;
-        }
-        self.stopCancel = NO;
-    }
-}
-- (void)singleTap:(UITapGestureRecognizer *)tap {
-    if (self.cellTapClick) {
-        self.cellTapClick();
-    }
-}
-- (void)doubleTap:(UITapGestureRecognizer *)tap {
-    if (_scrollView.zoomScale > 1.0) {
-        [_scrollView setZoomScale:1.0 animated:YES];
-    } else {
-        CGFloat width = self.frame.size.width;
-        CGFloat height = self.frame.size.height;
-        CGPoint touchPoint;
-        if (self.model.type == HXPhotoModelMediaTypeLivePhoto) {
-            touchPoint = [tap locationInView:self.livePhotoView];
-        }else {
-    #if HasYYKitOrWebImage
-            touchPoint = [tap locationInView:self.animatedImageView];
-    #else
-            touchPoint = [tap locationInView:self.imageView];
-    #endif
-        }
-        CGFloat newZoomScale = self.scrollView.maximumZoomScale;
-        CGFloat xsize = width / newZoomScale;
-        CGFloat ysize = height / newZoomScale;
-        [self.scrollView zoomToRect:CGRectMake(touchPoint.x - xsize/2, touchPoint.y - ysize/2, xsize, ysize) animated:YES];
-    }
-}
-#pragma mark - < PHLivePhotoViewDelegate >
-- (void)livePhotoView:(PHLivePhotoView *)livePhotoView willBeginPlaybackWithStyle:(PHLivePhotoViewPlaybackStyle)playbackStyle {
-    self.livePhotoAnimating = YES;
-}
-- (void)livePhotoView:(PHLivePhotoView *)livePhotoView didEndPlaybackWithStyle:(PHLivePhotoViewPlaybackStyle)playbackStyle {
-    [self stopLivePhoto];
-}
-- (void)stopLivePhoto {
-    self.livePhotoAnimating = NO;
-    [self.livePhotoView stopPlayback];
-}
-#pragma mark - < UIScrollViewDelegate >
-- (nullable UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
-    if (self.model.subType == HXPhotoModelMediaSubTypeVideo) {
-        return nil;
-    }
-    if (self.model.type == HXPhotoModelMediaTypeLivePhoto) {
-        return self.livePhotoView;
-    }else {
-    #if HasYYKitOrWebImage
-        return self.animatedImageView;
-    #else
-        return self.imageView;
-    #endif
-    }
-}
-- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
-    CGFloat offsetX = (scrollView.frame.size.width > scrollView.contentSize.width) ? (scrollView.frame.size.width - scrollView.contentSize.width) * 0.5 : 0.0;
-    CGFloat offsetY = (scrollView.frame.size.height > scrollView.contentSize.height) ? (scrollView.frame.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
-
-    if (self.model.type == HXPhotoModelMediaTypeLivePhoto) {
-        self.livePhotoView.center = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX, scrollView.contentSize.height * 0.5 + offsetY);
-    }else {
-    #if HasYYKitOrWebImage
-        self.animatedImageView.center = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX, scrollView.contentSize.height * 0.5 + offsetY);
-    #else
-        self.imageView.center = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX, scrollView.contentSize.height * 0.5 + offsetY);
-    #endif
-    }
-}
-- (void)didPlayBtnClick:(UIButton *)button {
-    button.selected = !button.selected;
-    if (button.selected) {
-        [self.player play];
-    }else {
-        [self.player pause];
-    }
-    if (self.cellDidPlayVideoBtn) {
-        self.cellDidPlayVideoBtn(button.selected);
-    }
-}
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    if (!CGRectEqualToRect(self.scrollView.frame, self.bounds)) {
-        self.scrollView.frame = self.bounds;
-        self.scrollView.contentSize = CGSizeMake(self.hx_w, self.hx_h);
-    }
-    self.progressView.center = CGPointMake(self.hx_w / 2, self.hx_h / 2);
-    self.loadingView.center = self.progressView.center;
-}
-#pragma mark - < 懒加载 >
-- (UIScrollView *)scrollView {
-if (!_scrollView) {
-    _scrollView = [[UIScrollView alloc] init];
-    _scrollView.showsHorizontalScrollIndicator = NO;
-    _scrollView.showsVerticalScrollIndicator = NO;
-    _scrollView.bouncesZoom = YES;
-    _scrollView.minimumZoomScale = 1;
-    _scrollView.multipleTouchEnabled = YES;
-    _scrollView.delegate = self;
-    _scrollView.scrollsToTop = NO;
-    _scrollView.showsHorizontalScrollIndicator = NO;
-    _scrollView.showsVerticalScrollIndicator = NO;
-    _scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _scrollView.delaysContentTouches = NO;
-    _scrollView.canCancelContentTouches = YES;
-    _scrollView.alwaysBounceVertical = NO;
-#ifdef __IPHONE_11_0
-    if (@available(iOS 11.0, *)) {
-        _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-#else
-        if ((NO)) {
-#endif
-        }
-        UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTap:)];
-        [_scrollView addGestureRecognizer:tap1];
-        UITapGestureRecognizer *tap2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
-        tap2.numberOfTapsRequired = 2;
-        [tap1 requireGestureRecognizerToFail:tap2];
-        [_scrollView addGestureRecognizer:tap2];
-    }
-    return _scrollView;
-}
-- (CGFloat)zoomScale {
-    return self.scrollView.zoomScale;
-}
-#if HasYYKitOrWebImage
-- (YYAnimatedImageView *)animatedImageView {
-    if (!_animatedImageView) {
-        _animatedImageView = [[YYAnimatedImageView alloc] init];
-    }
-    return _animatedImageView;
-}
-#endif
-- (UIImageView *)imageView {
-    if (!_imageView) {
-        _imageView = [[UIImageView alloc] init];
-    }
-    return _imageView;
-}
-- (PHLivePhotoView *)livePhotoView {
-    if (!_livePhotoView) {
-        _livePhotoView = [[PHLivePhotoView alloc] init];
-        _livePhotoView.clipsToBounds = YES;
-        _livePhotoView.contentMode = UIViewContentModeScaleAspectFill;
-        _livePhotoView.delegate = self;
-    }
-    return _livePhotoView;
-}
-- (UIButton *)videoPlayBtn {
-    if (!_videoPlayBtn) {
-        _videoPlayBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_videoPlayBtn setImage:[UIImage hx_imageNamed:@"hx_multimedia_videocard_play"] forState:UIControlStateNormal];
-        [_videoPlayBtn setImage:[[UIImage alloc] init] forState:UIControlStateSelected];
-        [_videoPlayBtn addTarget:self action:@selector(didPlayBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _videoPlayBtn;
-}
-- (HXCircleProgressView *)progressView {
-    if (!_progressView) {
-        _progressView = [[HXCircleProgressView alloc] init];
-        _progressView.hidden = YES;
-    }
-    return _progressView;
-}
-- (UIActivityIndicatorView *)loadingView {
-    if (!_loadingView) {
-        _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        [_loadingView stopAnimating];
-    }
-    return _loadingView;
-}
-- (AVPlayerLayer *)playerLayer {
-    if (!_playerLayer) {
-        _playerLayer = [[AVPlayerLayer alloc] init];
-        _playerLayer.hidden = YES;
-        _playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    }
-    return _playerLayer;
-}
-- (void)dealloc {
-    [self cancelRequest];
 }
 @end
             

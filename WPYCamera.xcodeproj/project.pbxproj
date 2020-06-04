@@ -3,12 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		30040CCC227580610053D25F /* Rotatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30040CCB227580610053D25F /* Rotatable.swift */; };
-		30040CCE227583CC0053D25F /* ConfigurationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30040CCD227583CC0053D25F /* ConfigurationHelper.swift */; };
 		30040CD32276E1330053D25F /* UserDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30040CD22276E1330053D25F /* UserDetailVC.swift */; };
 		30040CE82276FE800053D25F /* CommentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30040CE62276FE800053D25F /* CommentVC.swift */; };
 		30040CE92276FE800053D25F /* CommentVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30040CE72276FE800053D25F /* CommentVC.xib */; };
@@ -46,7 +44,6 @@
 		304CD79922705A11000B8B83 /* WPYPhotoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304CD79822705A11000B8B83 /* WPYPhotoModel.swift */; };
 		304CD79D2270708A000B8B83 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 304CD79C2270708A000B8B83 /* libsqlite3.0.tbd */; };
 		304CD79F227074B3000B8B83 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 304CD79E227074B3000B8B83 /* SQLite.framework */; };
-		304CD7A32272D2A2000B8B83 /* CAGradientLayer+GradientBG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304CD7A22272D2A2000B8B83 /* CAGradientLayer+GradientBG.swift */; };
 		304FC45821EC369400DB0B7A /* Util_OC.m in Sources */ = {isa = PBXBuildFile; fileRef = 304FC45521EC369400DB0B7A /* Util_OC.m */; };
 		304FC45921EC369400DB0B7A /* WPY_AVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304FC45621EC369400DB0B7A /* WPY_AVPlayer.swift */; };
 		304FC45E21EC485100DB0B7A /* WPYPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304FC45D21EC485100DB0B7A /* WPYPlayView.swift */; };
@@ -94,19 +91,21 @@
 		30D9FCEC21F1C703000CFCA0 /* VolumeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D9FCEA21F1C703000CFCA0 /* VolumeCell.swift */; };
 		30D9FCED21F1C703000CFCA0 /* VolumeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30D9FCEB21F1C703000CFCA0 /* VolumeCell.xib */; };
 		30D9FCF021F5C3D0000CFCA0 /* WPYVideoEditManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D9FCEF21F5C3D0000CFCA0 /* WPYVideoEditManager.swift */; };
+		30DA982823546FCE00A74BE2 /* WPYCamera-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 307511E321CB661E00A34BA7 /* WPYCamera-Bridging-Header.h */; };
 		30E17FD722C21E55004EA036 /* DYViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E17FD622C21E55004EA036 /* DYViewController.swift */; };
 		30E17FDA22C35660004EA036 /* UIScrollView+WPYTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E17FD922C35660004EA036 /* UIScrollView+WPYTransition.m */; };
 		30E17FDE22C38970004EA036 /* WPY_PageTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E17FDD22C38970004EA036 /* WPY_PageTableView.m */; };
 		30E17FE122C38A90004EA036 /* WPY_PageContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E17FE022C38A90004EA036 /* WPY_PageContainerView.m */; };
 		30E17FE422C475F7004EA036 /* WPY_PageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E17FE322C475F7004EA036 /* WPY_PageView.m */; };
 		30E5AA5D21E359CE00EA50DC /* WPYTakePhotoBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E5AA5C21E359CE00EA50DC /* WPYTakePhotoBtn.swift */; };
+		30F77AB9235E91080065B9DF /* CAGradientLayer+GradientBG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F77AB8235E91080065B9DF /* CAGradientLayer+GradientBG.swift */; };
+		DFC192FE248502DD00A5AA16 /* Rotatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC192FD248502DD00A5AA16 /* Rotatable.swift */; };
+		DFC193002485055E00A5AA16 /* ConfigurationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC192FF2485055D00A5AA16 /* ConfigurationHelper.swift */; };
 		DFF6477B46F411C7EA2C940E /* Pods_WPYCamera.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18AE7F2370990EA4884BF9C2 /* Pods_WPYCamera.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		18AE7F2370990EA4884BF9C2 /* Pods_WPYCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WPYCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		30040CCB227580610053D25F /* Rotatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Rotatable.swift; path = ../../../../../MyProject/Swift_myImGuider/MyImGuider/Vendor/Source/AnimatingBarButton/Animations/Rotatable.swift; sourceTree = "<group>"; };
-		30040CCD227583CC0053D25F /* ConfigurationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfigurationHelper.swift; path = ../../../../../MyProject/Swift_myImGuider/MyImGuider/Vendor/Source/Helpers/ConfigurationHelper/ConfigurationHelper.swift; sourceTree = "<group>"; };
 		30040CD22276E1330053D25F /* UserDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailVC.swift; sourceTree = "<group>"; };
 		30040CE62276FE800053D25F /* CommentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentVC.swift; sourceTree = "<group>"; };
 		30040CE72276FE800053D25F /* CommentVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentVC.xib; sourceTree = "<group>"; };
@@ -153,7 +152,6 @@
 		304CD79A2270707E000B8B83 /* SQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		304CD79C2270708A000B8B83 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		304CD79E227074B3000B8B83 /* SQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		304CD7A22272D2A2000B8B83 /* CAGradientLayer+GradientBG.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CAGradientLayer+GradientBG.swift"; path = "../../../../../ImGuiderX_Swift/ImGuider X/Public/Extension/CAGradientLayer+GradientBG.swift"; sourceTree = "<group>"; };
 		304FC45521EC369400DB0B7A /* Util_OC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util_OC.m; sourceTree = "<group>"; };
 		304FC45621EC369400DB0B7A /* WPY_AVPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPY_AVPlayer.swift; sourceTree = "<group>"; };
 		304FC45721EC369400DB0B7A /* Util_OC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util_OC.h; sourceTree = "<group>"; };
@@ -231,8 +229,11 @@
 		30E17FE222C475F7004EA036 /* WPY_PageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPY_PageView.h; sourceTree = "<group>"; };
 		30E17FE322C475F7004EA036 /* WPY_PageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WPY_PageView.m; sourceTree = "<group>"; };
 		30E5AA5C21E359CE00EA50DC /* WPYTakePhotoBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPYTakePhotoBtn.swift; sourceTree = "<group>"; };
+		30F77AB8235E91080065B9DF /* CAGradientLayer+GradientBG.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+GradientBG.swift"; sourceTree = "<group>"; };
 		52F3B248419CB0EAAA74CC88 /* Pods-WPYCamera.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WPYCamera.debug.xcconfig"; path = "Target Support Files/Pods-WPYCamera/Pods-WPYCamera.debug.xcconfig"; sourceTree = "<group>"; };
 		5AB72CE2368AD294B2BC6D78 /* Pods-WPYCamera.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WPYCamera.release.xcconfig"; path = "Target Support Files/Pods-WPYCamera/Pods-WPYCamera.release.xcconfig"; sourceTree = "<group>"; };
+		DFC192FD248502DD00A5AA16 /* Rotatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rotatable.swift; sourceTree = "<group>"; };
+		DFC192FF2485055D00A5AA16 /* ConfigurationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -293,10 +294,11 @@
 		300A5C022260991B00D88A3B /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				DFC192FF2485055D00A5AA16 /* ConfigurationHelper.swift */,
+				DFC192FD248502DD00A5AA16 /* Rotatable.swift */,
+				30F77AB7235E90F70065B9DF /* Extension */,
 				307511E321CB661E00A34BA7 /* WPYCamera-Bridging-Header.h */,
-				304CD7A12272D285000B8B83 /* Extension */,
 				304CD79522705812000B8B83 /* Model */,
-				304CD79022703F74000B8B83 /* DBManager */,
 				300A5C2D2264726200D88A3B /* Util */,
 				300A5C2A22643ED800D88A3B /* View */,
 				300A5C032260993400D88A3B /* BaseVC */,
@@ -368,8 +370,6 @@
 		300A5C2D2264726200D88A3B /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				30040CCD227583CC0053D25F /* ConfigurationHelper.swift */,
-				30040CCB227580610053D25F /* Rotatable.swift */,
 				300A5C2E2264731F00D88A3B /* Util.swift */,
 			);
 			path = Util;
@@ -467,17 +467,10 @@
 		304CD79522705812000B8B83 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				304CD79022703F74000B8B83 /* DBManager */,
 				304CD79822705A11000B8B83 /* WPYPhotoModel.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		304CD7A12272D285000B8B83 /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				304CD7A22272D2A2000B8B83 /* CAGradientLayer+GradientBG.swift */,
-			);
-			path = Extension;
 			sourceTree = "<group>";
 		};
 		304FC45321EC354F00DB0B7A /* WPYVideoPlayer */ = {
@@ -711,6 +704,14 @@
 			path = WPYTakePhotoBtn;
 			sourceTree = "<group>";
 		};
+		30F77AB7235E90F70065B9DF /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				30F77AB8235E91080065B9DF /* CAGradientLayer+GradientBG.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		7C2B6DB32292EE3573B5CAA5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -840,46 +841,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WPYCamera/Pods-WPYCamera-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/GKPageScrollViewSwift/GKPageScrollViewSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/HXPhotoPicker/HXPhotoPicker.framework",
-				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
-				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
-				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SKPhotoBrowser/SKPhotoBrowser.framework",
-				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Toast-Swift/Toast_Swift.framework",
-				"${BUILT_PRODUCTS_DIR}/YYCache/YYCache.framework",
-				"${BUILT_PRODUCTS_DIR}/YYImage/YYImage.framework",
-				"${BUILT_PRODUCTS_DIR}/YYWebImage/YYWebImage.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-WPYCamera/Pods-WPYCamera-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GKPageScrollViewSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HXPhotoPicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKPhotoBrowser.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toast_Swift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYCache.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYWebImage.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-WPYCamera/Pods-WPYCamera-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -893,6 +859,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30DA982823546FCE00A74BE2 /* WPYCamera-Bridging-Header.h in Sources */,
 				307511F121CB68CE00A34BA7 /* SDPhotoBrowser.m in Sources */,
 				304FC45E21EC485100DB0B7A /* WPYPlayView.swift in Sources */,
 				300A5C292264330900D88A3B /* MenuVC.swift in Sources */,
@@ -923,7 +890,6 @@
 				30D9FCE221F02701000CFCA0 /* MusicPlayerManager.swift in Sources */,
 				304FC45921EC369400DB0B7A /* WPY_AVPlayer.swift in Sources */,
 				30D9F2AF22B8908D00F02A76 /* UIViewController+WPYTransition.m in Sources */,
-				30040CCC227580610053D25F /* Rotatable.swift in Sources */,
 				300A5C1F2264282A00D88A3B /* LGSideMenuSegue.m in Sources */,
 				300A5C202264282A00D88A3B /* LGSideMenuController.m in Sources */,
 				300A5C1E2264282A00D88A3B /* LGSideMenuView.m in Sources */,
@@ -939,13 +905,13 @@
 				300A5C2F2264731F00D88A3B /* Util.swift in Sources */,
 				307F579D22291076003FA66C /* WPYVideoClipCell.swift in Sources */,
 				300A5C212264282A00D88A3B /* LGSideMenuGesturesHandler.m in Sources */,
-				304CD7A32272D2A2000B8B83 /* CAGradientLayer+GradientBG.swift in Sources */,
 				304CD79222703FDC000B8B83 /* DBHelper.swift in Sources */,
 				30D9FCE821F1BC17000CFCA0 /* WPYEditRecordView.swift in Sources */,
 				307511F321CB68CE00A34BA7 /* SDBrowserImageView.m in Sources */,
 				30D9F2B822B8D00000F02A76 /* LeftVC.swift in Sources */,
 				307F579B22290F8F003FA66C /* WPYClipFrameView.swift in Sources */,
 				30D9FCF021F5C3D0000CFCA0 /* WPYVideoEditManager.swift in Sources */,
+				DFC192FE248502DD00A5AA16 /* Rotatable.swift in Sources */,
 				30D9F2AD22B8908D00F02A76 /* WPYBaseTransition.m in Sources */,
 				3075118721CA5CC100A34BA7 /* AppDelegate.swift in Sources */,
 				30040CE82276FE800053D25F /* CommentVC.swift in Sources */,
@@ -954,11 +920,12 @@
 				300A5C1D2264282A00D88A3B /* LGSideMenuHelper.m in Sources */,
 				307511F221CB68CE00A34BA7 /* SDWaitingView.m in Sources */,
 				30D9F2A722B8908D00F02A76 /* WPY_VCDelegate.m in Sources */,
+				30F77AB9235E91080065B9DF /* CAGradientLayer+GradientBG.swift in Sources */,
 				30D9F2AE22B8908D00F02A76 /* WPY_NavDelegate.m in Sources */,
 				3043A568227854200046AB34 /* MyActVC.swift in Sources */,
-				30040CCE227583CC0053D25F /* ConfigurationHelper.swift in Sources */,
 				3043A56C2278546F0046AB34 /* AddUsersVC.swift in Sources */,
 				30D9F2AA22B8908D00F02A76 /* WPYDismissTransition.m in Sources */,
+				DFC193002485055E00A5AA16 /* ConfigurationHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1035,7 +1002,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1090,7 +1057,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1106,16 +1073,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B9QLYR7QH7;
+				DEVELOPMENT_TEAM = 99LSSXFZX4;
 				INFOPLIST_FILE = WPYCamera/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = WPY.WPYCamera;
+				PRODUCT_BUNDLE_IDENTIFIER = wpy.WPYCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "WPYCamera/Public/WPYCamera-Bridging-Header.h";
@@ -1131,16 +1098,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B9QLYR7QH7;
+				DEVELOPMENT_TEAM = 99LSSXFZX4;
 				INFOPLIST_FILE = WPYCamera/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = WPY.WPYCamera;
+				PRODUCT_BUNDLE_IDENTIFIER = wpy.WPYCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "WPYCamera/Public/WPYCamera-Bridging-Header.h";

@@ -92,7 +92,7 @@ extension WPYEditRecordView {
     }
     
     private func analysisAssetAudio(){
-        
+        //按标准拆分音频，为后期截取做准备
         interval = TimeInterval(audioTimeSC / 60.0)
         
         count = Int(duration / interval)
@@ -110,6 +110,7 @@ extension WPYEditRecordView{
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
+       //以 scrollView 0 坐标 为原点计算，从几秒开始截取
        let X = scrollView.contentOffset.x
         
        let start = max(0,interval * TimeInterval(X / kAudioItemWith))

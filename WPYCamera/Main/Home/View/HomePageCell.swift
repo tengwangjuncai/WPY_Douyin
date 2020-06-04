@@ -70,6 +70,7 @@ class HomePageCell: UICollectionViewCell,WPY_AVPlayerDelegate,Rotatable {
         addOKImageView.layer.cornerRadius = 12
         addOKImageView.clipsToBounds = true
         addOKImageView.alpha = 0
+        addOKImageView.image = UIImage(named: "wancheng")
         
         favBtn.alpha = 0.9
         let favCount = Float((arc4random()%30)/10)
@@ -158,20 +159,22 @@ class HomePageCell: UICollectionViewCell,WPY_AVPlayerDelegate,Rotatable {
         rotateAnimationFrom(addBtn, toItem: addOKImageView, duration: 0.5)
         
         self.addOKWidth.constant = 0
-        UIView.animate(withDuration: 0.5, delay: 0.7, options: UIView.AnimationOptions.curveLinear, animations: {
-            
+         UIView.animate(withDuration: 0.25, delay: 0.7, options:
+            UIView.AnimationOptions.curveLinear, animations: {
+            self.addOKWidth.constant = 16
             self.contentView.layoutIfNeeded()
             
         }) { (isfinish) in
             
-//            self.addOKImageView.isHidden =  true
+            self.addOKImageView.isHidden =  true
         }
         
     }
     
     func reset(){
          rotateAnimationFrom(addOKImageView, toItem: addBtn, duration: 0.1)
-        self.addOKWidth.constant = 24
+        self.addOKWidth.constant = 16
+        self.addOKImageView.isHidden =  false;
     }
     
     @IBAction func favAction(_ sender: UIButton) {

@@ -96,7 +96,6 @@ class WPYVideoEditManager: NSObject {
     
     class func cropVideo(asset: AVAsset, cropRange:CMTimeRange, completion:((_ newUrl: URL, _ newDuration:CGFloat,_ result:Bool) -> ())?) {
         
-        //        let asset = AVURLAsset.init(url: url, options: nil)
         let duration = CGFloat(CMTimeGetSeconds(asset.duration))
         
         //AVAssetExportPresetHighestQuality
@@ -119,7 +118,6 @@ class WPYVideoEditManager: NSObject {
         exportSession.outputFileType = AVFileType.mp4
         exportSession.shouldOptimizeForNetworkUse = true
         exportSession.timeRange = cropRange
-        //        exportSession.
         exportSession.exportAsynchronously {
             let status = exportSession.status
             switch status {
@@ -161,9 +159,6 @@ class WPYVideoEditManager: NSObject {
         
         exportSession?.outputURL = outPath()
         exportSession?.shouldOptimizeForNetworkUse = true
-        
-//        let startTime = CMTimeMake(value: Int64(fromTime), timescale: 1)
-//        let duration = CMTimeMake(value: Int64(toTime - fromTime), timescale: 1)
         
         /// 截取的范围
         exportSession?.timeRange = cropRange
@@ -317,7 +312,6 @@ class WPYVideoEditManager: NSObject {
         //3 建立环境组合素材
         
         let composition = AVMutableComposition.init()
-        
         
         
         //视频

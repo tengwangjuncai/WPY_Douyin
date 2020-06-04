@@ -7,12 +7,12 @@
 //
 
 #import "HXPhotoView.h"
+#import "HXPhotoSubViewCell.h"
 #import "HXPhotoManager.h"
 #import "HXCustomNavigationController.h"
 #import "HXAlbumListViewController.h"
 #import "HXPhotoViewController.h"
 #import "HXPhotoPreviewViewController.h"
-#import "HXDatePhotoToolManager.h"
 #import "HXPhotoPreviewBottomView.h"
 #import "UIViewController+HXExtension.h"
 #import "HXPhotoEditViewController.h"
@@ -25,3 +25,5 @@
 #import "UIImage+HXExtension.h"
 #import "UIImageView+HXExtension.h"
 #import "NSArray+HXExtension.h"
+#import "UIColor+HXExtension.h"
+#import "HXPhotoBottomSelectView.h"

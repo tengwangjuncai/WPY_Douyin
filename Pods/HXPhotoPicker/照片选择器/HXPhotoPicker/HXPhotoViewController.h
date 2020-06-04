@@ -14,7 +14,6 @@
 HXPhotoViewController ,
 HXPhotoViewCell ,
 HXPhotoBottomView ,
-HXCustomCameraController ,
 HXCustomPreviewView ,
 HXAlbumListViewController;
 @protocol HXPhotoViewControllerDelegate <NSObject>
@@ -37,10 +36,10 @@ HXAlbumListViewController;
  @param original 是否原图
  */
 - (void)photoViewController:(HXPhotoViewController *)photoViewController
-                 didDoneAllList:(NSArray<HXPhotoModel *> *)allList
-                         photos:(NSArray<HXPhotoModel *> *)photoList
-                         videos:(NSArray<HXPhotoModel *> *)videoList
-                       original:(BOOL)original;
+             didDoneAllList:(NSArray<HXPhotoModel *> *)allList
+                     photos:(NSArray<HXPhotoModel *> *)photoList
+                     videos:(NSArray<HXPhotoModel *> *)videoList
+                   original:(BOOL)original;
 
 /**
  改变了选择
@@ -49,7 +48,7 @@ HXAlbumListViewController;
  @param selected 是否选中
  */
 - (void)photoViewControllerDidChangeSelect:(HXPhotoModel *)model
-                                      selected:(BOOL)selected;
+                                  selected:(BOOL)selected;
 @end
 
 @interface HXPhotoViewController : UIViewController
@@ -81,6 +80,8 @@ HXAlbumListViewController;
 @property (assign, nonatomic) BOOL singleSelected;
 @property (strong, nonatomic) UIColor *selectBgColor;
 @property (strong, nonatomic) UIColor *selectedTitleColor;
+@property (strong, nonatomic) UIColor *darkSelectBgColor;
+@property (strong, nonatomic) UIColor *darkSelectedTitleColor;
 - (void)resetNetworkImage;
 - (void)cancelRequest;
 - (void)startRequestICloudAsset;
@@ -90,13 +91,14 @@ HXAlbumListViewController;
 
 @interface HXPhotoCameraViewCell : UICollectionViewCell
 @property (strong, nonatomic) HXPhotoModel *model;
-@property (strong, nonatomic, readonly) HXCustomCameraController *cameraController;
-@property (strong, nonatomic, readonly) HXCustomPreviewView *previewView;
-@property (strong, nonatomic) UIView *tempCameraPreviewView;
-@property (strong, nonatomic) UIView *tempCameraView;
-@property (copy, nonatomic) void (^ stopRunningComplete)(UIView *tempCameraPreviewView);
+@property (nonatomic, strong) AVCaptureSession *session;
+@property (strong, nonatomic, readonly) UIView *previewView; 
+@property (strong, nonatomic) UIImage *cameraImage;
+@property (assign, nonatomic) BOOL startSession;
 - (void)starRunning;
 - (void)stopRunning;
+- (void)addOutputDelegate;
+- (void)removeOutputDelegate;
 @end
 
 @interface HXPhotoViewSectionHeaderView : HXCustomCollectionReusableView

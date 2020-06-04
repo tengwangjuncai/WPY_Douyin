@@ -8,6 +8,77 @@
 
 import UIKit
 
+@objc public protocol GKPageListContainerViewGestureDelegate: NSObjectProtocol {
+    
+    @objc optional func pageListContainerCollectionView(_ collectionView: GKPageListContainerCollectionView, gestureRecognizerShouldBegin gestureRecognizer: UIGestureRecognizer) -> Bool
+    
+    @objc optional func pageListContainerCollectionView(_ collectionView: GKPageListContainerCollectionView, gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool
+}
+
+open class GKPageListContainerCollectionView: UICollectionView, UIGestureRecognizerDelegate {
+    open var isNestEnabled = false
+    open weak var gestureDelegate: GKPageListContainerViewGestureDelegate?
+    
+    public override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let result = self.gestureDelegate?.pageListContainerCollectionView?(self, gestureRecognizerShouldBegin: gestureRecognizer) {
+            return result
+        }else {
+            if isNestEnabled {
+                //没有代理，但是isNestEnabled为true
+                if gestureRecognizer.isMember(of: NSClassFromString("UIScrollViewPanGestureRecognizer")!) {
+                    let panGesture = gestureRecognizer as! UIPanGestureRecognizer
+                    let velocityX = panGesture.velocity(in: panGesture.view!).x
+                    if velocityX > 0 { // 右滑
+                        if self.contentOffset.x == 0 {
+                            return false
+                        }
+                    }else if velocityX < 0 { // 左滑
+                        if self.contentOffset.x + self.bounds.size.width == self.contentSize.width {
+                            return false
+                        }
+                    }
+                }
+                return true
+            }
+        }
+        
+        if self.panBack(gestureRecognizer: gestureRecognizer) {
+            return false
+        }
+        
+        return true
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if let result = self.gestureDelegate?.pageListContainerCollectionView?(self, gestureRecognizer: gestureRecognizer, shouldRecognizeSimultaneouslyWith: otherGestureRecognizer) {
+            return result
+        }
+        
+        if self.panBack(gestureRecognizer: gestureRecognizer) {
+            return true
+        }
+        
+        return false
+    }
+    
+    func panBack(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer == self.panGestureRecognizer {
+            let point = self.panGestureRecognizer.translation(in: self)
+            let state = gestureRecognizer.state
+            
+            let locationDistance = UIScreen.main.bounds.size.width
+            
+            if state == .began || state == .possible {
+                let location = gestureRecognizer.location(in: self)
+                if point.x > 0 && location.x < locationDistance && self.contentOffset.x <= 0 {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+}
+
 @objc public protocol GKPageListContainerViewDelegate: NSObjectProtocol {
     func numberOfRows(in listContainerView: GKPageListContainerView) -> Int
     
@@ -15,7 +86,7 @@ import UIKit
 }
 
 open class GKPageListContainerView: UIView {
-    open var collectionView: UICollectionView!
+    open var collectionView: GKPageListContainerCollectionView!
     open weak var delegate: GKPageListContainerViewDelegate?
     weak var mainTableView: GKPageTableView?
     
@@ -38,7 +109,7 @@ open class GKPageListContainerView: UIView {
         layout.minimumInteritemSpacing = 0
         layout.scrollDirection = .horizontal
         
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        self.collectionView = GKPageListContainerCollectionView(frame: .zero, collectionViewLayout: layout)
         self.collectionView.showsVerticalScrollIndicator = false
         self.collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.isPagingEnabled = true
@@ -87,21 +158,17 @@ extension GKPageListContainerView: UICollectionViewDataSource, UICollectionViewD
         return false
     }
     
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.mainTableView?.isScrollEnabled = false
+    }
+    
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.mainTableView?.isScrollEnabled = true
     }
     
     public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        self.mainTableView?.isScrollEnabled = true
-    }
-    
-    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        self.mainTableView?.isScrollEnabled = true
-    }
-    
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.isTracking || scrollView.isDecelerating {
-            self.mainTableView?.isScrollEnabled = false
+        if !decelerate {
+            self.mainTableView?.isScrollEnabled = true
         }
     }
 }

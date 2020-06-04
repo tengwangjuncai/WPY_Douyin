@@ -42,11 +42,16 @@
 /* <HXCustomCameraViewControllerDelegate> */
 - (void)hx_presentCustomCameraViewControllerWithManager:(HXPhotoManager *)manager delegate:(id)delegate;
 
+/// 设置圆角。使用自动布局，需要在layoutsubviews 中使用
+/// @param radius 圆角尺寸
+/// @param corner 圆角位置
+- (void)hx_radiusWithRadius:(CGFloat)radius corner:(UIRectCorner)corner;
 @end
 
 
 @interface HXHUD : UIView
 @property (assign, nonatomic) BOOL isImage;
+@property (copy, nonatomic) NSString *text;
 - (instancetype)initWithFrame:(CGRect)frame imageName:(NSString *)imageName text:(NSString *)text;
 - (void)showloading;
 @end

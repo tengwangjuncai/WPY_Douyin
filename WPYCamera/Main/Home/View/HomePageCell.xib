@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -71,7 +69,7 @@
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vja-f0-waH">
-                        <rect key="frame" x="101" y="173" width="100" height="100"/>
+                        <rect key="frame" x="101" y="190" width="100" height="100"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="Vja-f0-waH" secondAttribute="height" multiplier="1:1" id="Scj-H4-1ID"/>
                             <constraint firstAttribute="width" constant="100" id="VF5-B2-CFw"/>
@@ -143,7 +141,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="关注完成" translatesAutoresizingMaskIntoConstraints="NO" id="AwZ-N1-PWa">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wancheng" translatesAutoresizingMaskIntoConstraints="NO" id="AwZ-N1-PWa">
                                 <rect key="frame" x="18" y="39" width="24" height="24"/>
                                 <color key="backgroundColor" red="0.8980392157" green="0.12941176469999999" blue="0.2666666667" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -219,9 +217,9 @@
     </objects>
     <resources>
         <image name="Player Icon" width="36" height="36"/>
+        <image name="wancheng" width="24" height="24"/>
         <image name="wpySwiftAnimation" width="219.33332824707031" height="219.33332824707031"/>
         <image name="关注" width="24" height="24"/>
-        <image name="关注完成" width="24" height="24"/>
         <image name="喜欢" width="24" height="24"/>
         <image name="点赞" width="24" height="24"/>
         <image name="评论" width="24" height="24"/>

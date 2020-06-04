@@ -40,86 +40,155 @@
     HXWeakSelf
 #if HasYYKitOrWebImage
     YYWebImageManager *manager = [YYWebImageManager sharedManager];
-    UIImage *image = [manager.cache getImageForKey:[manager cacheKeyForURL:model.networkPhotoUrl] withType:YYImageCacheTypeAll];
-    if (image) {
-        if (!original) model.loadOriginalImage = YES;
-        self.image = image;
-        model.imageSize = image.size;
-        model.thumbPhoto = image;
-        model.previewPhoto = image;
-        model.downloadComplete = YES;
-        model.downloadError = NO;
-        if (completedBlock) {
-            completedBlock(image, nil, model);
+    [manager.cache getImageForKey:[manager cacheKeyForURL:model.networkPhotoUrl]  withType:YYImageCacheTypeAll withBlock:^(UIImage * _Nullable image, YYImageCacheType type) {
+        if (image) {
+            if (!original) model.loadOriginalImage = YES;
+            weakSelf.image = image;
+//            model.networkImageSize = imageData.length;
+            model.imageSize = weakSelf.image.size;
+            model.thumbPhoto = weakSelf.image;
+            model.previewPhoto = weakSelf.image;
+            model.downloadComplete = YES;
+            model.downloadError = NO;
+            if (completedBlock) {
+                completedBlock(weakSelf.image, nil, model);
+            }
+        }else {
+            NSURL *url = original ? model.networkPhotoUrl : model.networkThumbURL;
+            [weakSelf yy_setImageWithURL:url placeholder:model.thumbPhoto options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                model.receivedSize = receivedSize;
+                model.expectedSize = expectedSize;
+//                model.networkImageSize = expectedSize;
+                CGFloat progress = (CGFloat)receivedSize / expectedSize;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (progressBlock) {
+                        progressBlock(progress, model);
+                    }
+                });
+            } transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
+                return image;
+            } completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+                if (error != nil) {
+                    model.downloadError = YES;
+                    model.downloadComplete = YES;
+                }else {
+                    if (image) {
+                        weakSelf.image = image;
+                        model.imageSize = image.size;
+                        model.thumbPhoto = image;
+                        model.previewPhoto = image;
+                        model.downloadComplete = YES;
+                        model.downloadError = NO;
+                    }
+                }
+                if (completedBlock) {
+                    completedBlock(image,error,model);
+                }
+            }];
         }
-    }else {
-        NSURL *url = original ? model.networkPhotoUrl : model.networkThumbURL;
-        [self yy_setImageWithURL:url placeholder:model.thumbPhoto options:kNilOptions progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-            model.receivedSize = receivedSize;
-            model.expectedSize = expectedSize;
-            CGFloat progress = (CGFloat)receivedSize / expectedSize;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (progressBlock) {
-                    progressBlock(progress, model);
-                }
-            });
-        } transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
-            
-            return image;
-        } completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-            if (error != nil) {
-                model.downloadError = YES;
-                model.downloadComplete = YES;
-            }else {
-                if (image) {
-                    weakSelf.image = image;
-                    model.imageSize = image.size;
-                    model.thumbPhoto = image;
-                    model.previewPhoto = image;
-                    model.downloadComplete = YES;
-                    model.downloadError = NO;
-                }
-            }
-            if (completedBlock) {
-                completedBlock(image,error,model);
-            }
-        }];
-    }
-#elif HasSDWebImage
-    [[SDWebImageManager sharedManager] diskImageExistsForURL:model.networkPhotoUrl completion:^(BOOL isInCache) {
-        if (!original) model.loadOriginalImage = isInCache;
-        NSURL *url = (original || isInCache) ? model.networkPhotoUrl : model.networkThumbURL;
-        // 崩溃在这里说明SDWebImage版本过低
-        [weakSelf sd_setImageWithURL:url placeholderImage:model.thumbPhoto options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
-            model.receivedSize = receivedSize;
-            model.expectedSize = expectedSize;
-            CGFloat progress = (CGFloat)receivedSize / expectedSize;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (progressBlock) {
-                    progressBlock(progress, model);
-                }
-            });
-        } completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-            if (error != nil) {
-                model.downloadError = YES;
-                model.downloadComplete = YES;
-            }else {
-                if (image) {
-                    weakSelf.image = image;
-                    model.imageSize = image.size;
-                    model.thumbPhoto = image;
-                    model.previewPhoto = image;
-                    model.downloadComplete = YES;
-                    model.downloadError = NO;
-                }
-            }
-            if (completedBlock) {
-                completedBlock(image,error,model);
-            }
-        }];
     }];
+    /*
+    [manager.cache getImageDataForKey:[manager cacheKeyForURL:model.networkPhotoUrl] withBlock:^(NSData * _Nullable imageData) {
+        if (imageData) {
+            if (!original) model.loadOriginalImage = YES;
+            UIImage *image = [manager.cache getImageForKey:[manager cacheKeyForURL:model.networkPhotoUrl] withType:YYImageCacheTypeAll];
+            weakSelf.image = image;
+            model.networkImageSize = imageData.length;
+            model.imageSize = weakSelf.image.size;
+            model.thumbPhoto = weakSelf.image;
+            model.previewPhoto = weakSelf.image;
+            model.downloadComplete = YES;
+            model.downloadError = NO;
+            if (completedBlock) {
+                completedBlock(weakSelf.image, nil, model);
+            }
+        }else {
+            NSURL *url = original ? model.networkPhotoUrl : model.networkThumbURL;
+            [weakSelf yy_setImageWithURL:url placeholder:model.thumbPhoto options:kNilOptions progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                model.receivedSize = receivedSize;
+                model.expectedSize = expectedSize;
+                model.networkImageSize = expectedSize;
+                CGFloat progress = (CGFloat)receivedSize / expectedSize;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (progressBlock) {
+                        progressBlock(progress, model);
+                    }
+                });
+            } transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
+
+                return image;
+            } completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+                if (error != nil) {
+                    model.downloadError = YES;
+                    model.downloadComplete = YES;
+                }else {
+                    if (image) {
+                        weakSelf.image = image;
+                        model.imageSize = image.size;
+                        model.thumbPhoto = image;
+                        model.previewPhoto = image;
+                        model.downloadComplete = YES;
+                        model.downloadError = NO;
+                    }
+                }
+                if (completedBlock) {
+                    completedBlock(image,error,model);
+                }
+            }];
+        }
+    }];
+    */
+#elif HasSDWebImage
+    NSString *cacheKey = [[SDWebImageManager sharedManager] cacheKeyForURL:model.networkPhotoUrl];
+    [[SDWebImageManager sharedManager].imageCache queryImageForKey:cacheKey options:SDWebImageQueryMemoryData context:nil completion:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
+        if (image) {
+            weakSelf.image = image;
+//            if (data) {
+//                model.networkImageSize = data.length;
+//            }
+            model.imageSize = image.size;
+            model.thumbPhoto = image;
+            model.previewPhoto = image;
+            model.downloadComplete = YES;
+            model.downloadError = NO;
+            if (completedBlock) {
+                completedBlock(image, nil, model);
+            }
+        }else {
+            if (!original) model.loadOriginalImage = image;
+            NSURL *url = (original || image) ? model.networkPhotoUrl : model.networkThumbURL;
+            [weakSelf sd_setImageWithURL:url placeholderImage:model.thumbPhoto options:0 context:nil progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
+                model.receivedSize = receivedSize;
+                model.expectedSize = expectedSize;
+//                model.networkImageSize = expectedSize;
+                CGFloat progress = (CGFloat)receivedSize / expectedSize;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (progressBlock) {
+                        progressBlock(progress, model);
+                    }
+                });
+            } completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                if (error != nil) {
+                    model.downloadError = YES;
+                    model.downloadComplete = YES;
+                }else {
+                    if (image) {
+                        weakSelf.image = image;
+                        model.imageSize = image.size;
+                        model.thumbPhoto = image;
+                        model.previewPhoto = image;
+                        model.downloadComplete = YES;
+                        model.downloadError = NO;
+                    }
+                }
+                if (completedBlock) {
+                    completedBlock(image,error,model);
+                }
+            }];
+        }
+    }]; 
 #else
-    NSAssert(NO, @"请导入YYWebImage/SDWebImage后再使用网络图片功能");
+    NSAssert(NO, @"请导入YYWebImage/SDWebImage后再使用网络图片功能，HXPhotoPicker为pod导入的那么YY或者SD也必须是pod导入的否则会找不到");
 #endif
 }
 @end

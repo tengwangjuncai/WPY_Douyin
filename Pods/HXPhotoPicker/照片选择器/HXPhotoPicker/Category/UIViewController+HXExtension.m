@@ -10,14 +10,19 @@
 #import "HXPhotoPicker.h" 
 
 @implementation UIViewController (HXExtension)
-- (void)hx_presentAlbumListViewControllerWithManager:(HXPhotoManager *)manager delegate:(id)delegate {
+- (void)hx_presentAlbumListViewControllerWithManager:(HXPhotoManager *)manager
+                                            delegate:(id)delegate {
     HXAlbumListViewController *vc = [[HXAlbumListViewController alloc] initWithManager:manager];
     vc.delegate = delegate ? delegate : (id)self; 
     HXCustomNavigationController *nav = [[HXCustomNavigationController alloc] initWithRootViewController:vc];
     nav.supportRotation = manager.configuration.supportRotation;
+    nav.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    nav.modalPresentationCapturesStatusBarAppearance = YES;
     [self presentViewController:nav animated:YES completion:nil];
 }
-- (void)hx_presentSelectPhotoControllerWithManager:(HXPhotoManager *)manager didDone:(void (^)(NSArray<HXPhotoModel *> *, NSArray<HXPhotoModel *> *, NSArray<HXPhotoModel *> *, BOOL, UIViewController *, HXPhotoManager *))models cancel:(void (^)(UIViewController *, HXPhotoManager *))cancel {
+- (void)hx_presentSelectPhotoControllerWithManager:(HXPhotoManager *)manager
+                                           didDone:(void (^)(NSArray<HXPhotoModel *> *, NSArray<HXPhotoModel *> *, NSArray<HXPhotoModel *> *, BOOL, UIViewController *, HXPhotoManager *))models
+                                            cancel:(void (^)(UIViewController *, HXPhotoManager *))cancel {
     
     viewControllerDidDoneBlock modelBlock = ^(NSArray<HXPhotoModel *> *allList, NSArray<HXPhotoModel *> *photoList, NSArray<HXPhotoModel *> *videoList, BOOL original, UIViewController *viewController, HXPhotoManager *manager) {
         if (models) {
@@ -30,10 +35,13 @@
         }
     };
     HXCustomNavigationController *nav = [[HXCustomNavigationController alloc] initWithManager:manager doneBlock:modelBlock cancelBlock:cancelBlock];
+    nav.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    nav.modalPresentationCapturesStatusBarAppearance = YES;
     [self presentViewController:nav animated:YES completion:nil];
 }
 
-- (void)hx_presentCustomCameraViewControllerWithManager:(HXPhotoManager *)manager delegate:(id)delegate {
+- (void)hx_presentCustomCameraViewControllerWithManager:(HXPhotoManager *)manager
+                                               delegate:(id)delegate {
     if(![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         [self.view hx_showImageHUDText:[NSBundle hx_localizedStringForKey:@"无法使用相机!"]];
         return;
@@ -49,6 +57,8 @@
                 HXCustomNavigationController *nav = [[HXCustomNavigationController alloc] initWithRootViewController:vc];
                 nav.isCamera = YES;
                 nav.supportRotation = manager.configuration.supportRotation;
+                nav.modalPresentationStyle = UIModalPresentationOverFullScreen;
+                nav.modalPresentationCapturesStatusBarAppearance = YES;
                 [weakSelf presentViewController:nav animated:YES completion:nil];
             }else {
                 hx_showAlert(weakSelf, [NSBundle hx_localizedStringForKey:@"无法使用相机"], [NSBundle hx_localizedStringForKey:@"请在设置-隐私-相机中允许访问相机"], [NSBundle hx_localizedStringForKey:@"取消"], [NSBundle hx_localizedStringForKey:@"设置"] , nil, ^{
@@ -59,7 +69,9 @@
     }];
 }
 
-- (void)hx_presentCustomCameraViewControllerWithManager:(HXPhotoManager *)manager done:(HXCustomCameraViewControllerDidDoneBlock)done cancel:(HXCustomCameraViewControllerDidCancelBlock)cancel {
+- (void)hx_presentCustomCameraViewControllerWithManager:(HXPhotoManager *)manager
+                                                   done:(HXCustomCameraViewControllerDidDoneBlock)done
+                                                 cancel:(HXCustomCameraViewControllerDidCancelBlock)cancel {
     if(![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         [self.view hx_showImageHUDText:[NSBundle hx_localizedStringForKey:@"无法使用相机!"]];
         return;
@@ -77,6 +89,8 @@
                 HXCustomNavigationController *nav = [[HXCustomNavigationController alloc] initWithRootViewController:vc];
                 nav.isCamera = YES;
                 nav.supportRotation = manager.configuration.supportRotation;
+                nav.modalPresentationStyle = UIModalPresentationOverFullScreen;
+                nav.modalPresentationCapturesStatusBarAppearance = YES;
                 [weakSelf presentViewController:nav animated:YES completion:nil];
             }else {
                 hx_showAlert(weakSelf, [NSBundle hx_localizedStringForKey:@"无法使用相机"], [NSBundle hx_localizedStringForKey:@"请在设置-隐私-相机中允许访问相机"], [NSBundle hx_localizedStringForKey:@"取消"], [NSBundle hx_localizedStringForKey:@"设置"] , nil, ^{
@@ -87,23 +101,67 @@
     }];
 }
 
-- (void)hx_presentPreviewPhotoControllerWithManager:(HXPhotoManager *)manager models:(NSArray<HXPhotoModel *> *)models currentModel:(HXPhotoModel * _Nullable)currentModel photoView:(HXPhotoView * _Nullable)photoView {
+- (void)hx_presentPreviewPhotoControllerWithManager:(HXPhotoManager *)manager
+                                       previewStyle:(HXPhotoViewPreViewShowStyle)previewStyle
+                                       currentIndex:(NSUInteger)currentIndex
+                                          photoView:(HXPhotoView * _Nullable)photoView {
     
     HXPhotoPreviewViewController *vc = [[HXPhotoPreviewViewController alloc] init];
     vc.disableaPersentInteractiveTransition = photoView.disableaInteractiveTransition;
     vc.outside = YES;
     vc.manager = manager ?: photoView.manager;
-    vc.exteriorPreviewStyle = photoView.previewStyle;
+    vc.exteriorPreviewStyle = photoView ? photoView.previewStyle : previewStyle;
     vc.delegate = (id)self;
-    vc.modelArray = [NSMutableArray arrayWithArray:models];
-    if (currentModel && [models containsObject:currentModel]) {
-        vc.currentModelIndex = [models indexOfObject:currentModel];
+    if (manager.afterSelectedArray) {
+        vc.modelArray = [NSMutableArray arrayWithArray:manager.afterSelectedArray];
+    }
+    if (currentIndex >= vc.modelArray.count) {
+        vc.currentModelIndex = vc.modelArray.count - 1;
+    }else if (currentIndex < 0) {
+        vc.currentModelIndex = 0;
+    }else {
+        vc.currentModelIndex = currentIndex;
     }
     vc.previewShowDeleteButton = photoView.previewShowDeleteButton;
     vc.photoView = photoView;
+    vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    vc.modalPresentationCapturesStatusBarAppearance = YES;
     [self presentViewController:vc animated:YES completion:nil];
 }
 
+- (void)hx_presentPhotoEditViewControllerWithManager:(HXPhotoManager *)manager
+                                          photoModel:(HXPhotoModel *)photomodel
+                                            delegate:(id)delegate
+                                                done:(HXPhotoEditViewControllerDidDoneBlock)done
+                                              cancel:(HXPhotoEditViewControllerDidCancelBlock)cancel {
+    HXPhotoEditViewController *vc = [[HXPhotoEditViewController alloc] init];
+    vc.isInside = YES;
+    vc.delegate = delegate ?: self;
+    vc.manager = manager;
+    vc.model = photomodel;
+    vc.doneBlock = done;
+    vc.cancelBlock = cancel;
+    vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    vc.modalPresentationCapturesStatusBarAppearance = YES;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (void)hx_presentVideoEditViewControllerWithManager:(HXPhotoManager *)manager
+                                          videoModel:(HXPhotoModel *)videoModel
+                                            delegate:(id)delegate
+                                                done:(HXVideoEditViewControllerDidDoneBlock)done
+                                              cancel:(HXVideoEditViewControllerDidCancelBlock)cancel {
+    HXVideoEditViewController *vc = [[HXVideoEditViewController alloc] init];
+    vc.model = videoModel;
+    vc.delegate = delegate ?: self;
+    vc.manager = manager;
+    vc.isInside = YES;
+    vc.doneBlock = done;
+    vc.cancelBlock = cancel;
+    vc.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    vc.modalPresentationCapturesStatusBarAppearance = YES;
+    [self presentViewController:vc animated:YES completion:nil];
+}
 - (BOOL)hx_navigationBarWhetherSetupBackground {
     if ([self.navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault]) {
         return YES;

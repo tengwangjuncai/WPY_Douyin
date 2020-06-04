@@ -49,7 +49,7 @@ class playVideoVC: BaseVC,WPYEditRecordViewDelegate{
         //视频播放层
         self.player?.playerView.playerBackgroundColor = UIColor.black
         
-        self.player?.loadView(frame:CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), superView: self.view)
+        self.player?.loadView(frame:CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight), superView: self.view)
         
         let singleGesture = UITapGestureRecognizer(target: self, action: #selector(singleAction))
         singleGesture.numberOfTapsRequired = 1

@@ -58,7 +58,7 @@ class ReleaseVC: BaseVC {
         let model = WPYPhotoModel()
         model.name = "wpy"
         model.content = inputTextView.text
-        model.videoUrl = self.model?.videoURL.absoluteString
+        model.videoUrl = self.model?.videoURL?.absoluteString
         model.thumbImage = self.model?.thumbPhoto
         
         
@@ -75,7 +75,7 @@ class ReleaseVC: BaseVC {
     
     @objc func back(){
         
-        if  var path = self.model?.videoURL.absoluteString {
+        if  var path = self.model?.videoURL?.absoluteString {
             
             path = String(path.suffix(path.count - 7))
             WPYVideoEditManager.deleteTheVideoWithPath(path: path)

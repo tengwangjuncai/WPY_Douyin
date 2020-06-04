@@ -14,26 +14,17 @@
     if (!imageName) {
         return nil;
     }
-    UIImage *image;
+    UIImage *image = [self imageNamed:imageName];;
+    if (image) return image;
     NSBundle *myBundle = [NSBundle hx_photoPickerBundle];
     imageName = [imageName stringByAppendingString:@"@2x"];
     NSString *imagePath = [myBundle pathForResource:imageName ofType:@"png"];
-    image = [UIImage imageWithContentsOfFile:imagePath];
-//    NSString *path = [NSString stringWithFormat:@"HXPhotoPicker.bundle/%@",imageName];
-//    image = [UIImage imageNamed:path];
+    image = [self imageWithContentsOfFile:imagePath];
     if (image) {
         return image;
     } else {
         imageName = [imageName stringByReplacingOccurrencesOfString:@"@2x" withString:@""];
-        image = [UIImage imageNamed:imageName];
-//        if (image) {
-//            return image;
-//        }
-//        NSString *path = [NSString stringWithFormat:@"Frameworks/HXPhotoPicker.framework/HXPhotoPicker.bundle/%@",imageName];
-//        image = [UIImage imageNamed:path];
-//        if (!image) {
-//            image = [UIImage imageNamed:imageName];
-//        }
+        image = [self imageNamed:imageName];
         return image;
     }
 } 
@@ -50,6 +41,7 @@
     NSError *thumbnailImageGenerationError = nil;
     thumbnailImageRef = [assetImageGenerator copyCGImageAtTime:CMTimeMake(thumbnailImageTime, 60)actualTime:NULL error:&thumbnailImageGenerationError];
     UIImage*thumbnailImage = thumbnailImageRef ? [[UIImage alloc]initWithCGImage: thumbnailImageRef] : nil;
+    CGImageRelease(thumbnailImageRef);
     return thumbnailImage;
 }
 + (UIImage *)hx_animatedGIFWithImageSourceRef:(CGImageSourceRef)source {
@@ -165,8 +157,7 @@
     return [UIImage animatedImageWithImages:scaledImages duration:self.duration];
 }
 
-- (UIImage *)hx_normalizedImage
-{
+- (UIImage *)hx_normalizedImage {
     if (self.imageOrientation == UIImageOrientationUp) return self;
     
     UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
@@ -290,6 +281,11 @@
     rect.size.width = CGImageGetWidth(imag);
     rect.size.height = CGImageGetHeight(imag);
     
+    while (rect.size.width * rect.size.height > 4 * 1000 * 1000) {
+        rect.size.width /= 2;
+        rect.size.height /= 2;
+    }
+    
     bnds = rect;
     
     switch (orient)
@@ -378,5 +374,19 @@ static CGRect swapWidthAndHeight(CGRect rect) {
     rect.size.height = swap;
     
     return rect;
+}
+
++ (UIImage *)hx_imageWithColor:(UIColor *)color havingSize:(CGSize)size {
+    CGRect rect = CGRectMake(0.0f, 0.0f, size.width, size.height);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 @end

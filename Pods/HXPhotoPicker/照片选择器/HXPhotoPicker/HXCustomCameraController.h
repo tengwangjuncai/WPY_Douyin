@@ -25,8 +25,12 @@
 @property (weak, nonatomic) id<HXCustomCameraControllerDelegate> delegate;
 @property (strong, nonatomic, readonly) AVCaptureSession *captureSession;
 
-- (BOOL)setupSession:(NSError *)error;
-- (void)startSessionComplete:(void (^)(void))complete;
+/// 相机界面默认前置摄像头
+@property (assign, nonatomic) BOOL defaultFrontCamera;
+
+- (void)initSeesion;
+- (void)setupPreviewLayer:(AVCaptureVideoPreviewLayer *)previewLayer startSessionCompletion:(void (^)(BOOL success))completion;
+
 - (void)startSession;
 - (void)stopSession;
 
@@ -49,6 +53,7 @@
 
 
 @property (copy, nonatomic) NSString *videoCodecKey;
+@property (copy, nonatomic) NSString *sessionPreset;
 
 - (void)focusAtPoint:(CGPoint)point;
 - (void)exposeAtPoint:(CGPoint)point;

@@ -62,7 +62,7 @@ class HomeVC: BaseVC,UICollectionViewDataSource,UICollectionViewDelegate,HomePag
         
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        
+        self.collectionView.isPagingEnabled = true
         if let collectionLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             
             collectionLayout.itemSize = CGSize(width: kScreenWidth, height: kScreenHeight)

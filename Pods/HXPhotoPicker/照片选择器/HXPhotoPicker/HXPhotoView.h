@@ -12,7 +12,7 @@
 
 typedef NS_ENUM(NSUInteger, HXPhotoViewPreViewShowStyle) {
     HXPhotoViewPreViewShowStyleDefault, //!< 默认
-    HXPhotoViewPreViewShowStyleDark     //!< 黑暗
+    HXPhotoViewPreViewShowStyleDark     //!< 暗黑，此模式下视频会有进度条
 };
 
 /*
@@ -218,16 +218,66 @@ typedef void (^HXPhotoViewLongGestureRecognizerEndedBlock)(UILongPressGestureRec
  */
 - (BOOL)photoView:(HXPhotoView *)photoView collectionViewShouldSelectItemAtIndexPath:(NSIndexPath *)indexPath model:(HXPhotoModel *)model;
 
-// 每次在相册选择的图片,不是所有选择的所有图片.
-//- (void)photoViewCurrentSelected:(NSArray<HXPhotoModel *> *)allList photos:(NSArray<HXPhotoModel *> *)photos videos:(NSArray<HXPhotoModel *> *)videos original:(BOOL)isOriginal;
+/// 当前选择的model数组，不是已经选择的model数组
+/// 例: 已经选择了 照片1、视频1，再跳转相册选择了照片2、视频2，那么一共就是 照片1、视频1、照片2、视频2.那这个代理返回的数据就是 照片2、视频2
+/// 只有在相册列表点了确定按钮才会触发
+/// @param allList 所有类型
+/// @param photos 照片类型
+/// @param videos 视频类型
+/// @param isOriginal 是否原图
+- (void)photoViewCurrentSelected:(NSArray<HXPhotoModel *> *)allList
+                          photos:(NSArray<HXPhotoModel *> *)photos
+                          videos:(NSArray<HXPhotoModel *> *)videos
+                        original:(BOOL)isOriginal;
+
+/// 取消预览大图的回调
+/// @param photoView self
+- (void)photoViewPreviewDismiss:(HXPhotoView *)photoView;
+
+/// 实现这个代理返回的高度就是HXPhotoView的高度，不会进行自动计算高度.
+/// 每次需要更新高度的时候触发，请确保高度正确
+/// @param photoView self
+- (CGFloat)photoViewHeight:(HXPhotoView *)photoView;
+
+/// 自定义每个item的大小，实现此代码必须将 HXPhotoViewCustomItemSize 此宏的值修改为 1
+/// 并且必须实现 - (CGFloat)photoViewHeight:(HXPhotoView *)photoView 此代理返回HXPhotoView的高度，如果不实现则HXPhotoView的高度为0
+/// @param collectionView collectionView
+/// @param collectionViewLayout layout
+/// @param indexPath indexPath
+/// @param isAddItem 是否是添加按钮的item
+/// @param photoView self
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+               isAddItem:(BOOL)isAddItem
+               photoView:(HXPhotoView *)photoView;
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                   layout:(UICollectionViewLayout *)collectionViewLayout
+minimumLineSpacingForSectionAtIndex:(NSInteger)section
+                photoView:(HXPhotoView *)photoView;
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                   layout:(UICollectionViewLayout *)collectionViewLayout
+minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+                photoView:(HXPhotoView *)photoView;
 @end
 
 @interface HXPhotoView : UIView
-- (instancetype)initWithFrame:(CGRect)frame manager:(HXPhotoManager *)manager;
+#pragma mark - < init >
+- (instancetype)initWithFrame:(CGRect)frame
+                      manager:(HXPhotoManager *)manager;
+- (instancetype)initWithFrame:(CGRect)frame
+                      manager:(HXPhotoManager *)manager
+              scrollDirection:(UICollectionViewScrollDirection)scrollDirection;
 - (instancetype)initWithManager:(HXPhotoManager *)manager;
+- (instancetype)initWithManager:(HXPhotoManager *)manager
+                scrollDirection:(UICollectionViewScrollDirection)scrollDirection;
 + (instancetype)photoManager:(HXPhotoManager *)manager;
-- (NSIndexPath *)currentModelIndexPath:(HXPhotoModel *)model;
++ (instancetype)photoManager:(HXPhotoManager *)manager
+             scrollDirection:(UICollectionViewScrollDirection)scrollDirection;
 
+- (NSIndexPath *)currentModelIndexPath:(HXPhotoModel *)model;
 @property (weak, nonatomic) id<HXPhotoViewDelegate> delegate;
 @property (strong, nonatomic) HXPhotoManager *manager;
 @property (strong, nonatomic) NSIndexPath *currentIndexPath; // 自定义转场动画时用到的属性
@@ -256,9 +306,16 @@ typedef void (^HXPhotoViewLongGestureRecognizerEndedBlock)(UILongPressGestureRec
 @property (copy, nonatomic) HXPhotoViewLongGestureRecognizerEndedBlock longGestureRecognizerEndedBlock;
 
 #pragma mark - < Configuration >
+/// default is UICollectionViewScrollDirectionVertical
+/// 重新设置需要调用 refreshView 刷新界面
+@property (nonatomic) UICollectionViewScrollDirection scrollDirection;
 /**  是否把相机功能放在外面 默认NO  */
-@property (assign, nonatomic) BOOL outerCamera;
-/**  每行个数 默认 3  */
+@property (assign, nonatomic) IBInspectable BOOL outerCamera;
+/** 每行个数 默认 3
+ *  cell的宽高取决于 每行个数 与 HXPhotoView 的宽度 和 item间距
+ *  cell.width = (view.width - (lineCount - 1) * spacing - contentInset.left - contentInset.right) / lineCount
+ *  横向布局时 cell.width -= 10
+ */
 @property (assign, nonatomic) NSInteger lineCount;
 /**  每个item间距 默认 3  */
 @property (assign, nonatomic) CGFloat spacing;
@@ -282,6 +339,9 @@ typedef void (^HXPhotoViewLongGestureRecognizerEndedBlock)(UILongPressGestureRec
 @property (assign, nonatomic) BOOL showDeleteNetworkPhotoAlert;
 /**  预览大图时的风格样式  */
 @property (assign, nonatomic) HXPhotoViewPreViewShowStyle previewStyle;
+/// 底部选择视图是否自适应暗黑风格
+@property (assign, nonatomic) BOOL adaptiveDarkness;
+
 /**  跳转相册 如果需要选择相机/相册时 还是需要选择  */
 - (void)goPhotoViewController;
 /**  跳转相册 过滤掉选择 - 不管需不需要选择 直接前往相册  */
@@ -299,4 +359,5 @@ typedef void (^HXPhotoViewLongGestureRecognizerEndedBlock)(UILongPressGestureRec
  *   point 传入的坐标是在HXPhotoView上的坐标,里面已经做了转换处理
  */
 - (HXPhotoSubViewCell *)previewingContextViewWithPoint:(CGPoint)point;
+- (HXPhotoSubViewCell *)collectionViewCellWithIndex:(NSInteger)index;
 @end

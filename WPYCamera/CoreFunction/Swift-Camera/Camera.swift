@@ -55,32 +55,36 @@ class Camera: UIViewController,AVCapturePhotoCaptureDelegate,WPYTakePhotoBtnDele
     
     var markViews = [UIView]()
     var completeHander:((_ image:UIImage?,_ videoURL:URL?,_ success:Bool) -> Void)?
-    
-//    private var handel:(([HXPhotoModel],SelectType)->Void)?
-    
     var cameraStyle : CameraStyle = .clickVideo
-    
     var imageView : UIImageView!
     var focusView : UIView!
     var image : UIImage = UIImage()
     
+   // 视频捕获,input和output的桥梁 由它把输入输出结合在一起， 并开始启动捕获设备（摄像头）
+    var session : AVCaptureSession!
+    
     // 捕获设备 通常是前置摄像头 后置摄像头， 麦克风（音频输入）
     var device : AVCaptureDevice?
-    private var desiredPosition:AVCaptureDevice.Position = .back
+    var audioDevice = AVCaptureDevice.default(for: AVMediaType.audio)
+    var videoDevice = AVCaptureDevice.default(for: AVMediaType.video)
+    
     // AVCaptureDeviceInput 输入设备 它使用 AVCaptureDevice 来初始化
-    var inputDevice : AVCaptureDeviceInput?
+       var inputDevice : AVCaptureDeviceInput?
+    var audioInput : AVCaptureInput?
+    
+    var movieFileOutput:AVCaptureMovieFileOutput = AVCaptureMovieFileOutput()
+    
+    //AVCaptureVideoPreviewLayer图形界面，用于捕获视频展示
+    var previewLayer : AVCaptureVideoPreviewLayer!
+    
+    
+    //照相机
+    private var desiredPosition:AVCaptureDevice.Position = .back
     // 当启动摄像头开始捕获输入
     var output : AVCaptureMetadataOutput?
     var imageOutPut : AVCaptureStillImageOutput?
-    // 由它把输入输出结合在一起， 并开始启动捕获设备（摄像头）
-    var videoDevice = AVCaptureDevice.default(for: AVMediaType.video)
-    var audioDevice = AVCaptureDevice.default(for: AVMediaType.audio)
-    var audioInput : AVCaptureInput?
-    var movieFileOutput:AVCaptureMovieFileOutput = AVCaptureMovieFileOutput()
-    var previewLayer : AVCaptureVideoPreviewLayer!
     
-    private var motionManager: CMMotionManager?
-    private var orientation: AVCaptureVideoOrientation = .portrait
+    
     
     //保存所有的录像片段数组
     var videoAssets = [AVAsset]()
@@ -88,7 +92,6 @@ class Camera: UIViewController,AVCapturePhotoCaptureDelegate,WPYTakePhotoBtnDele
     var assetURLs = [String]()
     var videoDurations = [Float]()
     var appendIndex: Int32 = 1
-    var session : AVCaptureSession!
     var framePerSecond = 30
     
     
@@ -99,13 +102,17 @@ class Camera: UIViewController,AVCapturePhotoCaptureDelegate,WPYTakePhotoBtnDele
     var canCa : Bool = false
     var hadDuration:Float = 0
     var currentDuration:Double = 0
-    var maxDuration:Float = 15 {
-        didSet{
+    var maxDuration:Float = 15
+    {
+        didSet
+        {
             movieFileOutput.maxRecordedDuration = CMTimeMake(value: Int64(maxDuration * 600), timescale: 600)
         }
     }
-    var remainingTime : TimeInterval = 15.0 {
-        didSet{
+    var remainingTime : TimeInterval = 15.0
+    {
+        didSet
+        {
              movieFileOutput.maxRecordedDuration = CMTimeMake(value: Int64(remainingTime * 600), timescale: 600)
         }
     }
@@ -114,18 +121,22 @@ class Camera: UIViewController,AVCapturePhotoCaptureDelegate,WPYTakePhotoBtnDele
     var oldX:CGFloat = 0
     var musicUrl:String?
     
-    var zoomFactor:CGFloat? {
+    var zoomFactor:CGFloat?
+    {
         
-        didSet {
+        didSet
+        {
             guard let device = device else {return}
             guard var zoom = zoomFactor else {return}
             
             let maxZoom = device.activeFormat.videoMaxZoomFactor - 10
-            if zoom > maxZoom {
+            if zoom > maxZoom
+            {
                 zoom = maxZoom
             }
             
-            if zoom < 1.0 {
+            if zoom < 1.0
+            {
                 zoom = 1.0
             }
             
@@ -138,24 +149,25 @@ class Camera: UIViewController,AVCapturePhotoCaptureDelegate,WPYTakePhotoBtnDele
     }
     
     
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
-        
         IsOk()
         setup()
         initCamera()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool)
+    {
         super.viewWillAppear(animated)
-        
         self.navigationController?.navigationBar.isHidden = true
     }
 
     
     //界面初始化操作
     
-    func setup(){
+    func setup()
+    {
         
         self.completeBtn.layer.cornerRadius = 20
         self.completeBtn.clipsToBounds = true
@@ -192,26 +204,26 @@ class Camera: UIViewController,AVCapturePhotoCaptureDelegate,WPYTakePhotoBtnDele
     }
     
     
-    @objc private func enterBackground() {
+    @objc private func enterBackground()
+    {
         
         self.takePhotoBtn.Recording()
         
     }
     
-    @objc private func becomeActive() {
-        
+    @objc private func becomeActive()
+    {
        self.takePhotoBtn.Recording()
-        
     }
     
     
-    deinit {
-        
+    deinit
+    {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func goBigImage(){
-        
+    @objc func goBigImage()
+    {
         setupBrowser(images: [self.image], index: 0)
     }
     
@@ -243,8 +255,8 @@ class Camera: UIViewController,AVCapturePhotoCaptureDelegate,WPYTakePhotoBtnDele
     }
     
     
-    func finishVide(url:URL){
-        
+    func finishVide(url:URL)
+    {
         let playVC = playVideoVC()
         playVC.videoURL = url
         self.navigationController?.pushViewController(playVC, animated: true)
@@ -446,18 +458,19 @@ extension Camera {
         self.progress.addSubview(markView)
     }
     
-    func resetProgressView(duration:Float){
+    func resetProgressView(duration:Float)
+    {
         
-        if let view = self.markViews.last {
-            
+        if let view = self.markViews.last
+        {
             view.removeFromSuperview()
-            
             self.markViews.removeLast()
         }
-        self.progress.setProgress(duration/15, animated: true)
+        self.progress.setProgress(duration/15.0, animated: true)
         self.hadDuration = duration
         self.remainingTime = TimeInterval(maxDuration - duration)
-        if hadDuration == 0 {
+        if hadDuration == 0
+        {
             self.deleteBtn.isHidden = true
             self.uploadView.isHidden = false
             self.completeBtn.isHidden = true
@@ -622,62 +635,51 @@ extension Camera : AVCaptureFileOutputRecordingDelegate{
     
     // 照相机初始化
     
-    func initCamera(){
+    func initCamera()
+    {
         
         //使用AVMediaType.video 指明self.device 代表视频 默认使用后置摄像头进行初始化
         
-        
-        for dev in AVCaptureDevice.devices(for: .video) {
-            
-            if dev.position == desiredPosition{
-                
+        for dev in AVCaptureDevice.devices(for: .video)
+        {
+            if dev.position == desiredPosition
+            {
                 self.device = dev
                 break
             }
         }
         
-        guard let dev = self.device else {
-            
-            return
-        }
-        
+        guard let dev = self.device else { return }
         
         //使用设备初始化输入
         self.inputDevice = try? AVCaptureDeviceInput(device:device!)
-        
         //生成输出对象
         self.output = AVCaptureMetadataOutput()
         self.imageOutPut = AVCaptureStillImageOutput()
         
-//        let videoInput = try! AVCaptureDeviceInput(device: self.videoDevice!)
+        let videoInput = try! AVCaptureDeviceInput(device: self.videoDevice!)
         self.audioInput = try! AVCaptureDeviceInput(device: self.audioDevice!)
         //生成会话，用来结合输出
         self.session = AVCaptureSession()
         
-        
-//        if self.session.canSetSessionPreset(AVCaptureSession.Preset(rawValue: "AVCaptureSessionPreset1280x720")){
-//
-//            self.session.sessionPreset = .photo
-//        }
-        
-//        if self.session.canAddInput(videoInput){
-//            self.session.addInput(videoInput)
-//        }
-        
-        if self.session.canAddInput(self.audioInput!){
+        if self.session.canAddInput(self.audioInput!)
+        {
             self.session.addInput(self.audioInput!)
         }
         
-        if self.session.canAddInput(self.inputDevice!){
+        if self.session.canAddInput(self.inputDevice!)
+        {
             self.session.addInput(self.inputDevice!)
         }
         
-        if self.session.canAddOutput(self.imageOutPut!){
+        if self.session.canAddOutput(self.imageOutPut!)
+        {
             
             self.session.addOutput(self.imageOutPut!)
         }
         
-        if self.session.canAddOutput(movieFileOutput){
+        if self.session.canAddOutput(movieFileOutput)
+        {
             
             session.addOutput(movieFileOutput)
         }
@@ -687,7 +689,6 @@ extension Camera : AVCaptureFileOutputRecordingDelegate{
         
         self.previewLayer = AVCaptureVideoPreviewLayer(session: self.session)
         self.previewLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        
         self.previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         self.view.layer.insertSublayer(self.previewLayer, below: self.tapFocusView.layer)
         
@@ -696,15 +697,15 @@ extension Camera : AVCaptureFileOutputRecordingDelegate{
         
         
         
-        if (try? device?.lockForConfiguration()) != nil {
-            
-            if (device?.isFlashModeSupported(.auto)) != nil {
+        if (try? device?.lockForConfiguration()) != nil
+        {
+            if (device?.isFlashModeSupported(.auto)) != nil
+            {
                 device?.flashMode = .auto
-                
             }
             //自动白平衡
-            if device?.isWhiteBalanceModeSupported(.autoWhiteBalance) ?? false{
-                
+            if device?.isWhiteBalanceModeSupported(.autoWhiteBalance) ?? false
+            {
                 device?.whiteBalanceMode = .autoWhiteBalance
             }
             
@@ -718,7 +719,8 @@ extension Camera : AVCaptureFileOutputRecordingDelegate{
                 if !flag {return}
             }
             
-            if device?.flashMode == .on || device?.flashMode == .off {
+            if device?.flashMode == .on || device?.flashMode == .off
+            {
                 
                 device?.flashMode = .off
                 self.isFlashOn = false
@@ -965,8 +967,7 @@ extension Camera : AVCaptureFileOutputRecordingDelegate{
     
     
     
-    
-    //-----------------AVCaptureFileOutputRecordingDelegate-----------
+//-----------------AVCaptureFileOutputRecordingDelegate-----------
     
     func fileOutput(_ output: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from connections: [AVCaptureConnection]) {
         
@@ -991,22 +992,22 @@ extension Camera : AVCaptureFileOutputRecordingDelegate{
         remainingTime = remainingTime - duration
         hadDuration = hadDuration + Float(duration)
         
-        if self.deleteBtn.isHidden {
+        if self.deleteBtn.isHidden
+        {
             self.deleteBtn.isHidden = false
             self.backBtn.isHidden = false
             self.menuView.isHidden = false
         }
-        if remainingTime <= 0 || isComplete{
-            
+        if remainingTime <= 0 || isComplete
+        {
             self.deleteBtn.isHidden = false
             self.takePhotoBtn.stop()
             mergeVideos()
-            
         }
-        if remainingTime > 0 {
+        if remainingTime > 0
+        {
             self.addMarkViewWith(duration: hadDuration)
         }
-        
         stopTimer()
     }
     
@@ -1096,8 +1097,6 @@ extension Camera : AVCaptureFileOutputRecordingDelegate{
         
         let videoPath = WPYVideoEditManager.mergeVideoURL()
         
-       
-
         let exporter = AVAssetExportSession(asset: composition, presetName: AVAssetExportPreset1280x720)!
         exporter.outputURL = videoPath
         exporter.outputFileType = AVFileType.mp4
@@ -1199,7 +1198,8 @@ import SKPhotoBrowser
 extension UIViewController : SKPhotoBrowserDelegate {
     
     
-    private struct BrowserStoreKey {
+    private struct BrowserStoreKey
+    {
         
         static var browserViewKey = "browserViewKey"
     }
@@ -1220,7 +1220,8 @@ extension UIViewController : SKPhotoBrowserDelegate {
         
         guard let images = images else { return }
        
-        DispatchQueue.once(token: "skconfig") {
+        DispatchQueue.once(token: "skconfig")
+        {
             SKPhotoBrowserOptions.displayAction = false
             SKPhotoBrowserOptions.displayStatusbar = true
             SKPhotoBrowserOptions.displayCounterLabel = true
@@ -1249,12 +1250,18 @@ extension UIViewController : SKPhotoBrowserDelegate {
         let browser = SKPhotoBrowser(photos: photos, initialPageIndex: index)
         browser.cancelTitle = "cancel"
         browser.delegate = self
-//        browser.setNavBarStyle(.transparency)
-        
+        if #available(iOS 13.0, *)
+        {
+            browser.isModalInPresentation = true
+        } else {
+            // Fallback on earlier versions
+        };
+        browser.modalPresentationStyle = UIModalPresentationStyle.fullScreen;
         self.present(browser, animated: true, completion: nil)
     }
     
-    public func viewForPhoto(_ browser: SKPhotoBrowser, index: Int) -> UIView? {
+    public func viewForPhoto(_ browser: SKPhotoBrowser, index: Int) -> UIView?
+    {
         
         let view = self.browserView?(index)
         

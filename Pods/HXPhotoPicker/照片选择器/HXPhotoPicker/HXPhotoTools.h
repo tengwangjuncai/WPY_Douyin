@@ -32,12 +32,12 @@
  @param albumName 自定义相册名称
  @param videoURL 本地视频地址
  */
-+ (void)saveVideoToCustomAlbumWithName:(NSString *)albumName
-                              videoURL:(NSURL *)videoURL;
-+ (void)saveVideoToCustomAlbumWithName:(NSString *)albumName
-                              videoURL:(NSURL *)videoURL
-                              location:(CLLocation *)location
-                              complete:(void (^)(HXPhotoModel *model, BOOL success))complete;
++ (void)saveVideoToCustomAlbumWithName:(NSString * _Nullable)albumName
+                              videoURL:(NSURL * _Nullable)videoURL;
++ (void)saveVideoToCustomAlbumWithName:(NSString * _Nullable)albumName
+                              videoURL:(NSURL * _Nullable)videoURL
+                              location:(CLLocation * _Nullable)location
+                              complete:(void (^ _Nullable)(HXPhotoModel * _Nullable model, BOOL success))complete;
 
 /**
  保存图片到系统相册和自定义相册
@@ -45,29 +45,34 @@
  @param albumName 自定义相册名称
  @param photo uiimage
  */
-+ (void)savePhotoToCustomAlbumWithName:(NSString *)albumName
-                                 photo:(UIImage *)photo;
-+ (void)savePhotoToCustomAlbumWithName:(NSString *)albumName
-                                 photo:(UIImage *)photo
-                              location:(CLLocation *)location
-                              complete:(void (^)(HXPhotoModel *model, BOOL success))complete;
++ (void)savePhotoToCustomAlbumWithName:(NSString * _Nullable)albumName
+                                 photo:(UIImage * _Nullable)photo;
++ (void)savePhotoToCustomAlbumWithName:(NSString * _Nullable)albumName
+                                 photo:(UIImage * _Nullable)photo
+                              location:(CLLocation * _Nullable)location
+                              complete:(void (^ _Nullable)(HXPhotoModel * _Nullable model, BOOL success))complete;
+
+//+ (void)saveNetWorkingPhotoToCustomAlbumWithName:(NSString * _Nullable)albumName
+//                                             URL:(NSURL * _Nullable)URL
+//                                        location:(CLLocation * _Nullable)location
+//                                        complete:(void (^ _Nullable)(HXPhotoModel * _Nullable model, BOOL success))complete;
 
 /**
  获取定位信息 
  */
-+ (CLGeocoder *)getDateLocationDetailInformationWithModel:(HXPhotoDateModel *)model
-                                               completion:(void (^)(CLPlacemark * _Nullable placemark, HXPhotoDateModel *model, NSError * _Nullable error))completion;
++ (CLGeocoder * _Nullable)getDateLocationDetailInformationWithModel:(HXPhotoDateModel * _Nullable)model
+                                               completion:(void (^ _Nullable)(CLPlacemark * _Nullable placemark, HXPhotoDateModel * _Nullable model, NSError * _Nullable error))completion;
 
 /**
  请求相册权限
  */
-+ (void)requestAuthorization:(UIViewController *)viewController
-                     handler:(void (^)(PHAuthorizationStatus status))handler;
++ (void)requestAuthorization:(UIViewController * _Nullable)viewController
+                     handler:(void (^ _Nullable)(PHAuthorizationStatus status))handler;
 
 /**
  判断是否是HEIF格式的图片
  */
-+ (BOOL)assetIsHEIF:(PHAsset *)asset;
++ (BOOL)assetIsHEIF:(PHAsset * _Nullable)asset;
 
 /**
  导出裁剪的视频
@@ -78,30 +83,35 @@
  @param success 成功
  @param failed 失败
  */
-+ (void)exportEditVideoForAVAsset:(AVAsset *)asset
++ (void)exportEditVideoForAVAsset:(AVAsset * _Nullable)asset
                         timeRange:(CMTimeRange)timeRange
-                       presetName:(NSString *)presetName
-                          success:(void (^)(NSURL *videoURL))success
-                           failed:(void (^)(NSError *error))failed;
+                       presetName:(NSString * _Nullable)presetName
+                          success:(void (^ _Nullable)(NSURL * _Nullable videoURL))success
+                           failed:(void (^ _Nullable)(NSError * _Nullable error))failed;
 
 /**
  获取视频的时长
  */
-+ (NSString *)transformVideoTimeToString:(NSTimeInterval)duration;
++ (NSString * _Nullable)transformVideoTimeToString:(NSTimeInterval)duration;
 
 /**
  获取数组里面图片的大小
  */
-+ (void)FetchPhotosBytes:(NSArray *)photos
-              completion:(void (^)(NSString *totalBytes))completion;
-+ (NSString *)getBytesFromDataLength:(NSInteger)dataLength;
++ (void)fetchPhotosBytes:(NSArray * _Nullable)photos
+              completion:(void (^ _Nullable)(NSString * _Nullable totalBytes))completion;
++ (NSString * _Nullable)getBytesFromDataLength:(NSUInteger)dataLength;
 
 + (BOOL)platform;
 /**  iphone6, 6s, 7, 8  */
 + (BOOL)isIphone6;
 
-+ (void)selectListWriteToTempPath:(NSArray *)selectList
-                      requestList:(void (^)(NSArray *imageRequestIds, NSArray *videoSessions))requestList
-                       completion:(void (^)(NSArray<NSURL *> *allUrl, NSArray<NSURL *> *imageUrls, NSArray<NSURL *> *videoUrls))completion
-                            error:(void (^)(void))error DEPRECATED_MSG_ATTRIBUTE("该无效已无效' instead");
+
+/// 判断网络地址是否在本地存在
+/// 如果文件夹不存在则会创建文件夹
+/// @param videoURL 网络视频地址
++ (BOOL)fileExistsAtVideoURL:(NSURL * _Nullable)videoURL;
+
+/// 将网络视频地址转换成本地文件名
+/// @param videoURL 网络视频地址
++ (NSString * _Nullable)getVideoURLFilePath:(NSURL * _Nullable)videoURL;
 @end

@@ -93,8 +93,6 @@ class SelectPageSectionView: UIView {
 }
 
 
-
-
 import SnapKit
 
 class NavBtn: UIButton {

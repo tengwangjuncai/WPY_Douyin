@@ -31,7 +31,7 @@ typedef void (^ getPhotoListBlock)(NSArray *allList , NSArray *previewList,NSArr
 typedef NS_ENUM(NSUInteger, HXPhotoManagerSelectedType) {
     HXPhotoManagerSelectedTypePhoto = 0,        //!< 只显示图片
     HXPhotoManagerSelectedTypeVideo = 1,        //!< 只显示视频
-    HXPhotoManagerSelectedTypePhotoAndVideo     //!< 图片和视频一起显示
+    HXPhotoManagerSelectedTypePhotoAndVideo = 2 //!< 图片和视频一起显示
 };
 
 typedef NS_ENUM(NSUInteger, HXPhotoManagerVideoSelectedType) {
@@ -84,6 +84,9 @@ typedef NS_ENUM(NSUInteger, HXPhotoManagerVideoSelectedType) {
  @param completion 获取完成
  */
 - (void)requestPhotosBytesWithCompletion:(void (^)(NSString *totalBytes, NSUInteger totalDataLengths))completion;
+
+/// 已选照片数据的总大小
+@property (assign, nonatomic) NSUInteger *selectPhotoTotalDataLengths;
 @property (strong, nonatomic) NSOperationQueue *dataOperationQueue;
 
 /**
@@ -373,8 +376,6 @@ typedef NS_ENUM(NSUInteger, HXPhotoManagerVideoSelectedType) {
 
 #pragma mark - < 辅助属性 >
 @property (assign, nonatomic) HXPhotoManagerVideoSelectedType videoSelectedType;
-@property (strong, nonatomic) UIView *tempCameraPreviewView;
-@property (strong, nonatomic) UIView *tempCameraView;
 
 @property (assign, nonatomic) BOOL selectPhotoing;
 
@@ -384,8 +385,6 @@ typedef NS_ENUM(NSUInteger, HXPhotoManagerVideoSelectedType) {
 @property (copy, nonatomic) getSelectAlbumBlock selectAlbumBlock;
 @property (copy, nonatomic) getAllAlbumListBlock allAlbumListBlock;
 @property (copy, nonatomic) getPhotoListBlock photoListBlock;
-
-typedef void (^ getPhotoListBlock)(NSArray *allList , NSArray *previewList,NSArray *photoList ,NSArray *videoList ,NSArray *dateList , HXPhotoModel *firstSelectModel, HXAlbumModel *albumModel);
 
 @property (copy, nonatomic) NSArray *tempAllList;
 @property (copy, nonatomic) NSArray *tempPreviewList;
