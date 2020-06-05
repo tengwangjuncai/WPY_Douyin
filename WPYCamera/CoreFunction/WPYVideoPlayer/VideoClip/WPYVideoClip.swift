@@ -113,7 +113,7 @@ class WPYVideoClip: BaseVC,UICollectionViewDelegate,UICollectionViewDataSource {
         
         let count = CGFloat(min(measureCount, 10))
         
-        playerLayer.frame = CGRect(x: 15, y: 0 , width: kScreenWidth, height: kScreenHeight)
+        playerLayer.frame = CGRect(x: 0, y: 0 , width: kScreenWidth, height: kScreenHeight)
         
         clipView.frame = CGRect(x: (CGFloat(kScreenWidth) - kItemWith * 10) / 2, y: CGFloat(kScreenHeight) - 66 - inset.bottom, width: kItemWith * count, height: kItemHeight)
         

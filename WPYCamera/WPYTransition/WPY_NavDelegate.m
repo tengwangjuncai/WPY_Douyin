@@ -156,8 +156,8 @@
                 [self.popTransition cancelInteractiveTransition];
             }
         }
-        self.pushTransition = nil;
-        self.popTransition = nil;
+//        self.pushTransition = nil;
+//        self.popTransition = nil;
     }
     
     

@@ -144,39 +144,22 @@ class WPYClipFrameView: UIView {
         var left = leftView.frame
         left.origin.x = left.origin.x - kItemWith / 2
         left.size.width = left.size.width + kItemWith / 2
-        
+
         var right = rightView.frame
         right.size.width = right.size.width + kItemWith / 2
-        
+
         if left.contains(point){
-            
+
             return leftView
         }
-        
+
         if right.contains(point){
-            
+
             return rightView
         }
-        
+        // 返回nil 那么事件就不由当前控件处理
         return nil
     }
     
-//    override func draw(_ rect: CGRect) {
-//
-//        let context = UIGraphicsGetCurrentContext()
-//
-//        context?.clear(self.validRect)
-//        context?.setStrokeColor(UIColor.orange.cgColor)
-//        context?.setLineWidth(4.0)
-//
-//        let topPoints = [CGPoint(x: self.validRect.origin.x, y: 0),CGPoint(x: self.validRect.origin.x+self.validRect.size.width, y: 0)]
-//
-//        let bottomPoints = [CGPoint(x: self.validRect.origin.x, y: kItemHeight),CGPoint(x: self.validRect.origin.x + self.validRect.size.width, y: kItemHeight)]
-//
-//        context?.addLines(between: topPoints)
-//        context?.addLines(between: bottomPoints)
-//
-//        context?.drawPath(using: .stroke)
-//    }
 }
 

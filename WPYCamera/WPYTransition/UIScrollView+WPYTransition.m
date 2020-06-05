@@ -14,7 +14,8 @@
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
     
-    if ([self backGesture:gestureRecognizer]) {
+    if ([self backGesture:gestureRecognizer])
+    {
         return false;
     }
     return true;
@@ -23,7 +24,8 @@
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    if ([self backGesture:gestureRecognizer]) {
+    if ([self backGesture:gestureRecognizer])
+    {
         return YES;
     }
     
@@ -33,14 +35,16 @@
 
 - (BOOL)backGesture:(UIGestureRecognizer *)gestureRecognizer {
     
-    if (gestureRecognizer == self.panGestureRecognizer) {
+    if (gestureRecognizer == self.panGestureRecognizer)
+    {
         
         CGPoint point = [self.panGestureRecognizer translationInView:self];
         UIGestureRecognizerState state = gestureRecognizer.state;
         
         //设置手势滑动位置距离屏幕左边的区域
         CGFloat locationDistance = [UIScreen mainScreen].bounds.size.width;
-        if (state == UIGestureRecognizerStateBegan || state == UIGestureRecognizerStatePossible) {
+        if (state == UIGestureRecognizerStateBegan || state == UIGestureRecognizerStatePossible)
+        {
             
             CGPoint location = [gestureRecognizer locationInView:self];
             //判断 手势滑动方向，滑动左边距离是否小于规定距离  scrollView 是否滑动到头
